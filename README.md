@@ -1,6 +1,6 @@
 # PATHS
 
-An interactive temporal knowledge graph of the *Attack on Titan* manga — explore characters, events, locations, factions, Titans and memories, and how they connect across time.
+An interactive temporal knowledge graph of the _Attack on Titan_ manga — explore characters, events, locations, factions, Titans and memories, and how they connect across time.
 
 ## Status
 
@@ -8,7 +8,7 @@ An interactive temporal knowledge graph of the *Attack on Titan* manga — explo
 
 ## Canon
 
-Based on the *Attack on Titan* manga by Hajime Isayama. The manga is the single canon source; every fact in the dataset cites the manga chapter(s) it comes from.
+Based on the _Attack on Titan_ manga by Hajime Isayama. The manga is the single canon source; every fact in the dataset cites the manga chapter(s) it comes from.
 
 ## Disclaimer
 
