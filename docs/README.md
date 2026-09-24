@@ -10,4 +10,4 @@ Design documents for PATHS. Phase 0 is complete when every item below is written
 | `model/spoilers.md` | The "revealed in chapter" spoiler system | TODO |
 | `model/relationships.md` | The relationship-type vocabulary | TODO |
 | `features/paths-mode.md` | What PATHS mode shows | TODO |
-| `decisions/` | One short record per architecture decision | TODO |
+| `decisions/` | One short record per architecture decision | Started (0001–0002) |
