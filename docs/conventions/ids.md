@@ -29,15 +29,15 @@ Pattern (enforced by the Zod schema in Phase 1):
 
 ## 2. Entity kinds
 
-| Kind        | Represents                                                             |
-| ----------- | ---------------------------------------------------------------------- |
-| `character` | An individual person, in any form (human or Titan)                     |
-| `titan`     | One of the Nine Titan powers                                           |
-| `event`     | Something that happens at a point or over a span of in-universe time   |
-| `location`  | A place — territory, settlement, structure, or other place             |
-| `faction`   | An organized group — military, government, movement, family line, etc. |
-| `arc`       | A PATHS-defined story arc (see `canon-and-sources.md` §9)              |
-| `memory`    | **Provisional** — finalized in `model/relationships.md` (Step 11)      |
+| Kind        | Represents                                                                          |
+| ----------- | ----------------------------------------------------------------------------------- |
+| `character` | An individual person, in any form (human or Titan)                                  |
+| `titan`     | One of the Nine Titan powers                                                        |
+| `event`     | Something that happens at a point or over a span of in-universe time                |
+| `location`  | A place — territory, settlement, structure, or other place                          |
+| `faction`   | An organized group — military, government, movement, family line, etc.              |
+| `arc`       | A PATHS-defined story arc (see `canon-and-sources.md` §9)                           |
+| `memory`    | A specific memory, experienced and later received (see `model/relationships.md` §5) |
 
 **Edges have no hand-written IDs.** An edge is identified by the tuple **(source, type, target, start date)**. The seed script derives its database ID from that tuple, and the validator rejects duplicate tuples.
 

@@ -4,7 +4,7 @@ An interactive temporal knowledge graph of the _Attack on Titan_ manga — explo
 
 ## Status
 
-**Phase 0 — design and scaffolding.** No application code yet. Design decisions live in [`docs/`](docs/README.md).
+**Phase 0 (design and scaffolding) — complete.** Next: **Phase 1 — data model and seed data.** No application code yet. The design lives in [`docs/`](docs/README.md).
 
 ## Canon
 

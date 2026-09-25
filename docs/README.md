@@ -1,13 +1,25 @@
 # Docs
 
-Design documents for PATHS. Phase 0 is complete when every item below is written.
+Design documents for PATHS. These are the rules the data and code must follow — when they disagree with the code, fix one of them.
 
-| Doc                      | Purpose                                    | Status              |
-| ------------------------ | ------------------------------------------ | ------------------- |
-| `canon-and-sources.md`   | Canon rules and how facts are cited        | Done                |
-| `conventions/ids.md`     | How entities get their IDs                 | Done                |
-| `model/dates.md`         | How in-universe dates are stored           | TODO                |
-| `model/spoilers.md`      | The "revealed in chapter" spoiler system   | TODO                |
-| `model/relationships.md` | The relationship-type vocabulary           | TODO                |
-| `features/paths-mode.md` | What PATHS mode shows                      | TODO                |
-| `decisions/`             | One short record per architecture decision | Started (0001–0002) |
+**Suggested reading order:** canon → IDs → dates → spoilers → relationships → PATHS mode.
+
+## Design
+
+| Doc                                                | Purpose                                                   | Status |
+| -------------------------------------------------- | --------------------------------------------------------- | ------ |
+| [`canon-and-sources.md`](canon-and-sources.md)     | What counts as canon, how facts are cited and written     | Done   |
+| [`conventions/ids.md`](conventions/ids.md)         | Entity kinds and how IDs are formed                       | Done   |
+| [`model/dates.md`](model/dates.md)                 | In-universe dates, uncertainty, ordering, eras            | Done   |
+| [`model/spoilers.md`](model/spoilers.md)           | The reader's chapter cutoff and what carries `revealedIn` | Done   |
+| [`model/relationships.md`](model/relationships.md) | The edge-type vocabulary, memories, path weights          | Done   |
+| [`features/paths-mode.md`](features/paths-mode.md) | The time-lane PATHS view                                  | Done   |
+
+## Decisions
+
+One short record per architecture decision, numbered in order.
+
+| #    | Decision                                                                                               |
+| ---- | ------------------------------------------------------------------------------------------------------ |
+| 0001 | [Internal packages export TypeScript source](decisions/0001-internal-packages-as-typescript-source.md) |
+| 0002 | [Pin TypeScript to 6.0.x](decisions/0002-pin-typescript-6.md)                                          |
