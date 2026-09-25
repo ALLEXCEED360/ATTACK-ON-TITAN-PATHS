@@ -4,7 +4,7 @@ An interactive temporal knowledge graph of the _Attack on Titan_ manga — explo
 
 ## Status
 
-**Phase 2 — database (complete).** Next: Phase 3, the API. The dataset covers chapters 1–53 so far. The design lives in [`docs/`](docs/README.md); how to write data is in [`data/`](data/README.md).
+**Phase 3 — API (built; deployment pending).** The dataset covers chapters 1–53 so far. The design lives in [`docs/`](docs/README.md); how to write data is in [`data/`](data/README.md).
 
 | Package                                    | What it does                                                           |
 | ------------------------------------------ | ---------------------------------------------------------------------- |
@@ -12,6 +12,7 @@ An interactive temporal knowledge graph of the _Attack on Titan_ manga — explo
 | [`@paths/graph-core`](packages/graph-core) | Graph building, spoiler/time filtering, traversal, paths, centrality   |
 | [`@paths/data`](packages/data)             | Loads and validates `data/`; generates editor schemas                  |
 | [`@paths/db`](packages/db)                 | PostgreSQL schema, migrations, seeding and spoiler-aware SQL queries   |
+| [`@paths/api`](apps/api)                   | Spoiler-aware REST API (Fastify); OpenAPI docs at `/docs`              |
 
 ## Development
 
@@ -21,6 +22,7 @@ Requires Node 24, pnpm and Docker.
 pnpm install
 cp .env.example .env
 pnpm db:up && pnpm db:migrate && pnpm db:seed
+pnpm api:dev    # http://localhost:3000/docs
 ```
 
 | Command            | What it does                                                            |
@@ -29,7 +31,8 @@ pnpm db:up && pnpm db:migrate && pnpm db:seed
 | `pnpm validate`    | Check `data/` against every rule in the design docs                     |
 | `pnpm db:seed`     | Rebuild the database from `data/`                                       |
 | `pnpm db:reset`    | Wipe the database, then migrate and seed from scratch                   |
-| `pnpm test:db`     | Database tests (needs `pnpm db:up`)                                     |
+| `pnpm api:dev`     | Run the API with auto-reload (restart it after `pnpm db:seed`)          |
+| `pnpm test:db`     | Database and API tests (needs `pnpm db:up`)                             |
 | `pnpm db:generate` | Create a migration after changing `packages/db/src/schema.ts`           |
 | `pnpm schemas`     | Regenerate the editor's YAML schemas after changing a Zod schema        |
 

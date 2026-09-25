@@ -14,6 +14,8 @@ export interface GraphNode {
 }
 
 export interface GraphEdge {
+  /** The edge's stable ID, when it comes from the dataset. */
+  id?: string;
   source: string;
   target: string;
   type: EdgeType;

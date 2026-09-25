@@ -6,7 +6,7 @@ names:
     revealedIn: 7
     variants: ["Tomas Wagner"]
 description:
-  - text: "A 104th trainee in Eren's squad, eaten early in the Battle of Trost."
+  - text: "A 104th trainee in Eren's squad, eaten early in the fighting after the Colossal Titan returns."
     revealedIn: 4
 revealedIn: 4
 sources: [4, 7]
@@ -15,7 +15,7 @@ died:
   revealedIn: 4
   sources: [2, 4]
   certainty: inferred
-  notes: "Killed during the Battle of Trost (ch. 4), in 850 (ch. 2)."
+  notes: "Killed in the fighting shown in ch. 4, which takes place in 850 (ch. 2)."
 edges:
   - type: member_of
     target: faction_104th_training_corps
