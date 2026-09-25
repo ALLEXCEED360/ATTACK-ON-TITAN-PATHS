@@ -10,6 +10,8 @@ const app = await buildApp({
   store,
   corsOrigin: process.env.CORS_ORIGIN?.split(",") ?? "*",
   logger: { level: process.env.LOG_LEVEL ?? "info" },
+  // Outside production, never cache: a reseed should show up on the next request.
+  ...(process.env.NODE_ENV === "production" ? {} : { cacheControl: "no-store" }),
 });
 
 for (const signal of ["SIGINT", "SIGTERM"] as const) {

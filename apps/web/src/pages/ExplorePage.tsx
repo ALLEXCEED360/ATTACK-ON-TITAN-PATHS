@@ -1,9 +1,11 @@
 import { Link, useParams } from "react-router";
 import type { EntityKind } from "../api/client";
-import { useEntities } from "../api/queries";
+import { useEntities, useNeighborhood } from "../api/queries";
 import { ErrorMessage, Loading } from "../components/QueryState";
 import { EntityDetails } from "../features/entity/EntityDetails";
+import { useExploreParams } from "../features/explore/params";
 import { GraphPanel } from "../features/graph/GraphPanel";
+import { TimeSlider } from "../features/timeline/TimeSlider";
 import { TimelineList } from "../features/timeline/TimelineList";
 import { KIND_LABELS } from "../lib/format";
 
@@ -48,6 +50,12 @@ function EntityIndex() {
  */
 export function ExplorePage() {
   const { id } = useParams();
+  const { at, search, setAt } = useExploreParams();
+  // Events directly connected to the selection light up on the timeline.
+  const { data: direct } = useNeighborhood(id, { depth: 1 });
+  const related = new Set(
+    direct?.nodes.filter((n) => n.kind === "event" && n.id !== id).map((n) => n.id),
+  );
 
   return (
     <div className="grid gap-6 lg:grid-cols-[16rem_1fr_22rem]">
@@ -56,13 +64,20 @@ export function ExplorePage() {
         className="order-3 lg:order-1 lg:max-h-[calc(100dvh-9rem)] lg:overflow-y-auto"
       >
         <h2 className="label mb-3">Timeline</h2>
-        <TimelineList order="world" selected={id} compact />
+        <TimelineList
+          order="world"
+          selected={id}
+          related={related}
+          at={at}
+          search={search}
+          compact
+        />
       </aside>
 
       <section aria-label="Connections" className="order-1 flex flex-col gap-4 lg:order-2">
         {id ? (
           <>
-            <h2 className="label">Connections</h2>
+            <TimeSlider at={at} onChange={setAt} />
             <GraphPanel id={id} />
           </>
         ) : (

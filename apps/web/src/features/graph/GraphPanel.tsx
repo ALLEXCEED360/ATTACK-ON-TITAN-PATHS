@@ -1,75 +1,13 @@
-import { useNavigate, useSearchParams } from "react-router";
+import { useNavigate } from "react-router";
 import { useNeighborhood } from "../../api/queries";
 import { ErrorMessage, Loading } from "../../components/QueryState";
 import { ConnectionsList } from "./ConnectionsList";
 import { GraphLegend } from "./GraphLegend";
 import { lazy, Suspense } from "react";
+import { CATEGORIES, useExploreParams } from "../explore/params";
 
 // Cytoscape is large: load it only when the graph is shown, not on every page.
 const GraphView = lazy(() => import("./GraphView").then((m) => ({ default: m.GraphView })));
-
-export const CATEGORIES = [
-  { value: "structural", label: "Family & membership" },
-  { value: "event", label: "Events" },
-  { value: "causal", label: "Cause & effect" },
-  { value: "paths", label: "Memories" },
-] as const;
-
-export type Category = (typeof CATEGORIES)[number]["value"];
-
-/**
- * The categories after toggling one. An empty list means "no filter" (everything shown), so
- * switching everything on — or the last one off — returns to it.
- */
-export function nextCategories(current: readonly Category[], category: Category): Category[] {
-  const active = current.length ? current : CATEGORIES.map((c) => c.value);
-  const next = active.includes(category)
-    ? active.filter((c) => c !== category)
-    : [...active, category];
-  return next.length === CATEGORIES.length ? [] : next;
-}
-
-/** Graph controls, all kept in the URL so a view can be shared: view, depth, categories. */
-export function useGraphParams() {
-  const [params, setParams] = useSearchParams();
-  const view: "graph" | "list" = params.get("view") === "list" ? "list" : "graph";
-  const depth = Math.min(3, Math.max(1, Number(params.get("depth") ?? 1) || 1));
-  const known = new Set<string>(CATEGORIES.map((c) => c.value));
-  const categories = (params.get("categories") ?? "")
-    .split(",")
-    .filter((c): c is Category => known.has(c));
-
-  const update = (changes: Record<string, string | null>) => {
-    setParams(
-      (current) => {
-        const next = new URLSearchParams(current);
-        for (const [key, value] of Object.entries(changes)) {
-          if (value === null) next.delete(key);
-          else next.set(key, value);
-        }
-        return next;
-      },
-      { replace: true },
-    );
-  };
-
-  return {
-    view,
-    depth,
-    categories,
-    at: params.get("at") ?? undefined,
-    setView: (v: "graph" | "list") => {
-      update({ view: v === "graph" ? null : v });
-    },
-    setDepth: (d: number) => {
-      update({ depth: d === 1 ? null : String(d) });
-    },
-    toggleCategory: (category: Category) => {
-      const next = nextCategories(categories, category);
-      update({ categories: next.length ? next.join(",") : null });
-    },
-  };
-}
 
 function Segmented<T extends string | number>({
   label,
@@ -108,7 +46,8 @@ function Segmented<T extends string | number>({
 /** The explorer's centre pane: the graph (or its list alternative) around one entity. */
 export function GraphPanel({ id }: { id: string }) {
   const navigate = useNavigate();
-  const { view, depth, categories, at, setView, setDepth, toggleCategory } = useGraphParams();
+  const { view, depth, categories, at, search, setView, setDepth, toggleCategory } =
+    useExploreParams();
   const { data, error, isPending } = useNeighborhood(view === "graph" ? id : undefined, {
     depth,
     at,
@@ -176,7 +115,7 @@ export function GraphPanel({ id }: { id: string }) {
             <GraphView
               neighborhood={data}
               onSelect={(next) => {
-                if (next !== id) void navigate(`/explore/${next}${window.location.search}`);
+                if (next !== id) void navigate(`/explore/${next}${search}`);
               }}
             />
           </Suspense>

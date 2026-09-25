@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { Neighborhood } from "../../api/client";
 import { toElements } from "./elements";
 import { clearHighlight, highlight } from "./focus";
-import { nextCategories } from "./GraphPanel";
+import { nextCategories } from "../explore/params";
 import { KIND_SHAPES, graphStyle, readPalette } from "./style";
 
 const neighborhood: Neighborhood = {

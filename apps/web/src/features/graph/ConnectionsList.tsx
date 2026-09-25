@@ -3,6 +3,7 @@ import type { Neighborhood } from "../../api/client";
 import { useNeighborhood } from "../../api/queries";
 import { ErrorMessage, Loading } from "../../components/QueryState";
 import { KIND_LABELS, edgeLabel } from "../../lib/format";
+import { useExploreParams } from "../explore/params";
 
 interface Group {
   label: string;
@@ -42,6 +43,7 @@ export function groupConnections(neighborhood: Neighborhood): Group[] {
  * A plain list of connections — the stand-in for the graph view, which arrives in Phase 5.
  */
 export function ConnectionsList({ id, at }: { id: string; at?: string }) {
+  const { search } = useExploreParams();
   const { data, error, isPending } = useNeighborhood(id, { depth: 1, at });
   if (isPending) return <Loading label="Loading connections…" />;
   if (error) return <ErrorMessage error={error} />;
@@ -60,7 +62,7 @@ export function ConnectionsList({ id, at }: { id: string; at?: string }) {
             {group.items.map((item) => (
               <li key={item.id}>
                 <Link
-                  to={`/explore/${item.id}${at ? `?at=${at}` : ""}`}
+                  to={`/explore/${item.id}${search}`}
                   title={KIND_LABELS[item.kind]}
                   className={`inline-block rounded border px-2.5 py-1 text-sm hover:border-brass-500 ${
                     item.uncertain

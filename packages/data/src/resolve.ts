@@ -82,13 +82,29 @@ export function isEmpty(interval: Interval): boolean {
   );
 }
 
+/**
+ * When a `killed` edge happens: the event it happened in, or else the victim's death. A killing
+ * is a moment, not a relationship that lasts while both are alive (docs/model/dates.md §7).
+ */
+function killingMoment(dataset: Dataset, edge: Edge): Interval | null {
+  if (edge.type !== "killed") return null;
+  const event = edge.in ? dataset.entities.get(edge.in)?.entity : undefined;
+  if (event) return lifetimeOf(event);
+  const victim = dataset.entities.get(edge.target)?.entity;
+  if (victim?.kind === "character" && victim.died) {
+    const death = resolveDate(victim.died.date);
+    return { start: death, end: death };
+  }
+  return null;
+}
+
 /** An edge's active period: its own `from`/`until`, clipped to both endpoints' lifetimes. */
 export function activeInterval(dataset: Dataset, loaded: LoadedEdge): Interval {
   const { edge } = loaded;
   const source = dataset.entities.get(edge.source)?.entity;
   const target = dataset.entities.get(edge.target)?.entity;
   const { from, until } = timeRefsOf(edge);
-  const own: Interval = {
+  const own: Interval = killingMoment(dataset, edge) ?? {
     start: from ? (resolveDateRef(dataset, from) ?? null) : null,
     end: until ? (resolveDateRef(dataset, until) ?? null) : null,
   };

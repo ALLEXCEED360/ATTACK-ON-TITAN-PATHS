@@ -72,6 +72,28 @@ describe("a valid dataset", () => {
     const holds = toGraphInput(dataset).edges.find((e) => e.type === "holds");
     expect(holds?.active.start?.earliest).toBe(8_450_101);
   });
+
+  it("makes a killing a moment: its event, or else the victim's death", () => {
+    const { dataset } = loadDataset([
+      ...reference,
+      character("character_killer", {
+        edges: [
+          { type: "killed", target: "character_one", in: "event_battle", ...fact() },
+          { type: "killed", target: "character_two", ...fact() },
+        ],
+      }),
+      character("character_one"),
+      character("character_two", { died: { date: { year: 852 }, ...fact() } }),
+      event("event_battle", 850),
+    ]);
+    const [inEvent, atDeath] = toGraphInput(dataset).edges;
+    expect(inEvent?.active).toEqual({
+      start: { earliest: 8_500_101, latest: 8_501_231 },
+      end: { earliest: 8_500_101, latest: 8_501_231 },
+    });
+    expect(atDeath?.active.start?.earliest).toBe(8_520_101);
+    expect(atDeath?.active.end?.latest).toBe(8_521_231);
+  });
 });
 
 describe("loading", () => {

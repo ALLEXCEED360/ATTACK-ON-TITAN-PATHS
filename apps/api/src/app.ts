@@ -25,12 +25,20 @@ export interface AppOptions {
   /** Allowed browser origin(s) for CORS. */
   corsOrigin?: string | string[];
   logger?: FastifyServerOptions["logger"];
+  /** Cache-Control for data responses. Defaults to a short public cache (production). */
+  cacheControl?: string;
 }
 
 /** Data only changes on deploy, so responses can be cached briefly by browsers and CDNs. */
 const CACHE_CONTROL = "public, max-age=300";
 
-export async function buildApp({ db, store, corsOrigin = "*", logger = false }: AppOptions) {
+export async function buildApp({
+  db,
+  store,
+  corsOrigin = "*",
+  logger = false,
+  cacheControl = CACHE_CONTROL,
+}: AppOptions) {
   const app = Fastify({ logger }).withTypeProvider<ZodTypeProvider>();
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);
@@ -64,7 +72,7 @@ export async function buildApp({ db, store, corsOrigin = "*", logger = false }: 
 
   app.addHook("onSend", async (request, reply) => {
     if (request.method === "GET" && reply.statusCode === 200 && !request.url.startsWith("/docs")) {
-      reply.header("cache-control", request.url.startsWith("/health") ? "no-store" : CACHE_CONTROL);
+      reply.header("cache-control", request.url.startsWith("/health") ? "no-store" : cacheControl);
     }
   });
 
