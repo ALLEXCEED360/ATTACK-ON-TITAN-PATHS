@@ -4,7 +4,15 @@ An interactive temporal knowledge graph of the _Attack on Titan_ manga — explo
 
 ## Status
 
-**Phase 0 (design and scaffolding) — complete.** Next: **Phase 1 — data model and seed data.** No application code yet. The design lives in [`docs/`](docs/README.md).
+**Phase 1 — data model and seed data (in progress).** The schemas, data validator and graph algorithms are built; the seed dataset is next. The design lives in [`docs/`](docs/README.md); how to write data is in [`data/`](data/README.md).
+
+| Package                                    | What it does                                                           |
+| ------------------------------------------ | ---------------------------------------------------------------------- |
+| [`@paths/shared`](packages/shared)         | Zod schemas and types for every kind of data; date and spoiler helpers |
+| [`@paths/graph-core`](packages/graph-core) | Graph building, spoiler/time filtering, traversal, paths, centrality   |
+| [`@paths/data`](packages/data)             | Loads and validates `data/`; generates editor schemas                  |
+
+Common commands: `pnpm check` (everything CI runs) · `pnpm validate` (check the data) · `pnpm test` · `pnpm schemas` (regenerate editor schemas after changing a schema).
 
 ## Canon
 

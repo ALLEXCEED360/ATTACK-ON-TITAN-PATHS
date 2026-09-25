@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^(character|titan|event|location|faction|arc|memory)_[a-z0-9]+(_[a-z0-9]+)*$"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "chapters": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "$ref": "#/$defs/__schema0"
+          },
+          {
+            "$ref": "#/$defs/__schema0"
+          }
+        ],
+        "items": false,
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "chapters"
+    ],
+    "additionalProperties": false
+  },
+  "$defs": {
+    "__schema0": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 139
+    }
+  }
+}

@@ -5,5 +5,17 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
+  },
+  "yaml.schemas": {
+    "./packages/data/schemas/characters.schema.json": "data/characters/*.yaml",
+    "./packages/data/schemas/titans.schema.json": "data/titans/*.yaml",
+    "./packages/data/schemas/events.schema.json": "data/events/*.yaml",
+    "./packages/data/schemas/locations.schema.json": "data/locations/*.yaml",
+    "./packages/data/schemas/factions.schema.json": "data/factions/*.yaml",
+    "./packages/data/schemas/memories.schema.json": "data/memories/*.yaml",
+    "./packages/data/schemas/volumes.schema.json": "data/reference/volumes.yaml",
+    "./packages/data/schemas/arcs.schema.json": "data/reference/arcs.yaml",
+    "./packages/data/schemas/eras.schema.json": "data/reference/eras.yaml",
+    "./packages/data/schemas/id-redirects.schema.json": "data/id-redirects.yaml"
   }
 }

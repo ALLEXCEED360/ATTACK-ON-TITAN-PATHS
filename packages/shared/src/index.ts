@@ -1,2 +1,9 @@
-// Temporary smoke test — replaced by real schemas in Phase 1.
-export const SHARED_READY = true;
+export * from "./chapters.ts";
+export * from "./dates.ts";
+export * from "./edge-types.ts";
+export * from "./edges.ts";
+export * from "./entities.ts";
+export * from "./facts.ts";
+export * from "./ids.ts";
+export * from "./reference.ts";
+export * from "./text.ts";

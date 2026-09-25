@@ -23,3 +23,4 @@ One short record per architecture decision, numbered in order.
 | ---- | ------------------------------------------------------------------------------------------------------ |
 | 0001 | [Internal packages export TypeScript source](decisions/0001-internal-packages-as-typescript-source.md) |
 | 0002 | [Pin TypeScript to 6.0.x](decisions/0002-pin-typescript-6.md)                                          |
+| 0003 | [Run TypeScript directly on Node](decisions/0003-run-typescript-natively-on-node.md)                   |

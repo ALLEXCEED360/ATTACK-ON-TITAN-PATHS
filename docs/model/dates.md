@@ -97,6 +97,8 @@ Relationships (edges) have optional `from` and `until` — each either a date or
 - **`from` omitted** → active from the moment both endpoints exist.
 - **`until` omitted** → active until either endpoint ceases to exist (e.g. a character's death), or the end of the story.
 - Every edge is **automatically clipped** to the lifetimes of its endpoints — there is no need to write "until death".
+- Lifetimes: a character exists from `born` to `died`, an event from `start` to `end`. Titans, locations, factions and **memories** are not bounded — a memory can be received before it was experienced, so its own date must not clip its edges.
+- Some untimed edges connect things that never exist at the same moment (e.g. `caused` between two events). That's valid: they simply never appear in a single moment of the time slider, and are shown in untimed views and PATHS mode. Only an edge whose **explicit** `from`/`until` contradict its endpoints' lifetimes is an error.
 - A relationship with a genuinely unknown end is given a `between` range for `until`, not left blank.
 
 Characters have optional `born` and `died` dates (usually inferred); a missing `born` means "unknown — before their first dated appearance".

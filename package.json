@@ -12,7 +12,10 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "pnpm typecheck && pnpm lint && pnpm format:check"
+    "test": "pnpm -r run test",
+    "validate": "node packages/data/src/cli/validate.ts data",
+    "schemas": "node packages/data/src/cli/schemas.ts",
+    "check": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm validate"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -20,6 +23,7 @@
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.9.9",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.70.1"
+    "typescript-eslint": "^8.70.1",
+    "vitest": "^5.0.1"
   }
 }

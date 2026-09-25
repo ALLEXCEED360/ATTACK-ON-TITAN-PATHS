@@ -16,7 +16,7 @@ character_eren_yeager    faction_survey_corps    event_fall_of_wall_maria    tit
 ```
 
 - Lowercase ASCII letters `a–z`, digits `0–9`, and single underscores between words.
-- The `<kind>` prefix must match the entity's `kind` field.
+- The `<kind>` prefix **is** the entity's kind — data files don't repeat it in a separate field. Each file lives in its kind's folder (`data/characters/`, `data/events/`, …) and is named `<id>.yaml`.
 - Keep the slug short — at most about five words.
 
 Pattern (enforced by the Zod schema in Phase 1):
