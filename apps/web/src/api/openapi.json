@@ -1,0 +1,1724 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Attack on Titan: PATHS API",
+    "version": "0.1.0",
+    "description": "Read-only, spoiler-aware access to the PATHS knowledge graph. Every data endpoint takes `cutoff`, the last chapter the reader has read; nothing revealed after it is ever returned."
+  },
+  "components": {
+    "schemas": {}
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Whether the API and its database are up",
+        "tags": [
+          "meta"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ok"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/entities": {
+      "get": {
+        "summary": "List the entities a reader at this chapter knows about",
+        "tags": [
+          "entities"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 139
+            },
+            "in": "query",
+            "name": "cutoff",
+            "required": true,
+            "description": "The last manga chapter the reader has read. Nothing revealed later is returned."
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "character",
+                "titan",
+                "event",
+                "location",
+                "faction",
+                "arc",
+                "memory"
+              ]
+            },
+            "in": "query",
+            "name": "kind",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "character",
+                              "titan",
+                              "event",
+                              "location",
+                              "faction",
+                              "arc",
+                              "memory"
+                            ]
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "kind",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/entities/{id}": {
+      "get": {
+        "summary": "One entity, as far as the reader knows it",
+        "tags": [
+          "entities"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 139
+            },
+            "in": "query",
+            "name": "cutoff",
+            "required": true,
+            "description": "The last manga chapter the reader has read. Nothing revealed later is returned."
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "character",
+                        "titan",
+                        "event",
+                        "location",
+                        "faction",
+                        "arc",
+                        "memory"
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "names": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "variants": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "variants"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "description": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "revealedIn": {
+                      "type": "number"
+                    },
+                    "sources": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "anyOf": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "minItems": 2,
+                            "maxItems": 2
+                          }
+                        ]
+                      }
+                    },
+                    "born": {
+                      "nullable": true,
+                      "type": "object",
+                      "properties": {
+                        "date": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "year": {
+                                  "type": "integer",
+                                  "minimum": -9007199254740991,
+                                  "maximum": 9007199254740991
+                                },
+                                "month": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 12
+                                },
+                                "day": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 31
+                                }
+                              },
+                              "required": [
+                                "year"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "between": {
+                                  "type": "array",
+                                  "items": {
+                                    "anyOf": [
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "year": {
+                                            "type": "integer",
+                                            "minimum": -9007199254740991,
+                                            "maximum": 9007199254740991
+                                          },
+                                          "month": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 12
+                                          },
+                                          "day": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 31
+                                          }
+                                        },
+                                        "required": [
+                                          "year"
+                                        ],
+                                        "additionalProperties": false
+                                      },
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "year": {
+                                            "type": "integer",
+                                            "minimum": -9007199254740991,
+                                            "maximum": 9007199254740991
+                                          },
+                                          "month": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 12
+                                          },
+                                          "day": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 31
+                                          }
+                                        },
+                                        "required": [
+                                          "year"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    ]
+                                  },
+                                  "minItems": 2,
+                                  "maxItems": 2
+                                }
+                              },
+                              "required": [
+                                "between"
+                              ],
+                              "additionalProperties": false
+                            }
+                          ]
+                        },
+                        "certainty": {
+                          "type": "string",
+                          "enum": [
+                            "stated",
+                            "inferred"
+                          ]
+                        },
+                        "sources": {
+                          "type": "array",
+                          "items": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                },
+                                "minItems": 2,
+                                "maxItems": 2
+                              }
+                            ]
+                          }
+                        },
+                        "notes": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "date",
+                        "certainty",
+                        "sources"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "died": {
+                      "nullable": true,
+                      "type": "object",
+                      "properties": {
+                        "date": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "year": {
+                                  "type": "integer",
+                                  "minimum": -9007199254740991,
+                                  "maximum": 9007199254740991
+                                },
+                                "month": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 12
+                                },
+                                "day": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 31
+                                }
+                              },
+                              "required": [
+                                "year"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "between": {
+                                  "type": "array",
+                                  "items": {
+                                    "anyOf": [
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "year": {
+                                            "type": "integer",
+                                            "minimum": -9007199254740991,
+                                            "maximum": 9007199254740991
+                                          },
+                                          "month": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 12
+                                          },
+                                          "day": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 31
+                                          }
+                                        },
+                                        "required": [
+                                          "year"
+                                        ],
+                                        "additionalProperties": false
+                                      },
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "year": {
+                                            "type": "integer",
+                                            "minimum": -9007199254740991,
+                                            "maximum": 9007199254740991
+                                          },
+                                          "month": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 12
+                                          },
+                                          "day": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 31
+                                          }
+                                        },
+                                        "required": [
+                                          "year"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    ]
+                                  },
+                                  "minItems": 2,
+                                  "maxItems": 2
+                                }
+                              },
+                              "required": [
+                                "between"
+                              ],
+                              "additionalProperties": false
+                            }
+                          ]
+                        },
+                        "certainty": {
+                          "type": "string",
+                          "enum": [
+                            "stated",
+                            "inferred"
+                          ]
+                        },
+                        "sources": {
+                          "type": "array",
+                          "items": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                },
+                                "minItems": 2,
+                                "maxItems": 2
+                              }
+                            ]
+                          }
+                        },
+                        "notes": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "date",
+                        "certainty",
+                        "sources"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "start": {
+                      "nullable": true,
+                      "type": "object",
+                      "properties": {
+                        "date": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "year": {
+                                  "type": "integer",
+                                  "minimum": -9007199254740991,
+                                  "maximum": 9007199254740991
+                                },
+                                "month": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 12
+                                },
+                                "day": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 31
+                                }
+                              },
+                              "required": [
+                                "year"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "between": {
+                                  "type": "array",
+                                  "items": {
+                                    "anyOf": [
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "year": {
+                                            "type": "integer",
+                                            "minimum": -9007199254740991,
+                                            "maximum": 9007199254740991
+                                          },
+                                          "month": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 12
+                                          },
+                                          "day": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 31
+                                          }
+                                        },
+                                        "required": [
+                                          "year"
+                                        ],
+                                        "additionalProperties": false
+                                      },
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "year": {
+                                            "type": "integer",
+                                            "minimum": -9007199254740991,
+                                            "maximum": 9007199254740991
+                                          },
+                                          "month": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 12
+                                          },
+                                          "day": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 31
+                                          }
+                                        },
+                                        "required": [
+                                          "year"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    ]
+                                  },
+                                  "minItems": 2,
+                                  "maxItems": 2
+                                }
+                              },
+                              "required": [
+                                "between"
+                              ],
+                              "additionalProperties": false
+                            }
+                          ]
+                        },
+                        "certainty": {
+                          "type": "string",
+                          "enum": [
+                            "stated",
+                            "inferred"
+                          ]
+                        },
+                        "sources": {
+                          "type": "array",
+                          "items": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                },
+                                "minItems": 2,
+                                "maxItems": 2
+                              }
+                            ]
+                          }
+                        },
+                        "notes": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "date",
+                        "certainty",
+                        "sources"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "end": {
+                      "nullable": true,
+                      "type": "object",
+                      "properties": {
+                        "date": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "year": {
+                                  "type": "integer",
+                                  "minimum": -9007199254740991,
+                                  "maximum": 9007199254740991
+                                },
+                                "month": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 12
+                                },
+                                "day": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 31
+                                }
+                              },
+                              "required": [
+                                "year"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "between": {
+                                  "type": "array",
+                                  "items": {
+                                    "anyOf": [
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "year": {
+                                            "type": "integer",
+                                            "minimum": -9007199254740991,
+                                            "maximum": 9007199254740991
+                                          },
+                                          "month": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 12
+                                          },
+                                          "day": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 31
+                                          }
+                                        },
+                                        "required": [
+                                          "year"
+                                        ],
+                                        "additionalProperties": false
+                                      },
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "year": {
+                                            "type": "integer",
+                                            "minimum": -9007199254740991,
+                                            "maximum": 9007199254740991
+                                          },
+                                          "month": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 12
+                                          },
+                                          "day": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 31
+                                          }
+                                        },
+                                        "required": [
+                                          "year"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    ]
+                                  },
+                                  "minItems": 2,
+                                  "maxItems": 2
+                                }
+                              },
+                              "required": [
+                                "between"
+                              ],
+                              "additionalProperties": false
+                            }
+                          ]
+                        },
+                        "certainty": {
+                          "type": "string",
+                          "enum": [
+                            "stated",
+                            "inferred"
+                          ]
+                        },
+                        "sources": {
+                          "type": "array",
+                          "items": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                },
+                                "minItems": 2,
+                                "maxItems": 2
+                              }
+                            ]
+                          }
+                        },
+                        "notes": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "date",
+                        "certainty",
+                        "sources"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "seq": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "connections": {
+                      "type": "number",
+                      "description": "Relationships visible at this chapter."
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "kind",
+                    "name",
+                    "names",
+                    "description",
+                    "revealedIn",
+                    "sources",
+                    "connections"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/graph/neighborhood/{id}": {
+      "get": {
+        "summary": "Everything within a few connections of an entity",
+        "tags": [
+          "graph"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 139
+            },
+            "in": "query",
+            "name": "cutoff",
+            "required": true,
+            "description": "The last manga chapter the reader has read. Nothing revealed later is returned."
+          },
+          {
+            "schema": {
+              "default": 1,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3
+            },
+            "in": "query",
+            "name": "depth",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^-?\\d+(-\\d{1,2}(-\\d{1,2})?)?$"
+            },
+            "in": "query",
+            "name": "at",
+            "required": false,
+            "description": "A moment in world time (YYYY, YYYY-MM or YYYY-MM-DD). Missing month/day mean the 1st."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "categories",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "center": {
+                      "type": "string"
+                    },
+                    "nodes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "character",
+                              "titan",
+                              "event",
+                              "location",
+                              "faction",
+                              "arc",
+                              "memory"
+                            ]
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "uncertain": {
+                            "type": "boolean",
+                            "description": "Only possibly present at `at` (its dates are approximate)."
+                          },
+                          "depth": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "kind",
+                          "name",
+                          "uncertain",
+                          "depth"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "edges": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          },
+                          "target": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "category": {
+                            "type": "string",
+                            "enum": [
+                              "structural",
+                              "event",
+                              "causal",
+                              "paths"
+                            ]
+                          },
+                          "uncertain": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "source",
+                          "target",
+                          "type",
+                          "category",
+                          "uncertain"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "center",
+                    "nodes",
+                    "edges"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/graph/path": {
+      "get": {
+        "summary": "The strongest chain of connections between two entities",
+        "tags": [
+          "graph"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 139
+            },
+            "in": "query",
+            "name": "cutoff",
+            "required": true,
+            "description": "The last manga chapter the reader has read. Nothing revealed later is returned."
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "in": "query",
+            "name": "from",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "in": "query",
+            "name": "to",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^-?\\d+(-\\d{1,2}(-\\d{1,2})?)?$"
+            },
+            "in": "query",
+            "name": "at",
+            "required": false,
+            "description": "A moment in world time (YYYY, YYYY-MM or YYYY-MM-DD). Missing month/day mean the 1st."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "categories",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "exclude",
+            "required": false,
+            "description": "Entities the path must not pass through."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "nullable": true,
+                      "description": "null when the two aren't connected in what the reader knows.",
+                      "type": "object",
+                      "properties": {
+                        "cost": {
+                          "type": "number"
+                        },
+                        "nodes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "kind": {
+                                "type": "string",
+                                "enum": [
+                                  "character",
+                                  "titan",
+                                  "event",
+                                  "location",
+                                  "faction",
+                                  "arc",
+                                  "memory"
+                                ]
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "uncertain": {
+                                "type": "boolean",
+                                "description": "Only possibly present at `at` (its dates are approximate)."
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "kind",
+                              "name",
+                              "uncertain"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "edges": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "source": {
+                                "type": "string"
+                              },
+                              "target": {
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string"
+                              },
+                              "category": {
+                                "type": "string",
+                                "enum": [
+                                  "structural",
+                                  "event",
+                                  "causal",
+                                  "paths"
+                                ]
+                              },
+                              "uncertain": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "source",
+                              "target",
+                              "type",
+                              "category",
+                              "uncertain"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "cost",
+                        "nodes",
+                        "edges"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "path"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/timeline": {
+      "get": {
+        "summary": "Events the reader knows about, in world or story order",
+        "tags": [
+          "timeline"
+        ],
+        "description": "`world` orders events by when they happened (docs/model/dates.md §4); `story` orders them by the chapter that reveals them (docs/model/spoilers.md §8). Events whose date isn't revealed yet come last in world order.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 139
+            },
+            "in": "query",
+            "name": "cutoff",
+            "required": true,
+            "description": "The last manga chapter the reader has read. Nothing revealed later is returned."
+          },
+          {
+            "schema": {
+              "default": "world",
+              "type": "string",
+              "enum": [
+                "world",
+                "story"
+              ]
+            },
+            "in": "query",
+            "name": "order",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "order": {
+                      "type": "string",
+                      "enum": [
+                        "world",
+                        "story"
+                      ]
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "revealedIn": {
+                            "type": "number",
+                            "description": "The chapter where the reader learns of this event."
+                          },
+                          "start": {
+                            "nullable": true,
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "year": {
+                                        "type": "integer",
+                                        "minimum": -9007199254740991,
+                                        "maximum": 9007199254740991
+                                      },
+                                      "month": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "maximum": 12
+                                      },
+                                      "day": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "maximum": 31
+                                      }
+                                    },
+                                    "required": [
+                                      "year"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "between": {
+                                        "type": "array",
+                                        "items": {
+                                          "anyOf": [
+                                            {
+                                              "type": "object",
+                                              "properties": {
+                                                "year": {
+                                                  "type": "integer",
+                                                  "minimum": -9007199254740991,
+                                                  "maximum": 9007199254740991
+                                                },
+                                                "month": {
+                                                  "type": "integer",
+                                                  "minimum": 1,
+                                                  "maximum": 12
+                                                },
+                                                "day": {
+                                                  "type": "integer",
+                                                  "minimum": 1,
+                                                  "maximum": 31
+                                                }
+                                              },
+                                              "required": [
+                                                "year"
+                                              ],
+                                              "additionalProperties": false
+                                            },
+                                            {
+                                              "type": "object",
+                                              "properties": {
+                                                "year": {
+                                                  "type": "integer",
+                                                  "minimum": -9007199254740991,
+                                                  "maximum": 9007199254740991
+                                                },
+                                                "month": {
+                                                  "type": "integer",
+                                                  "minimum": 1,
+                                                  "maximum": 12
+                                                },
+                                                "day": {
+                                                  "type": "integer",
+                                                  "minimum": 1,
+                                                  "maximum": 31
+                                                }
+                                              },
+                                              "required": [
+                                                "year"
+                                              ],
+                                              "additionalProperties": false
+                                            }
+                                          ]
+                                        },
+                                        "minItems": 2,
+                                        "maxItems": 2
+                                      }
+                                    },
+                                    "required": [
+                                      "between"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                ]
+                              },
+                              "certainty": {
+                                "type": "string",
+                                "enum": [
+                                  "stated",
+                                  "inferred"
+                                ]
+                              },
+                              "sources": {
+                                "type": "array",
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "array",
+                                      "items": {
+                                        "anyOf": [
+                                          {
+                                            "type": "number"
+                                          },
+                                          {
+                                            "type": "number"
+                                          }
+                                        ]
+                                      },
+                                      "minItems": 2,
+                                      "maxItems": 2
+                                    }
+                                  ]
+                                }
+                              },
+                              "notes": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "date",
+                              "certainty",
+                              "sources"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "end": {
+                            "nullable": true,
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "year": {
+                                        "type": "integer",
+                                        "minimum": -9007199254740991,
+                                        "maximum": 9007199254740991
+                                      },
+                                      "month": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "maximum": 12
+                                      },
+                                      "day": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "maximum": 31
+                                      }
+                                    },
+                                    "required": [
+                                      "year"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "between": {
+                                        "type": "array",
+                                        "items": {
+                                          "anyOf": [
+                                            {
+                                              "type": "object",
+                                              "properties": {
+                                                "year": {
+                                                  "type": "integer",
+                                                  "minimum": -9007199254740991,
+                                                  "maximum": 9007199254740991
+                                                },
+                                                "month": {
+                                                  "type": "integer",
+                                                  "minimum": 1,
+                                                  "maximum": 12
+                                                },
+                                                "day": {
+                                                  "type": "integer",
+                                                  "minimum": 1,
+                                                  "maximum": 31
+                                                }
+                                              },
+                                              "required": [
+                                                "year"
+                                              ],
+                                              "additionalProperties": false
+                                            },
+                                            {
+                                              "type": "object",
+                                              "properties": {
+                                                "year": {
+                                                  "type": "integer",
+                                                  "minimum": -9007199254740991,
+                                                  "maximum": 9007199254740991
+                                                },
+                                                "month": {
+                                                  "type": "integer",
+                                                  "minimum": 1,
+                                                  "maximum": 12
+                                                },
+                                                "day": {
+                                                  "type": "integer",
+                                                  "minimum": 1,
+                                                  "maximum": 31
+                                                }
+                                              },
+                                              "required": [
+                                                "year"
+                                              ],
+                                              "additionalProperties": false
+                                            }
+                                          ]
+                                        },
+                                        "minItems": 2,
+                                        "maxItems": 2
+                                      }
+                                    },
+                                    "required": [
+                                      "between"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                ]
+                              },
+                              "certainty": {
+                                "type": "string",
+                                "enum": [
+                                  "stated",
+                                  "inferred"
+                                ]
+                              },
+                              "sources": {
+                                "type": "array",
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "array",
+                                      "items": {
+                                        "anyOf": [
+                                          {
+                                            "type": "number"
+                                          },
+                                          {
+                                            "type": "number"
+                                          }
+                                        ]
+                                      },
+                                      "minItems": 2,
+                                      "maxItems": 2
+                                    }
+                                  ]
+                                }
+                              },
+                              "notes": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "date",
+                              "certainty",
+                              "sources"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "seq": {
+                            "nullable": true,
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "revealedIn",
+                          "start",
+                          "end",
+                          "seq"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "order",
+                    "items"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "summary": "Find entities by any name or spelling the reader knows",
+        "tags": [
+          "search"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 139
+            },
+            "in": "query",
+            "name": "cutoff",
+            "required": true,
+            "description": "The last manga chapter the reader has read. Nothing revealed later is returned."
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "in": "query",
+            "name": "q",
+            "required": true
+          },
+          {
+            "schema": {
+              "default": 10,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "character",
+                              "titan",
+                              "event",
+                              "location",
+                              "faction",
+                              "arc",
+                              "memory"
+                            ]
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "matched": {
+                            "type": "string",
+                            "description": "The name or spelling that matched."
+                          },
+                          "score": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "kind",
+                          "name",
+                          "matched",
+                          "score"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -26,3 +26,4 @@ One short record per architecture decision, numbered in order.
 | 0003 | [Run TypeScript directly on Node](decisions/0003-run-typescript-natively-on-node.md)                   |
 | 0004 | [Database schema](decisions/0004-database-schema.md)                                                   |
 | 0005 | [API design and deployment](decisions/0005-api-design.md)                                              |
+| 0006 | [Web app architecture](decisions/0006-web-app.md)                                                      |

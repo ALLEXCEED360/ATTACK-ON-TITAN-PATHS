@@ -1,8 +1,7 @@
 import { z } from "zod";
+import { FIRST_CHAPTER, LAST_CHAPTER } from "./constants.ts";
 
-/** Canon is manga chapters 1–139 (docs/canon-and-sources.md §1). */
-export const FIRST_CHAPTER = 1;
-export const LAST_CHAPTER = 139;
+export { FIRST_CHAPTER, LAST_CHAPTER };
 
 export const ChapterSchema = z.int().min(FIRST_CHAPTER).max(LAST_CHAPTER);
 export type Chapter = z.infer<typeof ChapterSchema>;

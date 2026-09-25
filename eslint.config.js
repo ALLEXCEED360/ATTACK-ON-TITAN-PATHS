@@ -1,11 +1,12 @@
 // @ts-check
 import eslint from "@eslint/js";
 import prettier from "eslint-config-prettier";
+import reactHooks from "eslint-plugin-react-hooks";
 import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 
 export default defineConfig(
-  globalIgnores(["**/dist/**", "**/coverage/**"]),
+  globalIgnores(["**/dist/**", "**/coverage/**", "apps/web/src/api/schema.d.ts"]),
 
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
@@ -21,6 +22,12 @@ export default defineConfig(
     rules: {
       "@typescript-eslint/switch-exhaustiveness-check": "error",
     },
+  },
+
+  // React rules for the web app.
+  {
+    files: ["apps/web/**/*.{ts,tsx}"],
+    extends: [reactHooks.configs.flat.recommended],
   },
 
   // Plain JS files (like this config) aren't part of any tsconfig.

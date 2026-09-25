@@ -24,12 +24,16 @@
     "db:reset": "docker compose down --volumes && pnpm db:up && pnpm db:migrate && pnpm db:seed",
     "test:db": "pnpm --filter @paths/db --filter @paths/api --workspace-concurrency=1 run test:db",
     "api:dev": "pnpm --filter @paths/api dev",
-    "crawl": "node packages/data/src/cli/crawl.ts"
+    "crawl": "node packages/data/src/cli/crawl.ts",
+    "api:types": "node apps/api/src/cli/openapi.ts && pnpm --filter @paths/web types",
+    "web:dev": "pnpm --filter @paths/web dev",
+    "web:build": "pnpm --filter @paths/web build"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "prettier": "^3.9.9",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.70.1",
