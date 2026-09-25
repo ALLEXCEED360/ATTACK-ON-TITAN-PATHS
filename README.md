@@ -1,10 +1,10 @@
-# Attack on Titan: PATHS
+﻿# Attack on Titan: PATHS
 
-An interactive temporal knowledge graph of the _Attack on Titan_ manga — explore characters, events, locations, factions, Titans and memories, and how they connect across time.
+An interactive temporal knowledge graph of the _Attack on Titan_ manga â€” explore characters, events, locations, factions, Titans and memories, and how they connect across time.
 
 ## Status
 
-**Phase 4 — web app (built; deployment pending).** API live at [paths-api-m9vw.onrender.com](https://paths-api-m9vw.onrender.com/docs). The dataset covers chapters 1–53 so far. The design lives in [`docs/`](docs/README.md); how to write data is in [`data/`](data/README.md).
+**Phase 4 â€” web app (built; deployment pending).** API live at [paths-api-m9vw.onrender.com](https://paths-api-m9vw.onrender.com/docs). The dataset covers chapters 1â€“53 so far. The design lives in [`docs/`](docs/README.md); how to write data is in [`data/`](data/README.md).
 
 | Package                                    | What it does                                                           |
 | ------------------------------------------ | ---------------------------------------------------------------------- |
@@ -46,8 +46,8 @@ Based on the _Attack on Titan_ manga by Hajime Isayama. The manga is the single 
 
 ## License
 
-- **Code** — [MIT](LICENSE).
-- **Data and documentation** (`data/`, `docs/`) — [CC BY-NC 4.0](LICENSE-DATA): reuse with attribution, non-commercial only.
+- **Code** â€” [MIT](LICENSE).
+- **Data and documentation** (`data/`, `docs/`) â€” [CC BY-NC 4.0](LICENSE-DATA): reuse with attribution, non-commercial only.
 - _Attack on Titan_ and all related names and characters belong to Hajime Isayama and Kodansha. These licenses cover only the original work in this repository.
 
 ## Disclaimer

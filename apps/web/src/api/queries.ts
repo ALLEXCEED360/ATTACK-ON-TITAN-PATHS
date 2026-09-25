@@ -23,15 +23,27 @@ export function useEntity(id: string) {
   });
 }
 
-export function useNeighborhood(id: string | undefined, options: { depth?: number; at?: string }) {
+export function useNeighborhood(
+  id: string | undefined,
+  options: { depth?: number; at?: string; categories?: readonly string[] },
+) {
   const cutoff = useCutoff();
-  const { depth = 1, at } = options;
+  const { depth = 1, at, categories } = options;
+  const categoryParam = categories?.length ? [...categories].sort().join(",") : undefined;
   return useQuery({
-    queryKey: ["neighborhood", id, cutoff, depth, at],
+    queryKey: ["neighborhood", id, cutoff, depth, at, categoryParam],
     queryFn: () =>
       unwrap(
         api.GET("/graph/neighborhood/{id}", {
-          params: { path: { id: id ?? "" }, query: { cutoff, depth, ...(at ? { at } : {}) } },
+          params: {
+            path: { id: id ?? "" },
+            query: {
+              cutoff,
+              depth,
+              ...(at ? { at } : {}),
+              ...(categoryParam ? { categories: categoryParam } : {}),
+            },
+          },
         }),
       ),
     enabled: id !== undefined,

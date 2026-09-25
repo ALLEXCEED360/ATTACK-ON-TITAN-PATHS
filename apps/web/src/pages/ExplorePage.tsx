@@ -1,9 +1,9 @@
-import { Link, useParams, useSearchParams } from "react-router";
+import { Link, useParams } from "react-router";
 import type { EntityKind } from "../api/client";
 import { useEntities } from "../api/queries";
 import { ErrorMessage, Loading } from "../components/QueryState";
 import { EntityDetails } from "../features/entity/EntityDetails";
-import { ConnectionsList } from "../features/graph/ConnectionsList";
+import { GraphPanel } from "../features/graph/GraphPanel";
 import { TimelineList } from "../features/timeline/TimelineList";
 import { KIND_LABELS } from "../lib/format";
 
@@ -43,13 +43,11 @@ function EntityIndex() {
 }
 
 /**
- * The three-pane explorer: timeline | connections (the graph, from Phase 5) | details.
+ * The three-pane explorer: timeline | graph | details.
  * The selection and moment live in the URL, so any view can be shared.
  */
 export function ExplorePage() {
   const { id } = useParams();
-  const [params] = useSearchParams();
-  const at = params.get("at") ?? undefined;
 
   return (
     <div className="grid gap-6 lg:grid-cols-[16rem_1fr_22rem]">
@@ -65,7 +63,7 @@ export function ExplorePage() {
         {id ? (
           <>
             <h2 className="label">Connections</h2>
-            <ConnectionsList id={id} at={at} />
+            <GraphPanel id={id} />
           </>
         ) : (
           <EntityIndex />
