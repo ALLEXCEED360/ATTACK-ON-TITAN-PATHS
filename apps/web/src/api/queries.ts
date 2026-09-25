@@ -72,6 +72,15 @@ export function useTimeline(order: "world" | "story") {
   });
 }
 
+export function useAnalytics() {
+  const cutoff = useCutoff();
+  return useQuery({
+    queryKey: ["analytics", cutoff],
+    queryFn: () => unwrap(api.GET("/analytics", { params: { query: { cutoff } } })),
+    placeholderData: keepPreviousData,
+  });
+}
+
 export function useSearch(q: string) {
   const cutoff = useCutoff();
   const query = q.trim();

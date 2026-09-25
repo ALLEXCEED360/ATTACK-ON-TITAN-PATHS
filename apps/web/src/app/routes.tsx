@@ -1,5 +1,6 @@
 import type { RouteObject } from "react-router";
 import { AppShell } from "../components/AppShell";
+import { AnalyticsPage } from "../pages/AnalyticsPage";
 import { EntityPage } from "../pages/EntityPage";
 import { ExplorePage } from "../pages/ExplorePage";
 import { HomePage } from "../pages/HomePage";
@@ -15,6 +16,7 @@ export const routes: RouteObject[] = [
       { path: "explore/:id", element: <ExplorePage /> },
       { path: "entity/:id", element: <EntityPage /> },
       { path: "timeline", element: <TimelinePage /> },
+      { path: "analytics", element: <AnalyticsPage /> },
       { path: "*", element: <NotFoundPage /> },
     ],
   },

@@ -1,5 +1,5 @@
 import type { GraphEdge, GraphNode, Interval, Lifetime } from "@paths/graph-core";
-import { type DateRange, type Name, resolveDate } from "@paths/shared";
+import { type DateRange, type Name, edgeAnchors, resolveDate } from "@paths/shared";
 import { asc, eq } from "drizzle-orm";
 import type { Db } from "./client.ts";
 import * as t from "./schema.ts";
@@ -64,14 +64,23 @@ export async function loadGraphInput(db: Db): Promise<{ nodes: GraphNode[]; edge
         ...(date ? { date } : {}),
       };
     }),
-    edges: edgeRows.map((row) => ({
-      id: row.id,
-      source: row.sourceId,
-      target: row.targetId,
-      type: row.type,
-      revealedIn: row.revealedIn,
-      own: interval(row.ownStartEarliest, row.ownStartLatest, row.ownEndEarliest, row.ownEndLatest),
-    })),
+    edges: edgeRows.map((row) => {
+      const anchors = edgeAnchors(row.fromRef, row.untilRef);
+      return {
+        id: row.id,
+        source: row.sourceId,
+        target: row.targetId,
+        type: row.type,
+        revealedIn: row.revealedIn,
+        own: interval(
+          row.ownStartEarliest,
+          row.ownStartLatest,
+          row.ownEndEarliest,
+          row.ownEndLatest,
+        ),
+        ...(anchors ? { anchors } : {}),
+      };
+    }),
   };
 }
 

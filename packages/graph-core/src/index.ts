@@ -1,3 +1,4 @@
+export * from "./analytics.ts";
 export * from "./centrality.ts";
 export * from "./graph.ts";
 export * from "./paths.ts";

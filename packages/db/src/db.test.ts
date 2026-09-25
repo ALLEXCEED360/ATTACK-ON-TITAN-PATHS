@@ -5,6 +5,7 @@ import { encodeBound } from "@paths/shared";
 import { sql } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { connect } from "./client.ts";
+import { loadGraphInput } from "./graph.ts";
 import { graphAt, neighborhood, search } from "./queries.ts";
 import * as t from "./schema.ts";
 import { buildSeedRows, seed } from "./seed.ts";
@@ -36,6 +37,17 @@ describe("seed", () => {
              (select count(*) from edges)::int as edges
     `);
     expect(counts).toEqual({ entities: dataset.entities.size, edges: dataset.edges.length });
+  });
+
+  it("loads back the same graph the data files describe", async () => {
+    const loaded = await loadGraphInput(db);
+    const byKey = <T extends { source: string; type: string; target: string }>(a: T, b: T) =>
+      `${a.source} ${a.type} ${a.target}`.localeCompare(`${b.source} ${b.type} ${b.target}`);
+    const expectedNodes = [...graph.nodes.values()].sort((a, b) => a.id.localeCompare(b.id));
+    expect(loaded.nodes).toEqual(expectedNodes);
+    // The database adds IDs; the data files derive them the same way on seeding.
+    const expectedEdges = [...graph.edges].map((e) => ({ ...e, id: expect.any(String) as string }));
+    expect([...loaded.edges].sort(byKey)).toEqual(expectedEdges.sort(byKey));
   });
 
   it("can be run again without duplicating anything", async () => {

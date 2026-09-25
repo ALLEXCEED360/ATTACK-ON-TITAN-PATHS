@@ -4,7 +4,7 @@ An interactive temporal knowledge graph of the _Attack on Titan_ manga — explo
 
 ## Status
 
-**Phase 8 — PATHS mode (complete).** Next: Phase 9, analytics. The web app's deployment is scheduled for the end. API live at [paths-api-m9vw.onrender.com](https://paths-api-m9vw.onrender.com/docs). The dataset covers chapters 1–53 so far. The design lives in [`docs/`](docs/README.md); how to write data is in [`data/`](data/README.md).
+**Phase 9 — analytics (complete).** Next: Phase 10, polish and the design pass. The web app's deployment is scheduled for the end. API live at [paths-api-m9vw.onrender.com](https://paths-api-m9vw.onrender.com/docs). The dataset covers chapters 1–53 so far. The design lives in [`docs/`](docs/README.md); how to write data is in [`data/`](data/README.md).
 
 | Package                                    | What it does                                                           |
 | ------------------------------------------ | ---------------------------------------------------------------------- |

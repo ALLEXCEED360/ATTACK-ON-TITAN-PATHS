@@ -13,6 +13,7 @@ import {
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import { z } from "zod";
+import { analyticsRoutes } from "./routes/analytics.ts";
 import { entityRoutes } from "./routes/entities.ts";
 import { graphRoutes } from "./routes/graph.ts";
 import { pathsRoutes } from "./routes/paths.ts";
@@ -97,5 +98,6 @@ export async function buildApp({
   await app.register(pathsRoutes, { store });
   await app.register(timelineRoutes, { db, store });
   await app.register(searchRoutes, { db });
+  await app.register(analyticsRoutes, { store });
   return app;
 }

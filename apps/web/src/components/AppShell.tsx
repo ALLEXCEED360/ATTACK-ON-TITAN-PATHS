@@ -31,6 +31,9 @@ export function AppShell() {
               <NavLink to="/timeline" className={navLink}>
                 Timeline
               </NavLink>
+              <NavLink to="/analytics" className={navLink}>
+                Analytics
+              </NavLink>
             </nav>
             {/* On phones the search takes its own full-width row below the navigation. */}
             <div className="order-last flex w-full sm:order-none sm:ml-auto sm:w-auto sm:flex-1 sm:justify-end">

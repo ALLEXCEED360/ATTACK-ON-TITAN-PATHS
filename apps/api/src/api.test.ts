@@ -59,6 +59,7 @@ describe("basics", () => {
     const { status, body } = await get("/docs/json");
     expect(status).toBe(200);
     expect(Object.keys(body.paths as object).sort()).toEqual([
+      "/analytics",
       "/entities",
       "/entities/{id}",
       "/graph/neighborhood/{id}",
@@ -201,6 +202,29 @@ describe("PATHS mode", () => {
   });
 });
 
+describe("analytics", () => {
+  it("counts only what the reader knows", async () => {
+    const early = (await get("/analytics?cutoff=1")).body.totals as Record<string, number>;
+    const late = (await get("/analytics?cutoff=139")).body.totals as Record<string, number>;
+    // Carla's death (ch. 2) isn't known at ch. 1.
+    expect(early.deaths).toBe(0);
+    expect(late.deaths).toBeGreaterThan(early.deaths ?? 0);
+    expect(late.characters).toBeGreaterThan(early.characters ?? 0);
+  });
+
+  it("returns a square faction matrix and per-year series of the right length", async () => {
+    const { body } = await get("/analytics?cutoff=139");
+    const factions = body.factions as unknown[];
+    const matrix = body.factionMatrix as number[][];
+    expect(matrix).toHaveLength(factions.length);
+    expect(matrix.every((row) => row.length === factions.length)).toBe(true);
+    const years = body.years as number[];
+    for (const c of body.connections as { perYear: number[] }[]) {
+      expect(c.perYear).toHaveLength(years.length);
+    }
+  });
+});
+
 describe("timeline and search", () => {
   it("orders by world time or by reveal", async () => {
     const world = ids((await get("/timeline?cutoff=139&order=world")).body.items);
@@ -292,6 +316,7 @@ describe("spoiler crawler", () => {
     }
     await fetch(`/timeline?cutoff=${String(cutoff)}&order=world`);
     await fetch(`/timeline?cutoff=${String(cutoff)}&order=story`);
+    await fetch(`/analytics?cutoff=${String(cutoff)}`);
 
     // Search for words that only unrevealed text contains: they must find nothing hidden.
     const connectionIssues: string[] = [];

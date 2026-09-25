@@ -41,6 +41,7 @@ export type PathResult = Json<"/graph/path">;
 export type Paths = Json<"/paths/{id}">;
 export type Timeline = Json<"/timeline">;
 export type SearchResults = Json<"/search">;
+export type Analytics = Json<"/analytics">;
 export type EntityKind = EntitySummary["kind"];
 export type Fact = NonNullable<EntityDetail["born"]>;
 export type { components };

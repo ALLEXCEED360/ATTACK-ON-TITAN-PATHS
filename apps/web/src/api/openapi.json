@@ -2182,6 +2182,253 @@
           }
         }
       }
+    },
+    "/analytics": {
+      "get": {
+        "summary": "Graph metrics over what the reader knows",
+        "tags": [
+          "analytics"
+        ],
+        "description": "Totals, events per year, connections over time, faction co-participation and Titan holders — all computed on the reader's spoiler-filtered graph. These are graph metrics, not rankings of importance.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 139
+            },
+            "in": "query",
+            "name": "cutoff",
+            "required": true,
+            "description": "The last manga chapter the reader has read. Nothing revealed later is returned."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totals": {
+                      "type": "object",
+                      "properties": {
+                        "characters": {
+                          "type": "number"
+                        },
+                        "events": {
+                          "type": "number"
+                        },
+                        "locations": {
+                          "type": "number"
+                        },
+                        "factions": {
+                          "type": "number"
+                        },
+                        "titans": {
+                          "type": "number"
+                        },
+                        "relationships": {
+                          "type": "number"
+                        },
+                        "deaths": {
+                          "type": "number",
+                          "description": "Characters whose death the reader knows of."
+                        }
+                      },
+                      "required": [
+                        "characters",
+                        "events",
+                        "locations",
+                        "factions",
+                        "titans",
+                        "relationships",
+                        "deaths"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "years": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "eventsPerYear": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "year": {
+                            "type": "number"
+                          },
+                          "events": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "name"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "year",
+                          "events"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "connections": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "degree": {
+                            "type": "number",
+                            "description": "Relationships the reader knows of."
+                          },
+                          "betweenness": {
+                            "type": "number",
+                            "description": "How often this entity lies on the shortest link between two others."
+                          },
+                          "perYear": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            },
+                            "description": "Relationships active in each of `years`."
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "degree",
+                          "betweenness",
+                          "perYear"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "factions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "factionMatrix": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        }
+                      },
+                      "description": "Events in which members of both factions took part (row × column)."
+                    },
+                    "titans": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "holders": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "start": {
+                                  "nullable": true,
+                                  "type": "object",
+                                  "properties": {
+                                    "earliest": {
+                                      "type": "number"
+                                    },
+                                    "latest": {
+                                      "type": "number"
+                                    }
+                                  },
+                                  "required": [
+                                    "earliest",
+                                    "latest"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "name",
+                                "start"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "holders"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "totals",
+                    "years",
+                    "eventsPerYear",
+                    "connections",
+                    "factions",
+                    "factionMatrix",
+                    "titans"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

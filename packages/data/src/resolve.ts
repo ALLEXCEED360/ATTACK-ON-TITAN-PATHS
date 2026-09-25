@@ -10,6 +10,7 @@ import {
   type DateRef,
   EDGE_TYPES,
   type Edge,
+  edgeAnchors,
   type Entity,
   resolveDate,
 } from "@paths/shared";
@@ -164,12 +165,14 @@ export function toGraphInput(dataset: Dataset): {
         message: "`from`/`until` fall outside the lifetimes of the edge's endpoints",
       });
     }
+    const anchors = edgeAnchors(from, until);
     edges.push({
       source: edge.source,
       target: edge.target,
       type: edge.type,
       revealedIn: edge.revealedIn,
       own: ownInterval(dataset, edge),
+      ...(anchors ? { anchors } : {}),
     });
   }
 

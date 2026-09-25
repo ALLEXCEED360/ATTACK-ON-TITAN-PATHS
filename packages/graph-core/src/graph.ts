@@ -1,4 +1,4 @@
-import type { DateRange, EdgeType, EntityKind } from "@paths/shared";
+import type { DateRange, EdgeType, EntityKind, EventDateRef } from "@paths/shared";
 
 /** When something is active. `null` means unbounded on that side. */
 export interface Interval {
@@ -41,6 +41,12 @@ export interface GraphEdge {
    * the edge. When it's actually active also depends on its endpoints' lifetimes — see `activeAt`.
    */
   own: Interval;
+  /**
+   * The events `from`/`until` refer to, when they do. Dates are often known only to the year, so
+   * two things in 850 overlap by date alone; the events' story order (`seq`) can still tell
+   * whether a membership began before or after something else that year.
+   */
+  anchors?: { from?: EventDateRef; until?: EventDateRef };
 }
 
 export interface Adjacent {

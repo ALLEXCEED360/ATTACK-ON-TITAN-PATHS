@@ -36,6 +36,25 @@ export type EventDateRef = z.infer<typeof EventDateRefSchema>;
 export const DateRefSchema = z.union([PointSchema, BetweenSchema, EventDateRefSchema]);
 export type DateRef = z.infer<typeof DateRefSchema>;
 
+/** The event a `from`/`until` refers to, if it refers to one (the value may come from storage). */
+export function eventAnchor(ref: unknown): EventDateRef | undefined {
+  if (typeof ref !== "object" || ref === null || !("event" in ref)) return undefined;
+  const { event, at } = ref as { event: unknown; at?: unknown };
+  if (typeof event !== "string") return undefined;
+  return { event, at: at === "end" ? "end" : "start" };
+}
+
+/** The events an edge's `from`/`until` refer to, or undefined when neither does. */
+export function edgeAnchors(
+  from: unknown,
+  until: unknown,
+): { from?: EventDateRef; until?: EventDateRef } | undefined {
+  const start = eventAnchor(from);
+  const end = eventAnchor(until);
+  if (!start && !end) return undefined;
+  return { ...(start ? { from: start } : {}), ...(end ? { until: end } : {}) };
+}
+
 /**
  * A resolved date: the inclusive range of moments it could refer to, as sortable integers
  * (`year × 10000 + month × 100 + day`; docs/model/dates.md §3).
