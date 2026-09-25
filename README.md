@@ -4,15 +4,34 @@ An interactive temporal knowledge graph of the _Attack on Titan_ manga — explo
 
 ## Status
 
-**Phase 1 — data model and seed data (in progress).** The schemas, validator and graph algorithms are built, and the first dataset covers chapters 1–53. The design lives in [`docs/`](docs/README.md); how to write data is in [`data/`](data/README.md).
+**Phase 2 — database (complete).** Next: Phase 3, the API. The dataset covers chapters 1–53 so far. The design lives in [`docs/`](docs/README.md); how to write data is in [`data/`](data/README.md).
 
 | Package                                    | What it does                                                           |
 | ------------------------------------------ | ---------------------------------------------------------------------- |
 | [`@paths/shared`](packages/shared)         | Zod schemas and types for every kind of data; date and spoiler helpers |
 | [`@paths/graph-core`](packages/graph-core) | Graph building, spoiler/time filtering, traversal, paths, centrality   |
 | [`@paths/data`](packages/data)             | Loads and validates `data/`; generates editor schemas                  |
+| [`@paths/db`](packages/db)                 | PostgreSQL schema, migrations, seeding and spoiler-aware SQL queries   |
 
-Common commands: `pnpm check` (everything CI runs) · `pnpm validate` (check the data) · `pnpm test` · `pnpm schemas` (regenerate editor schemas after changing a schema).
+## Development
+
+Requires Node 24, pnpm and Docker.
+
+```bash
+pnpm install
+cp .env.example .env
+pnpm db:up && pnpm db:migrate && pnpm db:seed
+```
+
+| Command            | What it does                                                            |
+| ------------------ | ----------------------------------------------------------------------- |
+| `pnpm check`       | Everything CI runs without a database: types, lint, format, tests, data |
+| `pnpm validate`    | Check `data/` against every rule in the design docs                     |
+| `pnpm db:seed`     | Rebuild the database from `data/`                                       |
+| `pnpm db:reset`    | Wipe the database, then migrate and seed from scratch                   |
+| `pnpm test:db`     | Database tests (needs `pnpm db:up`)                                     |
+| `pnpm db:generate` | Create a migration after changing `packages/db/src/schema.ts`           |
+| `pnpm schemas`     | Regenerate the editor's YAML schemas after changing a Zod schema        |
 
 ## Canon
 

@@ -1,0 +1,25 @@
+{
+  "name": "@paths/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc",
+    "test:db": "vitest run",
+    "generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "@paths/data": "workspace:*",
+    "@paths/shared": "workspace:*",
+    "drizzle-orm": "^0.45.3",
+    "postgres": "^3.4.9"
+  },
+  "devDependencies": {
+    "@paths/graph-core": "workspace:*",
+    "@types/node": "~24.13.6",
+    "drizzle-kit": "^0.31.11"
+  }
+}
