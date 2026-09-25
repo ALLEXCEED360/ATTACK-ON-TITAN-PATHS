@@ -183,9 +183,21 @@ describe("timeline and search", () => {
 
   it("searches revealed names only", async () => {
     expect((await get("/search?cutoff=40&q=historia")).body.items).toEqual([]);
-    expect((await get("/search?cutoff=41&q=historia")).body.items).toMatchObject([
-      { id: "character_krista_lenz", name: "Historia" },
-    ]);
+    // Her own name ranks first; things connected to her follow.
+    const items = (await get("/search?cutoff=41&q=historia")).body.items as { reason: string }[];
+    expect(items[0]).toMatchObject({
+      id: "character_krista_lenz",
+      name: "Historia",
+      reason: "name",
+    });
+    expect(items.slice(1).every((item) => item.reason === "connection")).toBe(true);
+  });
+
+  it("reports how the query was read", async () => {
+    expect((await get("/search?cutoff=139&q=The%20Battle%20of%20Trost%20850")).body).toMatchObject({
+      terms: ["battle", "trost"],
+      year: 850,
+    });
   });
 
   function ids(list: unknown) {
@@ -244,14 +256,56 @@ describe("spoiler crawler", () => {
     }
     await fetch(`/timeline?cutoff=${String(cutoff)}&order=world`);
     await fetch(`/timeline?cutoff=${String(cutoff)}&order=story`);
-    for (const term of ["historia", "armored", "colossal", "female", "coordinate", "ymir"]) {
-      await fetch(`/search?cutoff=${String(cutoff)}&q=${term}`);
+
+    // Search for words that only unrevealed text contains: they must find nothing hidden.
+    const connectionIssues: string[] = [];
+    for (const term of searchTerms(cutoff)) {
+      const url = `/search?cutoff=${String(cutoff)}&q=${encodeURIComponent(term)}`;
+      const response = await app.inject({ method: "GET", url });
+      // Only the results are scanned: the echoed query is the crawler's own words, not a leak.
+      const { items } = response.json<SearchBody>();
+      bodies.push({ url, body: JSON.stringify(items) });
+      for (const item of items.filter((i) => i.reason === "connection")) {
+        if (!(await connectionVisible(item.id, item.detail, cutoff))) {
+          connectionIssues.push(`${url} → ${item.id} via hidden link to "${item.detail}"`);
+        }
+      }
     }
 
     const leaks = bodies.flatMap(({ url, body }) => {
       const lower = body.toLowerCase();
       return hidden.filter((s) => lower.includes(s)).map((s) => `${url} → ${s}`);
     });
-    expect(leaks).toEqual([]);
+    expect([...leaks, ...connectionIssues]).toEqual([]);
   });
+
+  interface SearchBody {
+    terms: string[];
+    items: { id: string; reason: string; detail: string }[];
+  }
+
+  /** Distinctive words from what's hidden at this cutoff, plus some fixed spoiler-prone terms. */
+  function searchTerms(cutoff: number): string[] {
+    const words = new Set(["historia", "armored", "colossal", "female", "coordinate", "ymir"]);
+    for (const text of hiddenStrings(cutoff)) {
+      for (const word of text.toLowerCase().match(/\p{L}{6,}/gu) ?? []) words.add(word);
+    }
+    return [...words].slice(0, 40);
+  }
+
+  /** Whether `id` is connected, at this cutoff, to an entity with the name `name`. */
+  async function connectionVisible(id: string, name: string, cutoff: number) {
+    const response = await app.inject({
+      method: "GET",
+      url: `/graph/neighborhood/${id}?cutoff=${String(cutoff)}&depth=1`,
+    });
+    const neighbors = response.json<{ nodes: { id: string }[] }>().nodes.map((n) => n.id);
+    return neighbors.some((neighbor) =>
+      dataset.entities
+        .get(neighbor)
+        ?.entity.names.some(
+          (n) => n.revealedIn <= cutoff && [n.name, ...(n.variants ?? [])].includes(name),
+        ),
+    );
+  }
 });

@@ -1,3 +1,4 @@
+import { useRememberRecent } from "../features/search/useRememberRecent";
 import { Link, useParams } from "react-router";
 import type { EntityKind } from "../api/client";
 import { useEntities, useNeighborhood } from "../api/queries";
@@ -50,6 +51,7 @@ function EntityIndex() {
  */
 export function ExplorePage() {
   const { id } = useParams();
+  useRememberRecent(id);
   const { at, search, setAt } = useExploreParams();
   // Events directly connected to the selection light up on the timeline.
   const { data: direct } = useNeighborhood(id, { depth: 1 });

@@ -66,7 +66,7 @@ export function useSearch(q: string) {
   return useQuery({
     queryKey: ["search", cutoff, query],
     queryFn: () =>
-      unwrap(api.GET("/search", { params: { query: { cutoff, q: query, limit: 8 } } })),
+      unwrap(api.GET("/search", { params: { query: { cutoff, q: query, limit: 20 } } })),
     enabled: query.length > 0,
     placeholderData: keepPreviousData,
   });

@@ -1,7 +1,7 @@
 import { Link, NavLink, Outlet } from "react-router";
 import { ChapterButton } from "../features/spoilers/ChapterButton";
 import { ChapterGate } from "../features/spoilers/ChapterGate";
-import { SearchBox } from "../features/search/SearchBox";
+import { CommandPalette, PaletteTrigger } from "../features/search/CommandPalette";
 
 const navLink = ({ isActive }: { isActive: boolean }) =>
   `rounded px-2 py-1 text-sm ${isActive ? "text-brass-300" : "text-parchment-300 hover:text-parchment-100"}`;
@@ -34,13 +34,14 @@ export function AppShell() {
             </nav>
             {/* On phones the search takes its own full-width row below the navigation. */}
             <div className="order-last flex w-full sm:order-none sm:ml-auto sm:w-auto sm:flex-1 sm:justify-end">
-              <SearchBox />
+              <PaletteTrigger />
             </div>
             <div className="ml-auto sm:ml-0">
               <ChapterButton />
             </div>
           </div>
         </header>
+        <CommandPalette />
         <main id="main" className="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
           <Outlet />
         </main>

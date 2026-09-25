@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import type { Db } from "./client.ts";
+import { parseQuery } from "./search-query.ts";
 
 // Spoiler-aware queries written in SQL. Each mirrors a graph-core function, and the tests check
 // that both give the same answers on the real dataset.
@@ -94,56 +95,140 @@ export interface SearchResult {
   kind: string;
   /** The name the reader should see at this cutoff. */
   displayName: string;
-  /** The (possibly variant) name that matched. */
-  matched: string;
+  /**
+   * Why it matched: its own name or spelling, a revealed description, a connected entity's
+   * name, or (for a year alone) because it happened that year.
+   */
+  reason: "name" | "description" | "connection" | "year";
+  /** The text that matched: a name, a description paragraph, or the connected entity's name. */
+  detail: string;
   score: number;
 }
 
+export interface SearchResponse {
+  terms: string[];
+  year: number | null;
+  results: SearchResult[];
+}
+
 /**
- * Fuzzy name search over revealed names and spellings only (docs/model/spoilers.md §6).
- * Trigram similarity handles misspellings; a substring match always counts.
+ * Multi-word, year-aware search (docs/decisions/0007-search.md). Every word must match the
+ * entity's own names, one of its *revealed* description paragraphs, or the name of an entity
+ * connected by a *revealed* relationship. A year keeps only what exists that year. Nothing past
+ * the reader's cutoff takes part in matching (docs/model/spoilers.md §6).
  */
-export async function searchNames(
+export async function search(
   db: Db,
   { q, cutoff, limit = 10 }: { q: string; cutoff: number; limit?: number },
-): Promise<SearchResult[]> {
-  const query = q.trim().toLowerCase();
-  if (query === "") return [];
+): Promise<SearchResponse> {
+  const { terms, year } = parseQuery(q);
+  if (terms.length === 0 && year === null) return { terms, year, results: [] };
+
+  const yearStart = year === null ? null : year * 10_000 + 101;
+  const yearEnd = year === null ? null : year * 10_000 + 1231;
+  const displayName = sql`(
+    select d.name from entity_names d
+    where d.entity_id = e.id and d.is_primary and d.revealed_in <= ${cutoff}
+    order by d.position desc
+    limit 1
+  )`;
+  const visible = sql`
+    select id, kind from entities
+    where revealed_in <= ${cutoff}
+      and (${yearStart}::int is null or (
+        (life_start_earliest is null or life_start_earliest <= ${yearEnd}::int)
+        and (life_end_latest is null or life_end_latest >= ${yearStart}::int)
+      ))
+  `;
+
+  // A year on its own lists the events of that year, in order.
+  if (terms.length === 0) {
+    const rows = await db.execute<SearchResult & Record<string, unknown>>(sql`
+      with visible as (${visible})
+      select e.id, e.kind, ${displayName} as "displayName",
+             'year' as reason, ${String(year)} as detail, 1::real as score
+      from visible v
+      join entities e on e.id = v.id
+      join events ev on ev.entity_id = e.id
+      where v.kind = 'event'
+      order by e.life_start_earliest, ev.seq nulls last, e.id
+      limit ${limit}
+    `);
+    return { terms, year, results: [...rows] };
+  }
+
   const rows = await db.execute<SearchResult & Record<string, unknown>>(sql`
-    with matches as (
-      select
-        n.entity_id,
-        n.name,
-        greatest(
-          similarity(lower(n.name), ${query}),
-          case when lower(n.name) like '%' || ${query} || '%' then 1 else 0 end
-        ) as score
-      from entity_names n
-      join entities e on e.id = n.entity_id
-      where n.revealed_in <= ${cutoff}
-        and e.revealed_in <= ${cutoff}
-        and (lower(n.name) % ${query} or lower(n.name) like '%' || ${query} || '%')
-    ),
-    best as (
-      select distinct on (entity_id) entity_id, name as matched, score
-      from matches
-      order by entity_id, score desc, name
-    )
-    select
-      e.id,
-      e.kind,
-      (
-        select d.name from entity_names d
-        where d.entity_id = e.id and d.is_primary and d.revealed_in <= ${cutoff}
-        order by d.position desc
-        limit 1
-      ) as "displayName",
-      best.matched,
-      best.score::real as score
-    from best
-    join entities e on e.id = best.entity_id
-    order by best.score desc, e.id
+    with
+      visible as (${visible}),
+      terms as (
+        select term, ord
+        from jsonb_array_elements_text(${JSON.stringify(terms)}::jsonb) with ordinality as t(term, ord)
+      ),
+      names as (
+        select n.entity_id, n.name
+        from entity_names n
+        join entities e on e.id = n.entity_id
+        where n.revealed_in <= ${cutoff} and e.revealed_in <= ${cutoff}
+      ),
+      links as (
+        select e.source_id as a, e.target_id as b
+        from edges e
+        join entities s on s.id = e.source_id and s.revealed_in <= ${cutoff}
+        join entities t on t.id = e.target_id and t.revealed_in <= ${cutoff}
+        where e.revealed_in <= ${cutoff}
+          -- With a year, only relationships that exist that year connect anything.
+          and (${yearStart}::int is null or (
+            (e.active_start_earliest is null or e.active_start_earliest <= ${yearEnd}::int)
+            and (e.active_end_latest is null or e.active_end_latest >= ${yearStart}::int)
+          ))
+      ),
+      hits as (
+        select t.ord, n.entity_id, 'name' as reason, n.name as detail,
+               greatest(
+                 similarity(lower(n.name), t.term),
+                 case when lower(n.name) like '%' || t.term || '%' then 1 else 0 end
+               ) as score
+        from terms t
+        join names n on lower(n.name) % t.term or lower(n.name) like '%' || t.term || '%'
+        union all
+        select t.ord, s.entity_id, 'description', s.text, 0.6
+        from terms t
+        join description_segments s on s.search @@ to_tsquery('english', t.term || ':*')
+        where s.revealed_in <= ${cutoff}
+        union all
+        select t.ord, l.b, 'connection', n.name, 0.4
+        from terms t
+        join names n on lower(n.name) like '%' || t.term || '%'
+        join (select a, b from links union all select b, a from links) l on l.a = n.entity_id
+      ),
+      per_term as (
+        select h.entity_id, h.ord, max(h.score) as score
+        from hits h
+        join visible v on v.id = h.entity_id
+        group by h.entity_id, h.ord
+      ),
+      qualified as (
+        select entity_id, sum(score) as total
+        from per_term
+        group by entity_id
+        having count(*) = (select count(*) from terms)
+      ),
+      best as (
+        select distinct on (h.entity_id) h.entity_id, h.reason, h.detail
+        from hits h
+        join qualified q on q.entity_id = h.entity_id
+        order by h.entity_id,
+                 case h.reason when 'name' then 0 when 'description' then 1 else 2 end,
+                 h.score desc,
+                 h.detail
+      )
+    select e.id, e.kind, ${displayName} as "displayName",
+           best.reason, best.detail, q.total::real as score
+    from qualified q
+    join best on best.entity_id = q.entity_id
+    join entities e on e.id = q.entity_id
+    order by q.total desc, e.id
     limit ${limit}
   `);
-  return [...rows];
+  return { terms, year, results: [...rows] };
 }

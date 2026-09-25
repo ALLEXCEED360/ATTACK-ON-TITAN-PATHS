@@ -501,7 +501,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Find entities by any name or spelling the reader knows */
+        /**
+         * Find entities by name, description or connection, optionally in a year
+         * @description Every word must match the entity's names, a revealed description, or a connected entity's name. A standalone number (`850`) restricts to that year. Only what the reader has reached takes part in matching.
+         */
         get: {
             parameters: {
                 query: {
@@ -523,13 +526,19 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
+                            /** @description The words searched for. */
+                            terms: string[];
+                            /** @description The year searched in, if any. */
+                            year: number | null;
                             items: {
                                 id: string;
                                 /** @enum {string} */
                                 kind: "character" | "titan" | "event" | "location" | "faction" | "arc" | "memory";
                                 name: string;
-                                /** @description The name or spelling that matched. */
-                                matched: string;
+                                /** @enum {string} */
+                                reason: "name" | "description" | "connection" | "year";
+                                /** @description What matched: a name, a description paragraph, or a connected name. */
+                                detail: string;
                                 score: number;
                             }[];
                         };

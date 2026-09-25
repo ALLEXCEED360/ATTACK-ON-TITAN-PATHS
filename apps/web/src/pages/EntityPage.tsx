@@ -1,9 +1,11 @@
+import { useRememberRecent } from "../features/search/useRememberRecent";
 import { Link, useParams } from "react-router";
 import { EntityDetails } from "../features/entity/EntityDetails";
 import { ConnectionsList } from "../features/graph/ConnectionsList";
 
 export function EntityPage() {
   const { id = "" } = useParams();
+  useRememberRecent(id);
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-10">
       <EntityDetails id={id} />
