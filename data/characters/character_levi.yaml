@@ -1,0 +1,33 @@
+id: character_levi
+names:
+  - name: "Levi"
+    revealedIn: 19
+    variants: ["Rivaille"]
+description:
+  - text: "A Survey Corps lance corporal of formidable skill, put in charge of keeping Eren in check."
+    revealedIn: 19
+revealedIn: 19
+sources: [19, 20]
+edges:
+  - type: member_of
+    target: faction_survey_corps
+    role: "Lance Corporal"
+    revealedIn: 19
+    sources: [19]
+    certainty: stated
+  - type: leads
+    target: faction_special_operations_squad
+    from: { event: event_eren_court_martial }
+    revealedIn: 20
+    sources: [20]
+    certainty: stated
+  - type: participated_in
+    target: event_eren_court_martial
+    revealedIn: 19
+    sources: [19]
+    certainty: stated
+  - type: participated_in
+    target: event_57th_expedition
+    revealedIn: 21
+    sources: [21, 30]
+    certainty: stated

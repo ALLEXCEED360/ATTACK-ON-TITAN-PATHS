@@ -1,0 +1,56 @@
+id: character_bertholdt_hoover
+names:
+  - name: "Bertholdt Hoover"
+    revealedIn: 2
+    variants: ["Bertolt Hoover", "Berthold Huber"]
+description:
+  - text: "A 104th trainee ranked third in his class: highly capable, but reluctant to take the lead."
+    revealedIn: 18
+  - text: "He is revealed as the Colossal Titan, who broke the wall five years earlier."
+    revealedIn: 42
+revealedIn: 2
+sources: [2, 18, 42]
+edges:
+  - type: member_of
+    target: faction_104th_training_corps
+    from: { year: 847 }
+    until: { event: event_graduation_104th }
+    revealedIn: 2
+    sources: [2, 15]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_trost
+    revealedIn: 9
+    sources: [9]
+    certainty: stated
+  - type: member_of
+    target: faction_survey_corps
+    from: { event: event_battle_of_trost, at: end }
+    revealedIn: 21
+    sources: [21]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_utgard
+    revealedIn: 40
+    sources: [40]
+    certainty: stated
+  - type: participated_in
+    target: event_fall_of_wall_maria
+    revealedIn: 42
+    sources: [42]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_on_wall_rose
+    revealedIn: 42
+    sources: [42]
+    certainty: stated
+  - type: holds
+    target: titan_colossal
+    revealedIn: 42
+    sources: [42]
+    certainty: stated
+  - type: participated_in
+    target: event_rescue_of_eren
+    revealedIn: 50
+    sources: [50]
+    certainty: stated

@@ -1,0 +1,31 @@
+id: character_marco_bott
+names:
+  - name: "Marco Bott"
+    revealedIn: 2
+    variants: ["Marco Bodt"]
+description:
+  - text: "A 104th trainee, seventh in his class."
+    revealedIn: 2
+  - text: "The leader of a trainee squad in Trost, he is found dead after the battle. No one saw how he died."
+    revealedIn: 18
+revealedIn: 2
+sources: [2, 18]
+died:
+  date: { year: 850 }
+  revealedIn: 18
+  sources: [2, 18]
+  certainty: inferred
+  notes: "Found dead two days after the Trost gate was sealed (ch. 18), in 850 (ch. 2)."
+edges:
+  - type: member_of
+    target: faction_104th_training_corps
+    from: { year: 847 }
+    until: { event: event_graduation_104th }
+    revealedIn: 2
+    sources: [2, 15]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_trost
+    revealedIn: 18
+    sources: [18]
+    certainty: stated

@@ -1,0 +1,9 @@
+id: location_wall_rose
+names:
+  - name: "Wall Rose"
+    revealedIn: 2
+description:
+  - text: "The middle wall. After Wall Maria is lost, it becomes the new edge of human territory."
+    revealedIn: 2
+revealedIn: 2
+sources: [2]

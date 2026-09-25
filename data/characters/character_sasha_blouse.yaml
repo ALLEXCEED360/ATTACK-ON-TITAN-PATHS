@@ -1,0 +1,29 @@
+id: character_sasha_blouse
+names:
+  - name: "Sasha Blouse"
+    revealedIn: 2
+    variants: ["Sasha Braus"]
+description:
+  - text: "A 104th trainee from the village of Dauper, ninth in her class, with uncanny instincts."
+    revealedIn: 18
+revealedIn: 2
+sources: [2, 15, 18]
+edges:
+  - type: member_of
+    target: faction_104th_training_corps
+    from: { year: 847 }
+    until: { event: event_graduation_104th }
+    revealedIn: 2
+    sources: [2, 15]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_trost
+    revealedIn: 3
+    sources: [3]
+    certainty: stated
+  - type: member_of
+    target: faction_survey_corps
+    from: { event: event_battle_of_trost, at: end }
+    revealedIn: 21
+    sources: [21]
+    certainty: stated

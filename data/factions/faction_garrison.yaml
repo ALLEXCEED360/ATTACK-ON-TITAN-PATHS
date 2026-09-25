@@ -1,0 +1,10 @@
+id: faction_garrison
+names:
+  - name: "Garrison"
+    revealedIn: 1
+    variants: ["Stationary Troops", "Garrison Regiment"]
+description:
+  - text: "The military branch that guards and maintains the walls and the districts along them."
+    revealedIn: 2
+revealedIn: 1
+sources: [1, 2]

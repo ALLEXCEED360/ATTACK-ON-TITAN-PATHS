@@ -1,0 +1,28 @@
+id: character_dot_pixis
+names:
+  - name: "Pixis"
+    revealedIn: 11
+  - name: "Dot Pixis"
+    revealedIn: 12
+description:
+  - text: "The Garrison's commander for the southern region, who backs the plan to seal Trost's gate with Eren's Titan."
+    revealedIn: 12
+revealedIn: 11
+sources: [11, 12]
+edges:
+  - type: member_of
+    target: faction_garrison
+    role: "Commander of the southern region"
+    revealedIn: 12
+    sources: [12]
+    certainty: stated
+  - type: participated_in
+    target: event_trost_gate_sealed
+    revealedIn: 14
+    sources: [12, 14]
+    certainty: stated
+  - type: participated_in
+    target: event_eren_court_martial
+    revealedIn: 19
+    sources: [19]
+    certainty: stated

@@ -1,0 +1,33 @@
+id: event_battle_of_trost
+names:
+  - name: "Colossal Titan's return"
+    revealedIn: 3
+  - name: "Battle of Trost"
+    revealedIn: 12
+description:
+  - text: "Five years after Wall Maria fell, the Colossal Titan reappears and breaches the gate of the district where the newly graduated trainees are posted."
+    revealedIn: 3
+  - text: "Eren, swallowed by a Titan, emerges from the nape of a Titan body of his own."
+    revealedIn: 9
+  - text: "Eren's Titan carries a boulder to seal the broken gate — humanity's first victory against the Titans."
+    revealedIn: 14
+revealedIn: 3
+sources: [3, 9, 12, 14]
+start:
+  date: { year: 850 }
+  revealedIn: 3
+  sources: [2, 3]
+  certainty: inferred
+  notes: "Follows directly after the 104th's graduation, dated 850 in ch. 2; Eren notes it has been five years since the Colossal Titan's first attack (ch. 3)."
+seq: 20
+edges:
+  - type: occurred_at
+    target: location_trost
+    revealedIn: 12
+    sources: [12]
+    certainty: stated
+  - type: caused
+    target: event_eren_court_martial
+    revealedIn: 19
+    sources: [19]
+    certainty: stated

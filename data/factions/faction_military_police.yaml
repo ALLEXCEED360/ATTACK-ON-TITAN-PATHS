@@ -1,0 +1,10 @@
+id: faction_military_police
+names:
+  - name: "Military Police"
+    revealedIn: 2
+    variants: ["Military Police Brigade"]
+description:
+  - text: "The military branch that serves the king in the interior. Only the top graduates may join it."
+    revealedIn: 2
+revealedIn: 2
+sources: [2]

@@ -1,0 +1,29 @@
+id: character_connie_springer
+names:
+  - name: "Connie Springer"
+    revealedIn: 2
+    variants: ["Conny Springer"]
+description:
+  - text: "A 104th trainee from the village of Ragako, eighth in his class."
+    revealedIn: 15
+revealedIn: 2
+sources: [2, 15]
+edges:
+  - type: member_of
+    target: faction_104th_training_corps
+    from: { year: 847 }
+    until: { event: event_graduation_104th }
+    revealedIn: 2
+    sources: [2, 15]
+    certainty: stated
+  - type: member_of
+    target: faction_survey_corps
+    from: { event: event_battle_of_trost, at: end }
+    revealedIn: 21
+    sources: [21]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_utgard
+    revealedIn: 40
+    sources: [40]
+    certainty: stated

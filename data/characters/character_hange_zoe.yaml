@@ -1,0 +1,22 @@
+id: character_hange_zoe
+names:
+  - name: "Hange Zoë"
+    revealedIn: 19
+    variants: ["Hanji Zoe", "Hange Zoe"]
+description:
+  - text: "A Survey Corps squad leader who escorts Eren to his court-martial."
+    revealedIn: 19
+revealedIn: 19
+sources: [19]
+edges:
+  - type: member_of
+    target: faction_survey_corps
+    role: "Squad Leader"
+    revealedIn: 19
+    sources: [19]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_stohess
+    revealedIn: 34
+    sources: [34]
+    certainty: stated

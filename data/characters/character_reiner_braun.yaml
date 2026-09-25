@@ -1,0 +1,60 @@
+id: character_reiner_braun
+names:
+  - name: "Reiner Braun"
+    revealedIn: 2
+description:
+  - text: "A 104th trainee ranked second in his class: strong-willed and trusted by his comrades."
+    revealedIn: 18
+  - text: "He reveals that he is the Armored Titan, and that five years earlier he helped break the wall."
+    revealedIn: 42
+revealedIn: 2
+sources: [2, 18, 42]
+edges:
+  - type: member_of
+    target: faction_104th_training_corps
+    from: { year: 847 }
+    until: { event: event_graduation_104th }
+    revealedIn: 2
+    sources: [2, 15]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_trost
+    revealedIn: 9
+    sources: [9]
+    certainty: stated
+  - type: member_of
+    target: faction_survey_corps
+    from: { event: event_battle_of_trost, at: end }
+    revealedIn: 21
+    sources: [21]
+    certainty: stated
+  - type: participated_in
+    target: event_57th_expedition
+    revealedIn: 23
+    sources: [23]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_utgard
+    revealedIn: 40
+    sources: [40]
+    certainty: stated
+  - type: participated_in
+    target: event_fall_of_wall_maria
+    revealedIn: 42
+    sources: [42]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_on_wall_rose
+    revealedIn: 42
+    sources: [42]
+    certainty: stated
+  - type: holds
+    target: titan_armored
+    revealedIn: 42
+    sources: [42]
+    certainty: stated
+  - type: participated_in
+    target: event_rescue_of_eren
+    revealedIn: 50
+    sources: [50]
+    certainty: stated

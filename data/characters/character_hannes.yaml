@@ -1,0 +1,35 @@
+id: character_hannes
+names:
+  - name: "Hannes"
+    revealedIn: 1
+description:
+  - text: "A Garrison soldier and friend of the Yeager family."
+    revealedIn: 1
+  - text: "During the fall of Shiganshina he carries Eren and Mikasa to safety."
+    revealedIn: 2
+  - text: "He dies fighting the same Titan that killed Eren's mother."
+    revealedIn: 50
+revealedIn: 1
+sources: [1, 2, 3, 50]
+died:
+  date: { year: 850 }
+  revealedIn: 50
+  sources: [2, 50]
+  certainty: inferred
+  notes: "Killed during the rescue of Eren (ch. 50), in the same year as the Battle of Trost (850, ch. 2)."
+edges:
+  - type: member_of
+    target: faction_garrison
+    revealedIn: 1
+    sources: [1, 3]
+    certainty: stated
+  - type: participated_in
+    target: event_fall_of_wall_maria
+    revealedIn: 2
+    sources: [2]
+    certainty: stated
+  - type: participated_in
+    target: event_rescue_of_eren
+    revealedIn: 50
+    sources: [50]
+    certainty: stated

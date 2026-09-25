@@ -1,0 +1,82 @@
+id: character_eren_yeager
+names:
+  - name: "Eren Yeager"
+    revealedIn: 1
+    variants: ["Eren Jaeger"]
+description:
+  - text: "A boy from Shiganshina who dreams of the world beyond the walls and swears to wipe out the Titans after his mother is killed."
+    revealedIn: 2
+  - text: "He can turn into a Titan himself — a power linked to an injection from his father and to the secret in his family's basement."
+    revealedIn: 10
+revealedIn: 1
+sources: [1, 2, 10]
+edges:
+  - type: participated_in
+    target: event_fall_of_wall_maria
+    revealedIn: 2
+    sources: [2]
+    certainty: stated
+  - type: participated_in
+    target: event_mikasa_rescue
+    revealedIn: 6
+    sources: [6]
+    certainty: stated
+  - type: member_of
+    target: faction_104th_training_corps
+    from: { year: 847 }
+    until: { event: event_graduation_104th }
+    revealedIn: 2
+    sources: [2, 15]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_trost
+    revealedIn: 3
+    sources: [3]
+    certainty: stated
+  - type: participated_in
+    target: event_trost_gate_sealed
+    revealedIn: 14
+    sources: [14]
+    certainty: stated
+  - type: participated_in
+    target: event_eren_court_martial
+    revealedIn: 19
+    sources: [19]
+    certainty: stated
+  - type: member_of
+    target: faction_survey_corps
+    from: { event: event_eren_court_martial }
+    revealedIn: 19
+    sources: [19]
+    certainty: stated
+  - type: member_of
+    target: faction_special_operations_squad
+    from: { event: event_eren_court_martial }
+    revealedIn: 20
+    sources: [20]
+    certainty: stated
+  - type: participated_in
+    target: event_57th_expedition
+    revealedIn: 21
+    sources: [21]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_stohess
+    revealedIn: 33
+    sources: [33]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_on_wall_rose
+    revealedIn: 42
+    sources: [42]
+    certainty: stated
+  - type: participated_in
+    target: event_rescue_of_eren
+    revealedIn: 50
+    sources: [50]
+    certainty: stated
+  - type: holds
+    target: titan_coordinate
+    revealedIn: 50
+    sources: [50]
+    certainty: stated

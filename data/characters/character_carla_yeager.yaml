@@ -1,0 +1,27 @@
+id: character_carla_yeager
+names:
+  - name: "Carla Yeager"
+    revealedIn: 1
+    variants: ["Carla Jaeger"]
+description:
+  - text: "Eren's mother. During the fall of Shiganshina she is trapped under her collapsed house and killed by a Titan."
+    revealedIn: 2
+revealedIn: 1
+sources: [1, 2]
+died:
+  date: { year: 845 }
+  revealedIn: 2
+  sources: [1, 2]
+  certainty: inferred
+  notes: "Killed on the day of the attack (ch. 2), which ch. 1 dates to 845."
+edges:
+  - type: parent_of
+    target: character_eren_yeager
+    revealedIn: 1
+    sources: [1]
+    certainty: stated
+  - type: participated_in
+    target: event_fall_of_wall_maria
+    revealedIn: 2
+    sources: [2]
+    certainty: stated

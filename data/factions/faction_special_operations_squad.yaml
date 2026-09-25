@@ -1,0 +1,16 @@
+id: faction_special_operations_squad
+names:
+  - name: "Special Operations Squad"
+    revealedIn: 20
+    variants: ["Levi Squad", "Rivaille's Squad"]
+description:
+  - text: "A small elite Survey Corps squad chosen to keep Eren under watch."
+    revealedIn: 20
+revealedIn: 20
+sources: [20]
+edges:
+  - type: part_of
+    target: faction_survey_corps
+    revealedIn: 20
+    sources: [20]
+    certainty: stated

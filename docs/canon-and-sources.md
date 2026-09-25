@@ -26,6 +26,14 @@ Chapters are used in their **collected-volume (tankōbon) form**. Where a collec
 
 - In particular, the **extra pages added to chapter 139 in volume 34** are canon.
 
+### Verification copies
+
+Facts may be **verified** against any complete translation of a chapter. Where translations differ, the official English edition wins, and a fact confirmed only against an unofficial translation must be re-checked against the official edition before v1.0.
+
+- Translation differences are mostly spellings; they become **aliases** (§7), never separate entities.
+- Citations are to chapter numbers, which are the same in every edition, so re-checking never changes a citation.
+- **Status:** v0.1 (chapters 1–53) was verified against an unofficial translation. Every fact from it is due for re-checking against the official edition.
+
 ## 3. Citations
 
 - Every fact cites **at least one chapter**.

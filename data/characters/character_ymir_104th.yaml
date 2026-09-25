@@ -1,0 +1,36 @@
+id: character_ymir_104th
+names:
+  - name: "Ymir"
+    revealedIn: 40
+description:
+  - text: "A sharp-tongued 104th trainee who is fiercely protective of Krista."
+    revealedIn: 40
+  - text: "At Castle Utgard she reveals that she can turn into a Titan, and fights to save her comrades."
+    revealedIn: 40
+revealedIn: 40
+sources: [40, 41]
+notes: "Appears from ch. 5 without being named in the pages checked. Move revealedIn earlier once her first naming is confirmed."
+edges:
+  - type: member_of
+    target: faction_104th_training_corps
+    from: { year: 847 }
+    until: { event: event_graduation_104th }
+    revealedIn: 40
+    sources: [15, 40]
+    certainty: stated
+  - type: member_of
+    target: faction_survey_corps
+    from: { event: event_battle_of_trost, at: end }
+    revealedIn: 40
+    sources: [21, 40]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_utgard
+    revealedIn: 40
+    sources: [40, 41]
+    certainty: stated
+  - type: participated_in
+    target: event_rescue_of_eren
+    revealedIn: 50
+    sources: [50]
+    certainty: stated

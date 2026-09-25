@@ -1,0 +1,25 @@
+id: event_fall_of_wall_maria
+names:
+  - name: "Fall of Wall Maria"
+    revealedIn: 2
+description:
+  - text: "The Colossal Titan kicks in Shiganshina's outer gate, and a second, armored Titan breaks through the inner gate. Titans flood in and humanity abandons Wall Maria."
+    revealedIn: 2
+revealedIn: 2
+sources: [1, 2]
+start:
+  date: { year: 845 }
+  revealedIn: 2
+  sources: [1, 2]
+  certainty: stated
+edges:
+  - type: occurred_at
+    target: location_shiganshina
+    revealedIn: 12
+    sources: [12]
+    certainty: stated
+  - type: caused
+    target: event_wall_maria_recovery_operation
+    revealedIn: 3
+    sources: [3]
+    certainty: stated

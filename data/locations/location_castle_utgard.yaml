@@ -1,0 +1,9 @@
+id: location_castle_utgard
+names:
+  - name: "Castle Utgard"
+    revealedIn: 38
+description:
+  - text: "A ruined castle tower within Wall Rose where a group of unarmed soldiers take shelter."
+    revealedIn: 38
+revealedIn: 38
+sources: [38, 40]

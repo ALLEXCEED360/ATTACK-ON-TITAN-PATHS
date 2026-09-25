@@ -1,0 +1,16 @@
+id: location_ragako
+names:
+  - name: "Ragako"
+    revealedIn: 15
+    variants: ["Ragako Village"]
+description:
+  - text: "A village in the southern territory of Wall Rose, and Connie's home."
+    revealedIn: 15
+revealedIn: 15
+sources: [15]
+edges:
+  - type: part_of
+    target: location_wall_rose
+    revealedIn: 15
+    sources: [15]
+    certainty: stated

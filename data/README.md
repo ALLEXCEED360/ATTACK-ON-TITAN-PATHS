@@ -6,6 +6,16 @@ The files in this folder are the **source of truth** for all canon data in PATHS
 - Never edit the database by hand. To change a fact, edit the file here and re-seed.
 - Every fact must cite the manga chapter(s) it comes from, and be verified against the chapter itself ([canon rules](../docs/canon-and-sources.md)).
 
+## Coverage
+
+| Version | Chapters | Contents                                                                | Verified against           |
+| ------- | -------- | ----------------------------------------------------------------------- | -------------------------- |
+| v0.1    | 1–53     | 23 characters, 12 events, 11 locations, 5 factions, 4 Titans, 115 edges | Unofficial translation[^1] |
+
+[^1]: Due for re-checking against the official edition (see [canon rules §2](../docs/canon-and-sources.md#2-edition)).
+
+Not yet written: `reference/volumes.yaml`, `reference/arcs.yaml` and `reference/eras.yaml`. All three must cover the whole story (chapters 1–139), so they wait for the full source. `pnpm validate` shows a warning for each until then.
+
 ## Layout
 
 ```
@@ -31,7 +41,8 @@ An entity's file holds its **outgoing edges**. A symmetric edge (e.g. `sibling_o
 # data/characters/character_example.yaml
 id: character_example
 names:
-  - { name: "Example Person", revealedIn: 3 }
+  - name: "Example Person"
+    revealedIn: 3
 description:
   - { text: "What a reader learns first, in our own words.", revealedIn: 3 }
 revealedIn: 3

@@ -1,0 +1,15 @@
+id: location_trost
+names:
+  - name: "Trost District"
+    revealedIn: 12
+description:
+  - text: "A district on the southern edge of Wall Rose, facing the territory lost in 845."
+    revealedIn: 12
+revealedIn: 12
+sources: [12, 19]
+edges:
+  - type: part_of
+    target: location_wall_rose
+    revealedIn: 12
+    sources: [12]
+    certainty: stated

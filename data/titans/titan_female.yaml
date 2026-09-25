@@ -1,0 +1,10 @@
+id: titan_female
+names:
+  - name: "Female Titan"
+    revealedIn: 23
+    variants: ["Female Type Titan"]
+description:
+  - text: "An unusually intelligent Titan that attacks the Survey Corps on its 57th expedition."
+    revealedIn: 23
+revealedIn: 23
+sources: [23]

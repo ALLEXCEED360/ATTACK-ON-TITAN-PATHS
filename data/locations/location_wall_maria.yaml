@@ -1,0 +1,9 @@
+id: location_wall_maria
+names:
+  - name: "Wall Maria"
+    revealedIn: 2
+description:
+  - text: "The outermost of the three great walls that enclose humanity's territory."
+    revealedIn: 2
+revealedIn: 2
+sources: [2]

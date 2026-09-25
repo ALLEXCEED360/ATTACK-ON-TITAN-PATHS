@@ -1,0 +1,39 @@
+id: character_jean_kirstein
+names:
+  - name: "Jean Kirstein"
+    revealedIn: 2
+    variants: ["Jean Kirschtein"]
+description:
+  - text: "A blunt 104th trainee who planned to join the Military Police. After Trost, he chooses the Survey Corps instead."
+    revealedIn: 18
+revealedIn: 2
+sources: [2, 18, 21]
+edges:
+  - type: member_of
+    target: faction_104th_training_corps
+    from: { year: 847 }
+    until: { event: event_graduation_104th }
+    revealedIn: 2
+    sources: [2, 15]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_trost
+    revealedIn: 9
+    sources: [9]
+    certainty: stated
+  - type: member_of
+    target: faction_survey_corps
+    from: { event: event_battle_of_trost, at: end }
+    revealedIn: 21
+    sources: [18, 21]
+    certainty: stated
+  - type: participated_in
+    target: event_57th_expedition
+    revealedIn: 23
+    sources: [23]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_stohess
+    revealedIn: 31
+    sources: [31]
+    certainty: stated

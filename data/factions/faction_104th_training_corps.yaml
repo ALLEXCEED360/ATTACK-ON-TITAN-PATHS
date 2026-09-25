@@ -1,0 +1,10 @@
+id: faction_104th_training_corps
+names:
+  - name: "104th Training Corps"
+    revealedIn: 2
+    variants: ["104th Trainees Squad", "104th Cadet Corps"]
+description:
+  - text: "The class of military trainees that enlists in 847 and graduates in 850."
+    revealedIn: 15
+revealedIn: 2
+sources: [2, 3, 15]

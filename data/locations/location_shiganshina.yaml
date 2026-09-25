@@ -1,0 +1,15 @@
+id: location_shiganshina
+names:
+  - name: "Shiganshina District"
+    revealedIn: 12
+description:
+  - text: "A district on the southern edge of Wall Maria, and the hometown of Eren, Mikasa and Armin."
+    revealedIn: 12
+revealedIn: 12
+sources: [12, 15]
+edges:
+  - type: part_of
+    target: location_wall_maria
+    revealedIn: 12
+    sources: [12]
+    certainty: stated

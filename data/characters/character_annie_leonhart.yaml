@@ -1,0 +1,47 @@
+id: character_annie_leonhart
+names:
+  - name: "Annie Leonhart"
+    revealedIn: 2
+    variants: ["Annie Leonhardt", "Annie Leonheart"]
+description:
+  - text: "A solitary 104th trainee, ranked fourth, with exceptional hand-to-hand skill."
+    revealedIn: 18
+  - text: "Cornered in Stohess, she transforms into the Female Titan, and after her defeat seals herself in crystal."
+    revealedIn: 34
+revealedIn: 2
+sources: [2, 18, 32, 34]
+edges:
+  - type: member_of
+    target: faction_104th_training_corps
+    from: { year: 847 }
+    until: { event: event_graduation_104th }
+    revealedIn: 2
+    sources: [2, 15]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_trost
+    revealedIn: 9
+    sources: [9]
+    certainty: stated
+  - type: member_of
+    target: faction_military_police
+    from: { event: event_battle_of_trost, at: end }
+    revealedIn: 21
+    sources: [21, 31]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_stohess
+    revealedIn: 31
+    sources: [31, 32]
+    certainty: stated
+  - type: holds
+    target: titan_female
+    revealedIn: 32
+    sources: [32, 34]
+    certainty: stated
+  - type: participated_in
+    target: event_57th_expedition
+    revealedIn: 32
+    sources: [23, 32]
+    certainty: inferred
+    notes: "The Female Titan attacked the expedition (ch. 23); ch. 32 reveals Annie as the Female Titan."

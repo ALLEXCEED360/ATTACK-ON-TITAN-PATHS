@@ -1,0 +1,22 @@
+id: event_trost_gate_sealed
+names:
+  - name: "Sealing of the Trost gate"
+    revealedIn: 14
+description:
+  - text: "Under Commander Pixis's plan, Eren's Titan plugs the breached gate with a huge boulder while soldiers draw the Titans away."
+    revealedIn: 14
+revealedIn: 14
+sources: [12, 14]
+start:
+  date: { year: 850 }
+  revealedIn: 14
+  sources: [2, 14]
+  certainty: inferred
+  notes: "Part of the Battle of Trost (see event_battle_of_trost)."
+seq: 30
+edges:
+  - type: sub_event_of
+    target: event_battle_of_trost
+    revealedIn: 14
+    sources: [14]
+    certainty: stated

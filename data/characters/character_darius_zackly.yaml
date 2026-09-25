@@ -1,0 +1,16 @@
+id: character_darius_zackly
+names:
+  - name: "Darius Zackly"
+    revealedIn: 19
+    variants: ["Dallis Zacklay"]
+description:
+  - text: "The generalissimo in command of all three military branches, who judges Eren's case."
+    revealedIn: 19
+revealedIn: 19
+sources: [19]
+edges:
+  - type: participated_in
+    target: event_eren_court_martial
+    revealedIn: 19
+    sources: [19]
+    certainty: stated

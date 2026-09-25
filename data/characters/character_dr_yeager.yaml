@@ -1,0 +1,29 @@
+id: character_dr_yeager
+names:
+  - name: "Dr. Yeager"
+    revealedIn: 1
+    variants: ["Doctor Jaeger"]
+description:
+  - text: "Eren's father, a respected doctor in Shiganshina who keeps a locked room in his basement."
+    revealedIn: 1
+  - text: "He injected Eren with something and told him to return to the basement. He has been missing since 845."
+    revealedIn: 10
+revealedIn: 1
+sources: [1, 10, 19]
+notes: "His given name isn't confirmed in the ch. 1–53 source used for v0.1; add it once verified."
+edges:
+  - type: parent_of
+    target: character_eren_yeager
+    revealedIn: 1
+    sources: [1]
+    certainty: stated
+  - type: spouse_of
+    target: character_carla_yeager
+    revealedIn: 1
+    sources: [1]
+    certainty: stated
+  - type: participated_in
+    target: event_mikasa_rescue
+    revealedIn: 5
+    sources: [5, 6]
+    certainty: stated

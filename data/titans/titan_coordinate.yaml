@@ -1,0 +1,9 @@
+id: titan_coordinate
+names:
+  - name: "The Coordinate"
+    revealedIn: 50
+description:
+  - text: "A power able to command other Titans. Reiner and Bertholdt treat recovering it as their goal."
+    revealedIn: 50
+revealedIn: 50
+sources: [50]

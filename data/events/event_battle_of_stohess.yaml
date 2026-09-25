@@ -1,0 +1,24 @@
+id: event_battle_of_stohess
+names:
+  - name: "Battle of Stohess"
+    revealedIn: 31
+description:
+  - text: "The Survey Corps lures a suspect underground during Eren's transfer to the capital. The Female Titan emerges and fights Eren through the district."
+    revealedIn: 32
+  - text: "Defeated, the Female Titan's host seals herself inside a hard crystal, beyond questioning."
+    revealedIn: 34
+revealedIn: 31
+sources: [31, 32, 33, 34]
+start:
+  date: { year: 850 }
+  revealedIn: 31
+  sources: [2, 31]
+  certainty: inferred
+  notes: "Shortly after the 57th expedition returns (ch. 30–31), in 850."
+seq: 60
+edges:
+  - type: occurred_at
+    target: location_stohess
+    revealedIn: 31
+    sources: [31]
+    certainty: stated

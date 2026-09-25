@@ -1,0 +1,22 @@
+id: event_battle_on_wall_rose
+names:
+  - name: "Battle on Wall Rose"
+    revealedIn: 42
+description:
+  - text: "On top of Wall Rose, two soldiers reveal themselves as enemy Titans and try to take Eren."
+    revealedIn: 42
+revealedIn: 42
+sources: [42]
+start:
+  date: { year: 850 }
+  revealedIn: 42
+  sources: [2, 42]
+  certainty: inferred
+  notes: "The morning after the Battle of Castle Utgard (ch. 41–42), in 850."
+seq: 80
+edges:
+  - type: occurred_at
+    target: location_wall_rose
+    revealedIn: 42
+    sources: [42]
+    certainty: stated

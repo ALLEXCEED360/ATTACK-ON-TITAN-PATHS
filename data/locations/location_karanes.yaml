@@ -1,0 +1,10 @@
+id: location_karanes
+names:
+  - name: "Karanes District"
+    revealedIn: 21
+    variants: ["Karanese District"]
+description:
+  - text: "The district the Survey Corps sets out from on its 57th expedition."
+    revealedIn: 21
+revealedIn: 21
+sources: [21]

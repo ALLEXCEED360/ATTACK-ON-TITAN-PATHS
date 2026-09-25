@@ -1,0 +1,14 @@
+id: event_mikasa_rescue
+names:
+  - name: "Mikasa's rescue"
+    revealedIn: 5
+description:
+  - text: "Traffickers kill Mikasa's parents and kidnap her. Eren tracks them down, and the two children kill the kidnappers. Dr. Yeager then takes Mikasa into his family."
+    revealedIn: 6
+revealedIn: 5
+sources: [5, 6]
+start:
+  date: { year: 844 }
+  revealedIn: 5
+  sources: [5]
+  certainty: stated

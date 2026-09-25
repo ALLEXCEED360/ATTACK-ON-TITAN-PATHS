@@ -1,0 +1,17 @@
+id: event_wall_maria_recovery_operation
+names:
+  - name: "Wall Maria recovery operation"
+    revealedIn: 3
+description:
+  - text: "A general offensive that sends a large part of the population out to retake the lost territory. Almost none return."
+    revealedIn: 3
+  - text: "In truth, it was a way to reduce the number of mouths to feed."
+    revealedIn: 12
+revealedIn: 3
+sources: [3, 12]
+start:
+  date: { year: 846 }
+  revealedIn: 3
+  sources: [2, 3]
+  certainty: inferred
+  notes: "Ch. 3 places it four years before the story's present, which ch. 2 dates to 850."

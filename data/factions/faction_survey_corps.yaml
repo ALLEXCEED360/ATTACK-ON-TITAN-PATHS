@@ -1,0 +1,10 @@
+id: faction_survey_corps
+names:
+  - name: "Survey Corps"
+    revealedIn: 1
+    variants: ["Scouting Legion", "Scout Regiment"]
+description:
+  - text: "The military branch that ventures beyond the walls to fight Titans and explore the lost territory."
+    revealedIn: 1
+revealedIn: 1
+sources: [1, 2]

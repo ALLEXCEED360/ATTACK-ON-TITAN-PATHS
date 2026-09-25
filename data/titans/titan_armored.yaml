@@ -1,0 +1,9 @@
+id: titan_armored
+names:
+  - name: "Armored Titan"
+    revealedIn: 15
+description:
+  - text: "A Titan covered in hardened plates that broke through Wall Maria's inner gate in 845."
+    revealedIn: 15
+revealedIn: 15
+sources: [2, 15]

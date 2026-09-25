@@ -1,0 +1,25 @@
+id: character_mike_zacharias
+names:
+  - name: "Mike Zacharias"
+    revealedIn: 19
+    variants: ["Mike Zakarius"]
+description:
+  - text: "A Survey Corps squad leader with an uncanny sense of smell."
+    revealedIn: 19
+  - text: "He is killed by a hairy, speaking Titan while buying time for his soldiers."
+    revealedIn: 35
+revealedIn: 19
+sources: [19, 35]
+died:
+  date: { year: 850 }
+  revealedIn: 35
+  sources: [2, 35]
+  certainty: inferred
+  notes: "Killed by a Titan in ch. 35, in 850 (ch. 2)."
+edges:
+  - type: member_of
+    target: faction_survey_corps
+    role: "Squad Leader"
+    revealedIn: 19
+    sources: [19]
+    certainty: stated

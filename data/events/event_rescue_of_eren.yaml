@@ -1,0 +1,16 @@
+id: event_rescue_of_eren
+names:
+  - name: "Rescue of Eren"
+    revealedIn: 50
+description:
+  - text: "The Survey Corps and Garrison pursue Eren's captors. In the fighting, Eren's scream turns a crowd of Titans against his enemies."
+    revealedIn: 50
+revealedIn: 50
+sources: [50]
+start:
+  date: { year: 850 }
+  revealedIn: 50
+  sources: [2, 50]
+  certainty: inferred
+  notes: "Continues directly from the Battle on Wall Rose, in 850."
+seq: 90

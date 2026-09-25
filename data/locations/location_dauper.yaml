@@ -1,0 +1,16 @@
+id: location_dauper
+names:
+  - name: "Dauper"
+    revealedIn: 15
+    variants: ["Dauper Village"]
+description:
+  - text: "A village in the southern territory of Wall Rose, and Sasha's home."
+    revealedIn: 15
+revealedIn: 15
+sources: [15]
+edges:
+  - type: part_of
+    target: location_wall_rose
+    revealedIn: 15
+    sources: [15]
+    certainty: stated

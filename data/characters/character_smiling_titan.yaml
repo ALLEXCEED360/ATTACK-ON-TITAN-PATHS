@@ -1,0 +1,40 @@
+id: character_smiling_titan
+names:
+  - name: "Smiling Titan"
+    revealedIn: 2
+description:
+  - text: "The grinning Titan that devours Eren's mother during the fall of Shiganshina."
+    revealedIn: 2
+  - text: "Eren meets it again five years later, when it kills Hannes. The Titans Eren then commands tear it apart."
+    revealedIn: 50
+revealedIn: 2
+sources: [2, 50]
+died:
+  date: { year: 850 }
+  revealedIn: 50
+  sources: [2, 50]
+  certainty: inferred
+  notes: "Devoured by other Titans during the rescue of Eren (ch. 50), in 850."
+edges:
+  - type: killed
+    target: character_carla_yeager
+    in: event_fall_of_wall_maria
+    revealedIn: 2
+    sources: [2]
+    certainty: stated
+  - type: killed
+    target: character_hannes
+    in: event_rescue_of_eren
+    revealedIn: 50
+    sources: [50]
+    certainty: stated
+  - type: participated_in
+    target: event_fall_of_wall_maria
+    revealedIn: 2
+    sources: [2]
+    certainty: stated
+  - type: participated_in
+    target: event_rescue_of_eren
+    revealedIn: 50
+    sources: [50]
+    certainty: stated

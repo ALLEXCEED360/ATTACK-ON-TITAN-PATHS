@@ -4,7 +4,7 @@ An interactive temporal knowledge graph of the _Attack on Titan_ manga — explo
 
 ## Status
 
-**Phase 1 — data model and seed data (in progress).** The schemas, data validator and graph algorithms are built; the seed dataset is next. The design lives in [`docs/`](docs/README.md); how to write data is in [`data/`](data/README.md).
+**Phase 1 — data model and seed data (in progress).** The schemas, validator and graph algorithms are built, and the first dataset covers chapters 1–53. The design lives in [`docs/`](docs/README.md); how to write data is in [`data/`](data/README.md).
 
 | Package                                    | What it does                                                           |
 | ------------------------------------------ | ---------------------------------------------------------------------- |

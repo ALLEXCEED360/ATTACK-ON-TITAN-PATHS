@@ -1,0 +1,9 @@
+id: location_stohess
+names:
+  - name: "Stohess District"
+    revealedIn: 31
+description:
+  - text: "A district where the Survey Corps sets a trap during Eren's transfer."
+    revealedIn: 31
+revealedIn: 31
+sources: [31]

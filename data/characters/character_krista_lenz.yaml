@@ -1,0 +1,45 @@
+id: character_krista_lenz
+names:
+  - name: "Krista Lenz"
+    revealedIn: 2
+    variants: ["Christa Lenz", "Christa Renz"]
+  - name: "Historia"
+    revealedIn: 41
+  - name: "Historia Reiss"
+    revealedIn: 42
+description:
+  - text: "A 104th trainee, tenth in her class."
+    revealedIn: 2
+  - text: "She is the illegitimate daughter of an important family, and enlisted under a false name."
+    revealedIn: 40
+revealedIn: 2
+sources: [2, 40, 41, 42]
+edges:
+  - type: member_of
+    target: faction_104th_training_corps
+    from: { year: 847 }
+    until: { event: event_graduation_104th }
+    revealedIn: 2
+    sources: [2, 15]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_trost
+    revealedIn: 5
+    sources: [5]
+    certainty: stated
+  - type: member_of
+    target: faction_survey_corps
+    from: { event: event_battle_of_trost, at: end }
+    revealedIn: 21
+    sources: [21]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_utgard
+    revealedIn: 40
+    sources: [40]
+    certainty: stated
+  - type: participated_in
+    target: event_rescue_of_eren
+    revealedIn: 50
+    sources: [50]
+    certainty: stated

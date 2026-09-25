@@ -1,0 +1,16 @@
+id: event_eren_court_martial
+names:
+  - name: "Eren's court-martial"
+    revealedIn: 19
+description:
+  - text: "A military tribunal decides what to do with a soldier who can become a Titan. Eren is handed to the Survey Corps."
+    revealedIn: 19
+revealedIn: 19
+sources: [19]
+start:
+  date: { year: 850 }
+  revealedIn: 19
+  sources: [2, 19]
+  certainty: inferred
+  notes: "Takes place days after the Battle of Trost (Eren was unconscious for three days, ch. 19)."
+seq: 40

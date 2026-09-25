@@ -1,0 +1,24 @@
+id: event_battle_of_utgard
+names:
+  - name: "Battle of Castle Utgard"
+    revealedIn: 38
+description:
+  - text: "Unarmed soldiers trapped in a ruined tower hold out against Titans through the night."
+    revealedIn: 40
+  - text: "Ymir reveals that she can turn into a Titan and fights to protect her comrades."
+    revealedIn: 40
+revealedIn: 38
+sources: [38, 40, 41]
+start:
+  date: { year: 850 }
+  revealedIn: 38
+  sources: [2, 38]
+  certainty: inferred
+  notes: "Follows the events in Stohess within the same year (850)."
+seq: 70
+edges:
+  - type: occurred_at
+    target: location_castle_utgard
+    revealedIn: 38
+    sources: [38]
+    certainty: stated

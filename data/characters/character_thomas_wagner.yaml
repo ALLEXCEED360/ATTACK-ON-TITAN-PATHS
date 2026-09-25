@@ -1,0 +1,31 @@
+id: character_thomas_wagner
+names:
+  - name: "Thomas"
+    revealedIn: 4
+  - name: "Thomas Wagner"
+    revealedIn: 7
+    variants: ["Tomas Wagner"]
+description:
+  - text: "A 104th trainee in Eren's squad, eaten early in the Battle of Trost."
+    revealedIn: 4
+revealedIn: 4
+sources: [4, 7]
+died:
+  date: { year: 850 }
+  revealedIn: 4
+  sources: [2, 4]
+  certainty: inferred
+  notes: "Killed during the Battle of Trost (ch. 4), in 850 (ch. 2)."
+edges:
+  - type: member_of
+    target: faction_104th_training_corps
+    from: { year: 847 }
+    until: { event: event_graduation_104th }
+    revealedIn: 4
+    sources: [4, 15]
+    certainty: stated
+  - type: participated_in
+    target: event_battle_of_trost
+    revealedIn: 4
+    sources: [4]
+    certainty: stated

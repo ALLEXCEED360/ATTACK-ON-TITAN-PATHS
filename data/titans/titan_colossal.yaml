@@ -1,0 +1,9 @@
+id: titan_colossal
+names:
+  - name: "Colossal Titan"
+    revealedIn: 2
+description:
+  - text: "A Titan tall enough to look over a 50-metre wall. It appears without warning and vanishes in steam."
+    revealedIn: 2
+revealedIn: 2
+sources: [1, 2, 4]

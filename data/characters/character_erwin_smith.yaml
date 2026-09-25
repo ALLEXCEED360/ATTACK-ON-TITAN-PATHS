@@ -1,0 +1,35 @@
+id: character_erwin_smith
+names:
+  - name: "Erwin"
+    revealedIn: 19
+    variants: ["Irvin", "Elvin"]
+  - name: "Erwin Smith"
+    revealedIn: 21
+    variants: ["Irvin Smith"]
+description:
+  - text: "Commander of the Survey Corps, who wins custody of Eren at his court-martial."
+    revealedIn: 19
+revealedIn: 19
+sources: [19, 21]
+edges:
+  - type: leads
+    target: faction_survey_corps
+    title: "Commander"
+    revealedIn: 19
+    sources: [19, 21]
+    certainty: stated
+  - type: participated_in
+    target: event_eren_court_martial
+    revealedIn: 19
+    sources: [19]
+    certainty: stated
+  - type: participated_in
+    target: event_57th_expedition
+    revealedIn: 21
+    sources: [21]
+    certainty: stated
+  - type: participated_in
+    target: event_rescue_of_eren
+    revealedIn: 50
+    sources: [50]
+    certainty: stated

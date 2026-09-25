@@ -1,0 +1,9 @@
+id: location_wall_sina
+names:
+  - name: "Wall Sina"
+    revealedIn: 2
+description:
+  - text: "The innermost wall, protecting the heart of human territory."
+    revealedIn: 2
+revealedIn: 2
+sources: [2]

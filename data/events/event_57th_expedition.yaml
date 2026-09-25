@@ -1,0 +1,25 @@
+id: event_57th_expedition
+names:
+  - name: "57th expedition beyond the walls"
+    revealedIn: 21
+description:
+  - text: "The Survey Corps' first expedition with Eren, setting out from the Karanes District a month after the new recruits join."
+    revealedIn: 21
+  - text: "The Female Titan attacks the formation. The Survey Corps traps her in a forest, but she escapes, and the expedition returns with heavy losses."
+    revealedIn: 30
+revealedIn: 21
+sources: [21, 23, 27, 30]
+start:
+  date: { year: 850 }
+  revealedIn: 21
+  sources: [2, 21]
+  certainty: inferred
+  notes: "Sets out one month after the recruits join the Survey Corps (ch. 21), in the same year as the Battle of Trost (850, ch. 2)."
+seq: 50
+edges:
+  - type: caused
+    target: event_battle_of_stohess
+    revealedIn: 31
+    sources: [31, 34]
+    certainty: inferred
+    notes: "The Stohess operation is the Survey Corps' plan to capture the Female Titan after she escaped on the expedition (ch. 31, 34)."

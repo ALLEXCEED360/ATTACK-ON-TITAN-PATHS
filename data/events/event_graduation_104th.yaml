@@ -1,0 +1,15 @@
+id: event_graduation_104th
+names:
+  - name: "Graduation of the 104th Training Corps"
+    revealedIn: 2
+description:
+  - text: "The 104th trainees graduate; the top ten earn the right to join the Military Police."
+    revealedIn: 2
+revealedIn: 2
+sources: [2]
+start:
+  date: { year: 850 }
+  revealedIn: 2
+  sources: [2]
+  certainty: stated
+seq: 10
