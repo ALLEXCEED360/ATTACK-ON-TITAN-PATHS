@@ -70,7 +70,7 @@ describe("a valid dataset", () => {
   it("resolves edges to time intervals", () => {
     const { dataset } = loadDataset(files);
     const holds = toGraphInput(dataset).edges.find((e) => e.type === "holds");
-    expect(holds?.active.start?.earliest).toBe(8_450_101);
+    expect(holds?.own.start?.earliest).toBe(8_450_101);
   });
 
   it("makes a killing a moment: its event, or else the victim's death", () => {
@@ -87,12 +87,24 @@ describe("a valid dataset", () => {
       event("event_battle", 850),
     ]);
     const [inEvent, atDeath] = toGraphInput(dataset).edges;
-    expect(inEvent?.active).toEqual({
+    expect(inEvent?.own).toEqual({
       start: { earliest: 8_500_101, latest: 8_501_231 },
       end: { earliest: 8_500_101, latest: 8_501_231 },
     });
-    expect(atDeath?.active.start?.earliest).toBe(8_520_101);
-    expect(atDeath?.active.end?.latest).toBe(8_521_231);
+    expect(atDeath?.own.start?.earliest).toBe(8_520_101);
+    expect(atDeath?.own.end?.latest).toBe(8_521_231);
+  });
+
+  it("records the chapter that reveals each lifetime bound", () => {
+    const { dataset } = loadDataset([
+      ...reference,
+      character("character_a", {
+        died: { date: { year: 850 }, revealedIn: 30, sources: [30], certainty: "stated" },
+      }),
+    ]);
+    const [node] = toGraphInput(dataset).nodes;
+    expect(node?.lifetime).toMatchObject({ start: null, endRevealedIn: 30 });
+    expect(node?.lifetime).not.toHaveProperty("startRevealedIn");
   });
 });
 

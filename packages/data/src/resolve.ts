@@ -1,4 +1,10 @@
-import type { GraphEdge, GraphNode, Interval } from "@paths/graph-core";
+import {
+  type GraphEdge,
+  type GraphNode,
+  type Interval,
+  type Lifetime,
+  intersect,
+} from "@paths/graph-core";
 import {
   type DateRange,
   type DateRef,
@@ -14,19 +20,28 @@ import type { Dataset, LoadedEdge } from "./load.ts";
 
 const ALWAYS: Interval = { start: null, end: null };
 
-/** When an entity exists in world time. */
-export function lifetimeOf(entity: Entity): Interval {
+/**
+ * When an entity exists in world time, with the chapter that reveals each bound (a death is often
+ * revealed after the character first appears).
+ */
+export function lifetimeOf(entity: Entity): Lifetime {
   switch (entity.kind) {
     case "character":
       return {
         start: entity.born ? resolveDate(entity.born.date) : null,
         end: entity.died ? resolveDate(entity.died.date) : null,
+        ...(entity.born ? { startRevealedIn: entity.born.revealedIn } : {}),
+        ...(entity.died ? { endRevealedIn: entity.died.revealedIn } : {}),
       };
-    case "event":
+    case "event": {
+      const end = entity.end ?? entity.start;
       return {
         start: resolveDate(entity.start.date),
-        end: resolveDate((entity.end ?? entity.start).date),
+        end: resolveDate(end.date),
+        startRevealedIn: entity.start.revealedIn,
+        endRevealedIn: end.revealedIn,
       };
+    }
     // A memory can be received before it is experienced, so it isn't bound to its own date.
     case "memory":
     case "titan":
@@ -62,18 +77,6 @@ export function resolveDateRef(dataset: Dataset, ref: DateRef): DateRange | unde
   return resolveDate((ref.at === "end" ? (end ?? start) : start).date);
 }
 
-function later(a: DateRange | null, b: DateRange | null): DateRange | null {
-  if (!a) return b;
-  if (!b) return a;
-  return { earliest: Math.max(a.earliest, b.earliest), latest: Math.max(a.latest, b.latest) };
-}
-
-function sooner(a: DateRange | null, b: DateRange | null): DateRange | null {
-  if (!a) return b;
-  if (!b) return a;
-  return { earliest: Math.min(a.earliest, b.earliest), latest: Math.min(a.latest, b.latest) };
-}
-
 export function isEmpty(interval: Interval): boolean {
   return (
     interval.start !== null &&
@@ -89,7 +92,10 @@ export function isEmpty(interval: Interval): boolean {
 function killingMoment(dataset: Dataset, edge: Edge): Interval | null {
   if (edge.type !== "killed") return null;
   const event = edge.in ? dataset.entities.get(edge.in)?.entity : undefined;
-  if (event) return lifetimeOf(event);
+  if (event) {
+    const { start, end } = lifetimeOf(event);
+    return { start, end };
+  }
   const victim = dataset.entities.get(edge.target)?.entity;
   if (victim?.kind === "character" && victim.died) {
     const death = resolveDate(victim.died.date);
@@ -98,22 +104,31 @@ function killingMoment(dataset: Dataset, edge: Edge): Interval | null {
   return null;
 }
 
-/** An edge's active period: its own `from`/`until`, clipped to both endpoints' lifetimes. */
+/** An edge's own period: the moment of a killing, or its `from` / `until`. */
+export function ownInterval(dataset: Dataset, edge: Edge): Interval {
+  const { from, until } = timeRefsOf(edge);
+  return (
+    killingMoment(dataset, edge) ?? {
+      start: from ? (resolveDateRef(dataset, from) ?? null) : null,
+      end: until ? (resolveDateRef(dataset, until) ?? null) : null,
+    }
+  );
+}
+
+/**
+ * An edge's active period with full knowledge (as at the last chapter): its own period, clipped to
+ * both endpoints' lifetimes. Readers' views clip by what *they* know — see `activeAt` in
+ * graph-core; this full-knowledge version is for validation.
+ */
 export function activeInterval(dataset: Dataset, loaded: LoadedEdge): Interval {
   const { edge } = loaded;
   const source = dataset.entities.get(edge.source)?.entity;
   const target = dataset.entities.get(edge.target)?.entity;
-  const { from, until } = timeRefsOf(edge);
-  const own: Interval = killingMoment(dataset, edge) ?? {
-    start: from ? (resolveDateRef(dataset, from) ?? null) : null,
-    end: until ? (resolveDateRef(dataset, until) ?? null) : null,
-  };
-  const sourceLife = source ? lifetimeOf(source) : ALWAYS;
-  const targetLife = target ? lifetimeOf(target) : ALWAYS;
-  return {
-    start: later(later(own.start, sourceLife.start), targetLife.start),
-    end: sooner(sooner(own.end, sourceLife.end), targetLife.end),
-  };
+  return intersect(
+    ownInterval(dataset, edge),
+    source ? lifetimeOf(source) : ALWAYS,
+    target ? lifetimeOf(target) : ALWAYS,
+  );
 }
 
 /** The dataset as graph nodes and edges, ready for `createGraph`. Assumes it has been validated. */
@@ -128,6 +143,8 @@ export function toGraphInput(dataset: Dataset): {
     kind: entity.kind,
     revealedIn: entity.revealedIn,
     lifetime: lifetimeOf(entity),
+    ...(entity.kind === "event" && entity.seq !== undefined ? { seq: entity.seq } : {}),
+    ...(entity.kind === "memory" ? { date: resolveDate(entity.start.date) } : {}),
   }));
 
   const edges: GraphEdge[] = [];
@@ -152,7 +169,7 @@ export function toGraphInput(dataset: Dataset): {
       target: edge.target,
       type: edge.type,
       revealedIn: edge.revealedIn,
-      active,
+      own: ownInterval(dataset, edge),
     });
   }
 

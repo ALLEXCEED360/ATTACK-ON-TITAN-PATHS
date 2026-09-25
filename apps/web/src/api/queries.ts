@@ -52,6 +52,18 @@ export function useNeighborhood(
   });
 }
 
+export function usePaths(id: string | undefined) {
+  const cutoff = useCutoff();
+  return useQuery({
+    queryKey: ["paths", id, cutoff],
+    queryFn: () =>
+      unwrap(api.GET("/paths/{id}", { params: { path: { id: id ?? "" }, query: { cutoff } } })),
+    enabled: id !== undefined,
+    placeholderData: keepPreviousData,
+    retry: false,
+  });
+}
+
 export function useTimeline(order: "world" | "story") {
   const cutoff = useCutoff();
   return useQuery({

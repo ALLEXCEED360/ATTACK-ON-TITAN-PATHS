@@ -6,11 +6,27 @@ export interface Interval {
   end: DateRange | null;
 }
 
+/**
+ * A lifetime whose bounds may be revealed later than the entity itself: a death is often revealed
+ * chapters after the character first appears. A bound the reader hasn't reached must not affect
+ * anything they see, including when things are present in time (docs/model/spoilers.md §3).
+ */
+export interface Lifetime extends Interval {
+  /** Chapter revealing the start bound; omitted means "revealed with the entity". */
+  startRevealedIn?: number;
+  /** Chapter revealing the end bound; omitted means "revealed with the entity". */
+  endRevealedIn?: number;
+}
+
 export interface GraphNode {
   id: string;
   kind: EntityKind;
   revealedIn: number;
-  lifetime: Interval;
+  lifetime: Lifetime;
+  /** Order among events with the same date (docs/model/dates.md §4). */
+  seq?: number;
+  /** When a memory was originally experienced (its own date). */
+  date?: DateRange;
 }
 
 export interface GraphEdge {
@@ -20,7 +36,11 @@ export interface GraphEdge {
   target: string;
   type: EdgeType;
   revealedIn: number;
-  active: Interval;
+  /**
+   * The edge's own period: its `from`/`until`, or the moment of a killing. Revealed together with
+   * the edge. When it's actually active also depends on its endpoints' lifetimes — see `activeAt`.
+   */
+  own: Interval;
 }
 
 export interface Adjacent {

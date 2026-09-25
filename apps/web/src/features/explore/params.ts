@@ -28,6 +28,7 @@ export function nextCategories(current: readonly Category[], category: Category)
 export function useExploreParams() {
   const [params, setParams] = useSearchParams();
   const view: "graph" | "list" = params.get("view") === "list" ? "list" : "graph";
+  const mode: "explore" | "paths" = params.get("mode") === "paths" ? "paths" : "explore";
   const depth = Math.min(3, Math.max(1, Number(params.get("depth") ?? 1) || 1));
   const known = new Set<string>(CATEGORIES.map((c) => c.value));
   const categories = (params.get("categories") ?? "")
@@ -50,6 +51,8 @@ export function useExploreParams() {
 
   return {
     view,
+    /** "paths" shows PATHS mode, the time-lane view (docs/features/paths-mode.md). */
+    mode,
     depth,
     categories,
     /** A moment in world time (`YYYY-MM`), or undefined for "all of time". */
@@ -58,6 +61,9 @@ export function useExploreParams() {
     search: params.toString() ? `?${params.toString()}` : "",
     setAt: (at: string | null) => {
       update({ at });
+    },
+    setMode: (m: "explore" | "paths") => {
+      update({ mode: m === "paths" ? m : null });
     },
     setView: (v: "graph" | "list") => {
       update({ view: v === "graph" ? null : v });

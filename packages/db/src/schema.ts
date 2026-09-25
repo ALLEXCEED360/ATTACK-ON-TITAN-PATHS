@@ -33,7 +33,7 @@ export const edgeType = pgEnum("edge_type", EDGE_TYPE_NAMES as [EdgeType, ...Edg
 export const edgeCategory = pgEnum("edge_category", EDGE_CATEGORIES);
 export const certainty = pgEnum("certainty", ["stated", "inferred"]);
 
-// Time bounds (the `life*` and `active*` columns) are encoded as sortable integers
+// Time bounds (the `life*` and `own*` columns) are encoded as sortable integers
 // (`year × 10000 + month × 100 + day`, docs/model/dates.md §3). Null means unbounded on that side.
 
 /** Every entity, whatever its kind. Kind-specific fields live in the detail tables below. */
@@ -50,6 +50,9 @@ export const entities = pgTable(
     lifeStartLatest: integer(),
     lifeEndEarliest: integer(),
     lifeEndLatest: integer(),
+    /** Chapter revealing each lifetime bound; null means "with the entity" (spoilers.md §3). */
+    lifeStartRevealedIn: smallint(),
+    lifeEndRevealedIn: smallint(),
   },
   (t) => [
     index("entities_kind_idx").on(t.kind),
@@ -153,11 +156,14 @@ export const edges = pgTable(
     /** `from` / `until` as written (a date or an event reference). */
     fromRef: jsonb(),
     untilRef: jsonb(),
-    /** When the edge is active, resolved and clipped to both endpoints' lifetimes. */
-    activeStartEarliest: integer(),
-    activeStartLatest: integer(),
-    activeEndEarliest: integer(),
-    activeEndLatest: integer(),
+    /**
+     * The edge's own period: its `from`/`until`, or the moment of a killing. Readers see it
+     * clipped to both endpoints' lifetimes *as known at their chapter* (see queries.ts).
+     */
+    ownStartEarliest: integer(),
+    ownStartLatest: integer(),
+    ownEndEarliest: integer(),
+    ownEndLatest: integer(),
     weight: real().notNull(),
   },
   (t) => [

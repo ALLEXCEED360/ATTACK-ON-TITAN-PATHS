@@ -81,6 +81,9 @@ describe("queries match graph-core", () => {
     { cutoff: 139, at: undefined },
     { cutoff: 139, at: encodeBound(846, 6, 1) },
     { cutoff: 50, at: encodeBound(850, 6, 1) },
+    // Carla's death (845) is revealed in ch. 2: at ch. 1 she must still be there in 846.
+    { cutoff: 1, at: encodeBound(846, 6, 1) },
+    { cutoff: 49, at: encodeBound(851, 1, 1) },
   ])("graph at ch. $cutoff, moment $at", async ({ cutoff, at }) => {
     const view = viewGraph(graph, { cutoff, at }).graph;
     const result = await graphAt(db, { cutoff, at });
@@ -154,6 +157,12 @@ describe("search", () => {
     expect(await ids("shiganshina 850", 139)).not.toContain("event_fall_of_wall_maria");
     // Carla died in 845, so she isn't found in 850.
     expect(await ids("carla 850", 139)).toEqual([]);
+  });
+
+  it("ignores deaths the reader hasn't reached when filtering by year", async () => {
+    // Carla dies in 845 (revealed ch. 2). A ch. 1 reader searching 846 still finds her.
+    expect(await ids("carla 846", 1)).toContain("character_carla_yeager");
+    expect(await ids("carla 846", 2)).not.toContain("character_carla_yeager");
   });
 
   it("lists a year's events for a year alone", async () => {

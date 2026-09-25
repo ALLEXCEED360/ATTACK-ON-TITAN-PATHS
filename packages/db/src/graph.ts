@@ -1,5 +1,5 @@
-import type { GraphEdge, GraphNode, Interval } from "@paths/graph-core";
-import type { Name } from "@paths/shared";
+import type { GraphEdge, GraphNode, Interval, Lifetime } from "@paths/graph-core";
+import { type DateRange, type Name, resolveDate } from "@paths/shared";
 import { asc, eq } from "drizzle-orm";
 import type { Db } from "./client.ts";
 import * as t from "./schema.ts";
@@ -28,31 +28,49 @@ function interval(
 export async function loadGraphInput(db: Db): Promise<{ nodes: GraphNode[]; edges: GraphEdge[] }> {
   const entityRows = await db.select().from(t.entities).orderBy(asc(t.entities.id));
   const edgeRows = await db.select().from(t.edges).orderBy(asc(t.edges.id));
+  const seqs = new Map(
+    (await db.select({ id: t.events.entityId, seq: t.events.seq }).from(t.events)).map((r) => [
+      r.id,
+      r.seq,
+    ]),
+  );
+  const memoryDates = new Map<string, DateRange>(
+    (await db.select().from(t.memories)).map((r) => [
+      r.entityId,
+      resolveDate(r.start.date as Parameters<typeof resolveDate>[0]),
+    ]),
+  );
 
   return {
-    nodes: entityRows.map((row) => ({
-      id: row.id,
-      kind: row.kind,
-      revealedIn: row.revealedIn,
-      lifetime: interval(
-        row.lifeStartEarliest,
-        row.lifeStartLatest,
-        row.lifeEndEarliest,
-        row.lifeEndLatest,
-      ),
-    })),
+    nodes: entityRows.map((row) => {
+      const lifetime: Lifetime = {
+        ...interval(
+          row.lifeStartEarliest,
+          row.lifeStartLatest,
+          row.lifeEndEarliest,
+          row.lifeEndLatest,
+        ),
+        ...(row.lifeStartRevealedIn === null ? {} : { startRevealedIn: row.lifeStartRevealedIn }),
+        ...(row.lifeEndRevealedIn === null ? {} : { endRevealedIn: row.lifeEndRevealedIn }),
+      };
+      const seq = seqs.get(row.id);
+      const date = memoryDates.get(row.id);
+      return {
+        id: row.id,
+        kind: row.kind,
+        revealedIn: row.revealedIn,
+        lifetime,
+        ...(seq === undefined || seq === null ? {} : { seq }),
+        ...(date ? { date } : {}),
+      };
+    }),
     edges: edgeRows.map((row) => ({
       id: row.id,
       source: row.sourceId,
       target: row.targetId,
       type: row.type,
       revealedIn: row.revealedIn,
-      active: interval(
-        row.activeStartEarliest,
-        row.activeStartLatest,
-        row.activeEndEarliest,
-        row.activeEndLatest,
-      ),
+      own: interval(row.ownStartEarliest, row.ownStartLatest, row.ownEndEarliest, row.ownEndLatest),
     })),
   };
 }

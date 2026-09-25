@@ -1,6 +1,7 @@
 import { fileURLToPath } from "node:url";
 import { type Dataset, loadDataset, readDataDir } from "@paths/data";
 import { buildSeedRows, connect, seed } from "@paths/db";
+import { resolveDate } from "@paths/shared";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { buildApp } from "./app.ts";
 import { loadStore } from "./store.ts";
@@ -63,6 +64,7 @@ describe("basics", () => {
       "/graph/neighborhood/{id}",
       "/graph/path",
       "/health",
+      "/paths/{id}",
       "/search",
       "/timeline",
     ]);
@@ -166,6 +168,39 @@ describe("graph", () => {
   });
 });
 
+describe("PATHS mode", () => {
+  it("shows a Titan's holder only once the holding is revealed", async () => {
+    const before = await get("/paths/titan_colossal?cutoff=41");
+    const after = await get("/paths/titan_colossal?cutoff=42");
+    expect((before.body.lanes as { id: string }[]).map((l) => l.id)).toEqual(["titan_colossal"]);
+    expect(after.body.lanes).toMatchObject([
+      { id: "titan_colossal", segments: [{ holder: "character_bertholdt_hoover" }] },
+      { id: "character_bertholdt_hoover", name: "Bertholdt Hoover" },
+    ]);
+  });
+
+  it("follows an event's participants and causes", async () => {
+    const { body } = await get("/paths/event_battle_of_trost?cutoff=139");
+    expect(body.causal as { from: string; to: string }[]).toContainEqual({
+      from: "event_battle_of_trost",
+      to: "event_eren_court_martial",
+    });
+    const lanes = (body.lanes as { id: string }[]).map((l) => l.id);
+    expect(lanes.length).toBeLessThanOrEqual(12);
+    expect(lanes).toEqual(
+      expect.arrayContaining(["character_eren_yeager", "character_thomas_wagner"]),
+    );
+  });
+
+  it("says when a kind isn't supported, and hides the unrevealed", async () => {
+    expect((await get("/paths/location_trost?cutoff=139")).body.supported).toBe(false);
+    expect(await get("/paths/character_ymir_104th?cutoff=10")).toMatchObject({
+      status: 404,
+      body: { error: "beyond_cutoff" },
+    });
+  });
+});
+
 describe("timeline and search", () => {
   it("orders by world time or by reveal", async () => {
     const world = ids((await get("/timeline?cutoff=139&order=world")).body.items);
@@ -253,6 +288,7 @@ describe("spoiler crawler", () => {
     for (const { id } of list) {
       await fetch(`/entities/${id}?cutoff=${String(cutoff)}`);
       await fetch(`/graph/neighborhood/${id}?cutoff=${String(cutoff)}&depth=3`);
+      await fetch(`/paths/${id}?cutoff=${String(cutoff)}`);
     }
     await fetch(`/timeline?cutoff=${String(cutoff)}&order=world`);
     await fetch(`/timeline?cutoff=${String(cutoff)}&order=story`);
@@ -278,6 +314,24 @@ describe("spoiler crawler", () => {
     });
     expect([...leaks, ...connectionIssues]).toEqual([]);
   });
+
+  it.each(boundaryCutoffs())(
+    "never reveals a death through the time filter at chapter %i",
+    async (cutoff) => {
+      const problems: string[] = [];
+      for (const { entity } of dataset.entities.values()) {
+        if (entity.kind !== "character" || entity.revealedIn > cutoff) continue;
+        if (!entity.died || entity.died.revealedIn <= cutoff) continue;
+        // Scrub past the unrevealed death: the character must still be there.
+        const year = resolveDate(entity.died.date).latest;
+        const at = `${String(Math.floor(year / 10_000) + 1)}-01`;
+        const url = `/graph/neighborhood/${entity.id}?cutoff=${String(cutoff)}&at=${at}`;
+        const response = await app.inject({ method: "GET", url });
+        if (response.statusCode !== 200) problems.push(`${url} → ${String(response.statusCode)}`);
+      }
+      expect(problems).toEqual([]);
+    },
+  );
 
   interface SearchBody {
     terms: string[];

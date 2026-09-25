@@ -38,16 +38,21 @@ function runLayout(cy: Core, { animate, randomize }: { animate: boolean; randomi
   } as LayoutOptions).run();
 }
 
+/** Node positions in the graph's box, keyed by entity ID (for PATHS mode's transition). */
+export type NodePositions = ReadonlyMap<string, { x: number; y: number }>;
+
 interface GraphViewProps {
   neighborhood: Neighborhood;
   onSelect: (id: string) => void;
+  /** Receives a function that reports where each node currently sits. */
+  onPositions?: (read: () => NodePositions) => void;
 }
 
 /**
  * The interactive graph. One Cytoscape instance lives for the component's lifetime; when the
  * data changes, elements are diffed in place so nodes keep their positions and glide to new ones.
  */
-export function GraphView({ neighborhood, onSelect }: GraphViewProps) {
+export function GraphView({ neighborhood, onSelect, onPositions }: GraphViewProps) {
   const container = useRef<HTMLDivElement>(null);
   const cyRef = useRef<Core | null>(null);
   const onSelectRef = useRef(onSelect);
@@ -81,6 +86,12 @@ export function GraphView({ neighborhood, onSelect }: GraphViewProps) {
       cyRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    onPositions?.(
+      () => new Map(cyRef.current?.nodes().map((n) => [n.id(), { ...n.renderedPosition() }]) ?? []),
+    );
+  }, [onPositions]);
 
   useEffect(() => {
     const cy = cyRef.current;

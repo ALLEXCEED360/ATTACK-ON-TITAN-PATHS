@@ -76,7 +76,11 @@ export function ExplorePage() {
         />
       </aside>
 
-      <section aria-label="Connections" className="order-1 flex flex-col gap-4 lg:order-2">
+      <section
+        aria-label="Connections"
+        // min-w-0: without it a wide graph or diagram stretches the grid column past the screen.
+        className="order-1 flex min-w-0 flex-col gap-4 lg:order-2"
+      >
         {id ? (
           <>
             <TimeSlider at={at} onChange={setAt} />

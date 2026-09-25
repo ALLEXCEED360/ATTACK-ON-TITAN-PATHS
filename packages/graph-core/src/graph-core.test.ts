@@ -4,7 +4,7 @@ import { betweennessCentrality, degreeCentrality } from "./centrality.ts";
 import { type GraphEdge, type GraphNode, type Interval, createGraph } from "./graph.ts";
 import { shortestPath } from "./shortest-path.ts";
 import { bfs, connectedComponents, dfs, findDirectedCycle } from "./traversal.ts";
-import { presenceAt, viewGraph } from "./view.ts";
+import { activeAt, intersect, lifetimeAt, presenceAt, viewGraph } from "./view.ts";
 
 const always: Interval = { start: null, end: null };
 
@@ -14,7 +14,7 @@ function node(id: string, revealedIn = 1, lifetime = always): GraphNode {
 }
 
 function edge(source: string, type: EdgeType, target: string, revealedIn = 1): GraphEdge {
-  return { source, target, type, revealedIn, active: always };
+  return { source, target, type, revealedIn, own: always };
 }
 
 const years = (from: number, to: number): Interval => ({
@@ -66,7 +66,7 @@ describe("viewGraph", () => {
     [
       edge("character_a", "sibling_of", "character_b", 1),
       edge("character_a", "parent_of", "character_c", 50),
-      { ...edge("character_a", "spouse_of", "character_b", 30), active: years(840, 846) },
+      { ...edge("character_a", "spouse_of", "character_b", 30), own: years(840, 846) },
     ],
   );
 
@@ -96,6 +96,56 @@ describe("viewGraph", () => {
     const later = viewGraph(graph, { cutoff: 139, at: encodeBound(860, 1, 1) });
     expect(later.graph.nodes.has("character_c")).toBe(false);
     expect(later.graph.edges.map((e) => e.type)).toEqual(["sibling_of"]);
+  });
+});
+
+describe("unrevealed lifetimes", () => {
+  // A dies in 845, but the reader only learns it in ch. 20.
+  const graph = createGraph(
+    [
+      {
+        ...node("character_a", 1),
+        lifetime: { start: null, end: resolveDate({ year: 845 }), endRevealedIn: 20 },
+      },
+      node("character_b", 1),
+    ],
+    [edge("character_a", "sibling_of", "character_b", 1)],
+  );
+  const later = encodeBound(846, 6, 1);
+
+  it("never removes someone because of a death the reader hasn't reached", () => {
+    const view = viewGraph(graph, { cutoff: 10, at: later });
+    expect(view.graph.nodes.has("character_a")).toBe(true);
+    expect(view.graph.edges).toHaveLength(1);
+  });
+
+  it("applies the death once it's revealed", () => {
+    const view = viewGraph(graph, { cutoff: 20, at: later });
+    expect(view.graph.nodes.has("character_a")).toBe(false);
+    expect(view.graph.edges).toHaveLength(0);
+  });
+
+  it("hands on only revealed lifetime bounds", () => {
+    const view = viewGraph(graph, { cutoff: 10 });
+    expect(view.graph.nodes.get("character_a")?.lifetime).toEqual({ start: null, end: null });
+    const a = graph.nodes.get("character_a");
+    expect(a && lifetimeAt(a, 20).end?.latest).toBe(8_451_231);
+  });
+
+  it("clips edges to what's known of both lives", () => {
+    const [e] = graph.edges;
+    if (!e) throw new Error("missing edge");
+    expect(activeAt(graph, e, 10)).toEqual({ start: null, end: null });
+    expect(activeAt(graph, e, 20).end?.latest).toBe(8_451_231);
+  });
+});
+
+describe("intersect", () => {
+  it("takes the later start and the sooner end, ignoring unbounded sides", () => {
+    expect(intersect(years(840, 850), years(845, 860), { start: null, end: null })).toEqual({
+      start: resolveDate({ year: 845 }),
+      end: resolveDate({ year: 850 }),
+    });
   });
 });
 

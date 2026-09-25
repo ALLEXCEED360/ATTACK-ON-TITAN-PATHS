@@ -38,6 +38,7 @@ export type EntitySummary = EntityList["items"][number];
 export type EntityDetail = Json<"/entities/{id}">;
 export type Neighborhood = Json<"/graph/neighborhood/{id}">;
 export type PathResult = Json<"/graph/path">;
+export type Paths = Json<"/paths/{id}">;
 export type Timeline = Json<"/timeline">;
 export type SearchResults = Json<"/search">;
 export type EntityKind = EntitySummary["kind"];

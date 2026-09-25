@@ -399,6 +399,144 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/paths/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * PATHS mode: how an entity connects across time
+         * @description Titan lineages, lifetimes, events, memories (including memories received before they happened) and causes, laid out as lanes (docs/features/paths-mode.md). Computed on the reader's spoiler-filtered graph.
+         */
+        get: {
+            parameters: {
+                query: {
+                    /** @description The last manga chapter the reader has read. Nothing revealed later is returned. */
+                    cutoff: number;
+                };
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            center: string;
+                            /** @description False for places and groups, which PATHS mode doesn't follow. */
+                            supported: boolean;
+                            lanes: {
+                                id: string;
+                                /** @enum {string} */
+                                kind: "character" | "titan" | "event" | "location" | "faction" | "arc" | "memory";
+                                name: string;
+                                /** @description Bounds are encoded dates (year × 10000 + month × 100 + day); null is unknown/open. */
+                                span: {
+                                    start: {
+                                        earliest: number;
+                                        latest: number;
+                                    } | null;
+                                    end: {
+                                        earliest: number;
+                                        latest: number;
+                                    } | null;
+                                };
+                                segments: {
+                                    holder: string;
+                                    holderName: string;
+                                    /** @description Bounds are encoded dates (year × 10000 + month × 100 + day); null is unknown/open. */
+                                    span: {
+                                        start: {
+                                            earliest: number;
+                                            latest: number;
+                                        } | null;
+                                        end: {
+                                            earliest: number;
+                                            latest: number;
+                                        } | null;
+                                    };
+                                }[];
+                            }[];
+                            hiddenLanes: number;
+                            events: {
+                                id: string;
+                                name: string;
+                                /** @description Bounds are encoded dates (year × 10000 + month × 100 + day); null is unknown/open. */
+                                span: {
+                                    start: {
+                                        earliest: number;
+                                        latest: number;
+                                    } | null;
+                                    end: {
+                                        earliest: number;
+                                        latest: number;
+                                    } | null;
+                                };
+                                seq: number | null;
+                                lanes: string[];
+                            }[];
+                            causal: {
+                                from: string;
+                                to: string;
+                            }[];
+                            memories: {
+                                id: string;
+                                name: string;
+                                date: {
+                                    earliest: number;
+                                    latest: number;
+                                } | null;
+                                experiencedBy: string | null;
+                                received: {
+                                    by: string;
+                                    /** @description Bounds are encoded dates (year × 10000 + month × 100 + day); null is unknown/open. */
+                                    span: {
+                                        start: {
+                                            earliest: number;
+                                            latest: number;
+                                        } | null;
+                                        end: {
+                                            earliest: number;
+                                            latest: number;
+                                        } | null;
+                                    };
+                                }[];
+                                depicts: string | null;
+                            }[];
+                        };
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            error: string;
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/timeline": {
         parameters: {
             query?: never;

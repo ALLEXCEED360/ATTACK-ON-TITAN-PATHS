@@ -62,6 +62,13 @@ describe("the dataset in data/", () => {
     expect(view.graph.nodes.has("character_eren_yeager")).toBe(true);
   });
 
+  it("keeps someone whose death the reader hasn't reached", () => {
+    const { nodes, edges } = toGraphInput(dataset);
+    // Carla's death (845) is revealed in ch. 2: a ch. 1 reader must still see her in 846.
+    const view = viewGraph(createGraph(nodes, edges), { cutoff: 1, at: encodeBound(846, 6, 1) });
+    expect(view.graph.nodes.has("character_carla_yeager")).toBe(true);
+  });
+
   it("finds a path only through revealed connections", () => {
     const { nodes, edges } = toGraphInput(dataset);
     const graph = createGraph(nodes, edges);

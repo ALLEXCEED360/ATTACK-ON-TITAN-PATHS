@@ -15,6 +15,7 @@ import {
 import { z } from "zod";
 import { entityRoutes } from "./routes/entities.ts";
 import { graphRoutes } from "./routes/graph.ts";
+import { pathsRoutes } from "./routes/paths.ts";
 import { searchRoutes } from "./routes/search.ts";
 import { timelineRoutes } from "./routes/timeline.ts";
 import type { Store } from "./store.ts";
@@ -93,6 +94,7 @@ export async function buildApp({
 
   await app.register(entityRoutes, { db, store });
   await app.register(graphRoutes, { store });
+  await app.register(pathsRoutes, { store });
   await app.register(timelineRoutes, { db, store });
   await app.register(searchRoutes, { db });
   return app;

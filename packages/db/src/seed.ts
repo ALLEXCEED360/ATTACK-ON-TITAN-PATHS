@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
-import { type Dataset, activeInterval, lifetimeOf, timeRefsOf } from "@paths/data";
-import type { Interval } from "@paths/graph-core";
+import { type Dataset, lifetimeOf, ownInterval, timeRefsOf } from "@paths/data";
+import type { Interval, Lifetime } from "@paths/graph-core";
 import { EDGE_TYPES, type Edge } from "@paths/shared";
 import { sql } from "drizzle-orm";
 import type { PgTable } from "drizzle-orm/pg-core";
@@ -161,7 +161,7 @@ export function buildSeedRows(dataset: Dataset): SeedRows {
       ),
       fromRef: from ?? null,
       untilRef: until ?? null,
-      ...activeColumns(activeInterval(dataset, loaded)),
+      ...ownColumns(ownInterval(dataset, edge)),
       weight: definition.weight,
     });
   }
@@ -169,23 +169,25 @@ export function buildSeedRows(dataset: Dataset): SeedRows {
   return rows;
 }
 
-function lifeColumns(interval: Interval) {
-  const b = bounds(interval);
+function lifeColumns(lifetime: Lifetime) {
+  const b = bounds(lifetime);
   return {
     lifeStartEarliest: b.startEarliest,
     lifeStartLatest: b.startLatest,
     lifeEndEarliest: b.endEarliest,
     lifeEndLatest: b.endLatest,
+    lifeStartRevealedIn: lifetime.startRevealedIn ?? null,
+    lifeEndRevealedIn: lifetime.endRevealedIn ?? null,
   };
 }
 
-function activeColumns(interval: Interval) {
+function ownColumns(interval: Interval) {
   const b = bounds(interval);
   return {
-    activeStartEarliest: b.startEarliest,
-    activeStartLatest: b.startLatest,
-    activeEndEarliest: b.endEarliest,
-    activeEndLatest: b.endLatest,
+    ownStartEarliest: b.startEarliest,
+    ownStartLatest: b.startLatest,
+    ownEndEarliest: b.endEarliest,
+    ownEndLatest: b.endLatest,
   };
 }
 

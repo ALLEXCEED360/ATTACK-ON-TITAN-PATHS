@@ -1,6 +1,6 @@
 # PATHS mode
 
-- **Status:** Accepted (design) — built in Phase 8
+- **Status:** Built (Phase 8) — see §11 for how the build differs from this design
 - **Date:** 2026-09-24
 
 PATHS mode is the project's signature view. The normal graph answers **"what is connected to what?"** PATHS mode answers **"how does this connect across time?"** — through Titan inheritance, memories (including memories received before they happened), and chains of cause and effect.
@@ -108,3 +108,14 @@ PATHS mode needs no special data — only what the model already defines:
 - `memory` entities with `experienced`, `received` (with `via` and `from`) and `depicts` edges → memory arcs;
 - `caused` edges → causal arrows;
 - `revealedIn` on everything → spoiler filtering.
+
+## 11. As built (Phase 8)
+
+- **Where it lives:** `pathsView()` in `packages/graph-core/src/paths.ts` computes lanes, events, causes and memories from the reader's already-filtered graph; the API serves it at `GET /paths/:id`; `apps/web/src/features/paths/` draws it as SVG.
+- **Time axis:** years with something on screen get room, and busier years get more (up to 4×). Empty stretches fold into `⋯`. Events that share a date spread across it in `seq` order.
+- **Unknown dates are never invented:** a lane or holder segment whose start or end isn't known (or isn't revealed yet) runs to the edge and fades out.
+- **Differences from §2–§6:**
+  - Leaving PATHS mode is a plain return to the graph (the graph re-lays itself out); only _entering_ uses the glide from graph positions (§5).
+  - Clicking a lane or marker selects that entity and keeps PATHS mode on, which re-centres the view — so a separate double-click gesture (§6) isn't needed.
+  - Layer toggles are per-visit UI state rather than part of the URL.
+- **Current data:** the chapters 1–53 dataset has no memory entities and few dated holdings, so memory arcs and dated Titan segments will fill in as the data grows. The drawing of both is covered by tests with a synthetic lineage.

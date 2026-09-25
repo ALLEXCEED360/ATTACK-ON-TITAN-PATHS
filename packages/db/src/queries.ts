@@ -51,6 +51,50 @@ export interface GraphAtResult {
 }
 
 /**
+ * Entities a reader at `cutoff` knows about, with each lifetime bound kept only if it's revealed
+ * by then (docs/model/spoilers.md §3): an unrevealed death must not remove anyone from view.
+ */
+function readerLives(cutoff: number) {
+  return sql`
+    select id, kind,
+      case when coalesce(life_start_revealed_in, 0) <= ${cutoff} then life_start_earliest end as start_earliest,
+      case when coalesce(life_start_revealed_in, 0) <= ${cutoff} then life_start_latest end as start_latest,
+      case when coalesce(life_end_revealed_in, 0) <= ${cutoff} then life_end_earliest end as end_earliest,
+      case when coalesce(life_end_revealed_in, 0) <= ${cutoff} then life_end_latest end as end_latest
+    from entities
+    where revealed_in <= ${cutoff}
+  `;
+}
+
+/**
+ * Relationships a reader at `cutoff` knows about, each active during its own period clipped to
+ * both endpoints' lives as known at that chapter (mirrors graph-core's `activeAt`). Needs a
+ * `lives` CTE built from `readerLives`. greatest()/least() ignore nulls, i.e. unbounded sides.
+ */
+function readerEdges(cutoff: number) {
+  return sql`
+    select e.id, e.source_id, e.target_id, e.type,
+      greatest(e.own_start_earliest, s.start_earliest, t.start_earliest) as start_earliest,
+      greatest(e.own_start_latest, s.start_latest, t.start_latest) as start_latest,
+      least(e.own_end_earliest, s.end_earliest, t.end_earliest) as end_earliest,
+      least(e.own_end_latest, s.end_latest, t.end_latest) as end_latest
+    from edges e
+    join lives s on s.id = e.source_id
+    join lives t on t.id = e.target_id
+    where e.revealed_in <= ${cutoff}
+  `;
+}
+
+/** SQL condition: the row (with start_earliest / end_latest) overlaps [from, to]. */
+function overlaps(alias: string, from: number | null, to: number | null) {
+  const a = sql.raw(alias);
+  return sql`(${from}::int is null or (
+    (${a}.start_earliest is null or ${a}.start_earliest <= ${to}::int)
+    and (${a}.end_latest is null or ${a}.end_latest >= ${from}::int)
+  ))`;
+}
+
+/**
  * The graph a reader at `cutoff` sees at world moment `at` (mirrors graph-core's `viewGraph`,
  * docs/model/dates.md §8). Omit `at` to ignore world time.
  */
@@ -59,33 +103,28 @@ export async function graphAt(
   { cutoff, at }: { cutoff: number; at?: number | undefined },
 ): Promise<GraphAtResult> {
   const t = at ?? null;
-  const visibleNodes = sql`
-    select id, kind
-    from entities
-    where revealed_in <= ${cutoff}
-      and (${t}::int is null or (
-        (life_start_earliest is null or life_start_earliest <= ${t})
-        and (life_end_latest is null or life_end_latest >= ${t})
-      ))
-  `;
-  const nodes = await db.execute<{ id: string; kind: string }>(sql`${visibleNodes} order by id`);
+  const nodes = await db.execute<{ id: string; kind: string }>(sql`
+    with lives as (${readerLives(cutoff)})
+    select id, kind from lives l
+    where ${overlaps("l", t, t)}
+    order by id
+  `);
   const edges = await db.execute<{
     id: string;
     sourceId: string;
     targetId: string;
     type: string;
   }>(sql`
-    with visible as (${visibleNodes})
-    select e.id, e.source_id as "sourceId", e.target_id as "targetId", e.type
-    from edges e
-    join visible s on s.id = e.source_id
-    join visible v on v.id = e.target_id
-    where e.revealed_in <= ${cutoff}
-      and (${t}::int is null or (
-        (e.active_start_earliest is null or e.active_start_earliest <= ${t})
-        and (e.active_end_latest is null or e.active_end_latest >= ${t})
-      ))
-    order by e.id
+    with
+      lives as (${readerLives(cutoff)}),
+      present as (select id from lives l where ${overlaps("l", t, t)}),
+      links as (${readerEdges(cutoff)})
+    select k.id, k.source_id as "sourceId", k.target_id as "targetId", k.type
+    from links k
+    join present s on s.id = k.source_id
+    join present p on p.id = k.target_id
+    where ${overlaps("k", t, t)}
+    order by k.id
   `);
   return { nodes: [...nodes], edges: [...edges] };
 }
@@ -132,26 +171,23 @@ export async function search(
     order by d.position desc
     limit 1
   )`;
+  // Entities the reader knows about that exist in the year (by *revealed* lifetimes).
   const visible = sql`
-    select id, kind from entities
-    where revealed_in <= ${cutoff}
-      and (${yearStart}::int is null or (
-        (life_start_earliest is null or life_start_earliest <= ${yearEnd}::int)
-        and (life_end_latest is null or life_end_latest >= ${yearStart}::int)
-      ))
+    select id, kind, start_earliest from lives l
+    where ${overlaps("l", yearStart, yearEnd)}
   `;
 
   // A year on its own lists the events of that year, in order.
   if (terms.length === 0) {
     const rows = await db.execute<SearchResult & Record<string, unknown>>(sql`
-      with visible as (${visible})
+      with lives as (${readerLives(cutoff)}), visible as (${visible})
       select e.id, e.kind, ${displayName} as "displayName",
              'year' as reason, ${String(year)} as detail, 1::real as score
       from visible v
       join entities e on e.id = v.id
       join events ev on ev.entity_id = e.id
       where v.kind = 'event'
-      order by e.life_start_earliest, ev.seq nulls last, e.id
+      order by v.start_earliest, ev.seq nulls last, e.id
       limit ${limit}
     `);
     return { terms, year, results: [...rows] };
@@ -159,6 +195,7 @@ export async function search(
 
   const rows = await db.execute<SearchResult & Record<string, unknown>>(sql`
     with
+      lives as (${readerLives(cutoff)}),
       visible as (${visible}),
       terms as (
         select term, ord
@@ -171,16 +208,10 @@ export async function search(
         where n.revealed_in <= ${cutoff} and e.revealed_in <= ${cutoff}
       ),
       links as (
-        select e.source_id as a, e.target_id as b
-        from edges e
-        join entities s on s.id = e.source_id and s.revealed_in <= ${cutoff}
-        join entities t on t.id = e.target_id and t.revealed_in <= ${cutoff}
-        where e.revealed_in <= ${cutoff}
-          -- With a year, only relationships that exist that year connect anything.
-          and (${yearStart}::int is null or (
-            (e.active_start_earliest is null or e.active_start_earliest <= ${yearEnd}::int)
-            and (e.active_end_latest is null or e.active_end_latest >= ${yearStart}::int)
-          ))
+        -- With a year, only relationships that exist that year, as far as the reader knows.
+        select k.source_id as a, k.target_id as b
+        from (${readerEdges(cutoff)}) k
+        where ${overlaps("k", yearStart, yearEnd)}
       ),
       hits as (
         select t.ord, n.entity_id, 'name' as reason, n.name as detail,

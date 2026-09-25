@@ -28,3 +28,4 @@ One short record per architecture decision, numbered in order.
 | 0005 | [API design and deployment](decisions/0005-api-design.md)                                              |
 | 0006 | [Web app architecture](decisions/0006-web-app.md)                                                      |
 | 0007 | [Search](decisions/0007-search.md)                                                                     |
+| 0008 | [Time is computed per reader chapter](decisions/0008-chapter-aware-time.md)                            |

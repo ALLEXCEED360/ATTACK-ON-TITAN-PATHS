@@ -114,6 +114,8 @@ from.earliest ≤ t ≤ until.latest
 
 If _t_ falls inside an uncertain part (between `from.earliest` and `from.latest`, or between `until.earliest` and `until.latest`), the edge is shown as **uncertain** (e.g. dashed). The same rule applies to entities (from `born`/`start` to `died`/`end`).
 
+**Only what the reader knows counts.** Every lifetime bound (`born`, `died`, an event's `start`/`end`) carries its own `revealedIn`. When computing presence at _t_ for a reader at chapter _c_, a bound revealed after _c_ is treated as unknown — so someone whose death is still hidden never disappears from the graph. Edges are clipped the same way: their own period (`from`/`until`, or a killing's moment) intersected with both endpoints' lifetimes _as known at *c*_. (See decision 0008.)
+
 ## 9. Eras and the time scale
 
 The timeline spans roughly two thousand years, but most events fall within about ten of them. A linear axis would squash the story into a sliver, so the timeline uses **eras**.
