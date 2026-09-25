@@ -23,7 +23,8 @@
     "db:seed": "node packages/db/src/cli/seed.ts data",
     "db:reset": "docker compose down --volumes && pnpm db:up && pnpm db:migrate && pnpm db:seed",
     "test:db": "pnpm --filter @paths/db --filter @paths/api --workspace-concurrency=1 run test:db",
-    "api:dev": "pnpm --filter @paths/api dev"
+    "api:dev": "pnpm --filter @paths/api dev",
+    "crawl": "node packages/data/src/cli/crawl.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

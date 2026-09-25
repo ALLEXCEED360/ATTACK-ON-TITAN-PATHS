@@ -37,7 +37,13 @@ describe("basics", () => {
   });
 
   it("requires a valid cutoff on data endpoints", async () => {
-    expect((await get("/entities")).status).toBe(400);
+    expect(await get("/entities")).toMatchObject({
+      status: 400,
+      body: {
+        error: "bad_request",
+        message: expect.stringContaining("cutoff is required") as string,
+      },
+    });
     expect((await get("/entities?cutoff=0")).status).toBe(400);
     expect((await get("/entities?cutoff=140")).status).toBe(400);
     expect((await get("/timeline?cutoff=abc")).body).toMatchObject({ error: "bad_request" });

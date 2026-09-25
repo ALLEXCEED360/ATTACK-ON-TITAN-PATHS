@@ -10,11 +10,13 @@ import { z } from "zod";
 
 // Shared request and response pieces.
 
+const CUTOFF_ERROR = `cutoff is required: the last chapter the reader has read (${String(FIRST_CHAPTER)}–${String(LAST_CHAPTER)})`;
+
 export const Cutoff = z.coerce
-  .number()
-  .int()
-  .min(FIRST_CHAPTER)
-  .max(LAST_CHAPTER)
+  .number({ error: CUTOFF_ERROR })
+  .int({ error: CUTOFF_ERROR })
+  .min(FIRST_CHAPTER, { error: CUTOFF_ERROR })
+  .max(LAST_CHAPTER, { error: CUTOFF_ERROR })
   .describe("The last manga chapter the reader has read. Nothing revealed later is returned.");
 
 /** A moment in world time: `YYYY`, `YYYY-MM` or `YYYY-MM-DD`; years may be negative. */
