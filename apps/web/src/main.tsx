@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { LazyMotion } from "motion/react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router";
@@ -12,13 +13,18 @@ const queryClient = new QueryClient({
   },
 });
 
+const loadMotion = () => import("./lib/motion-features").then((m) => m.default);
+
 const root = document.getElementById("root");
 if (!root) throw new Error("#root is missing from index.html");
 
 createRoot(root).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={createBrowserRouter(routes)} />
+      {/* `strict` makes a stray full `motion` import an error, keeping the bundle small. */}
+      <LazyMotion features={loadMotion} strict>
+        <RouterProvider router={createBrowserRouter(routes)} />
+      </LazyMotion>
     </QueryClientProvider>
   </StrictMode>,
 );

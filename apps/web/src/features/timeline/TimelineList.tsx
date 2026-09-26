@@ -21,19 +21,12 @@ export function OrderToggle({
       onClick={() => {
         onChange(value);
       }}
-      className={`px-3 py-1 text-sm ${
-        order === value ? "bg-charcoal-700 text-parchment-100" : "text-parchment-500"
-      }`}
     >
       {label}
     </button>
   );
   return (
-    <div
-      role="group"
-      aria-label="Timeline order"
-      className="inline-flex rounded border border-charcoal-600"
-    >
+    <div role="group" aria-label="Timeline order" className="seg">
       {option("world", "When it happened")}
       {option("story", "When it's revealed")}
     </div>
@@ -80,16 +73,24 @@ function EventLink({
     <li className={`relative pl-4 transition-opacity ${later ? "opacity-40" : ""}`}>
       <span
         aria-hidden
-        className={`absolute top-3 -left-[5px] size-2.5 rounded-full ${
-          selected ? "bg-brass-300" : related ? "bg-parchment-300" : "bg-military-600"
+        className={`absolute top-3.5 -left-[4.5px] size-2 rotate-45 ${
+          selected
+            ? "bg-brass-300 shadow-[0_0_10px_rgb(226_194_122/0.8)]"
+            : related
+              ? "bg-parchment-300"
+              : "bg-charcoal-600"
         }`}
       />
       <Link
         ref={ref}
         to={`/explore/${item.id}${search}`}
         aria-current={selected ? "true" : undefined}
-        className={`block rounded px-2 py-1.5 hover:bg-charcoal-800 ${
-          selected ? "bg-charcoal-800 ring-1 ring-brass-500" : related ? "bg-charcoal-800/60" : ""
+        className={`block border-l-2 px-2.5 py-1.5 transition-colors hover:bg-charcoal-900 ${
+          selected
+            ? "border-brass-400 bg-charcoal-900"
+            : related
+              ? "border-parchment-500/50 bg-charcoal-950"
+              : "border-transparent"
         }`}
       >
         <span className="block font-mono text-xs text-parchment-500">
@@ -97,7 +98,9 @@ function EventLink({
           {item.start ? formatFactDate(item.start) : "date not yet revealed"}
           {later && <span className="sr-only"> (after the chosen moment)</span>}
         </span>
-        <span className={compact ? "text-sm" : ""}>{item.name}</span>
+        <span className={compact ? "text-sm" : "font-serif text-lg text-parchment-100"}>
+          {item.name}
+        </span>
       </Link>
     </li>
   );
@@ -134,7 +137,7 @@ export function TimelineList({
   );
 
   if (order === "story") {
-    return <ol className="flex flex-col border-l border-charcoal-600">{data.items.map(link)}</ol>;
+    return <ol className="flex flex-col border-l border-charcoal-700">{data.items.map(link)}</ol>;
   }
 
   const rows = timelineRows(data.items);
@@ -155,10 +158,14 @@ export function TimelineList({
           );
         }
         const heading = row.kind === "year" ? formatYear(row.year) : "Undated";
+        // Years sit under the page's h1 on the Timeline page, under an h2 in the explorer.
+        const Heading = compact ? "h3" : "h2";
         return (
           <section key={heading} aria-label={heading}>
-            <h3 className="font-mono text-lg font-semibold text-brass-300">{heading}</h3>
-            <ol className="flex flex-col border-l border-charcoal-600">
+            <Heading className={`display text-brass-300 ${compact ? "text-2xl" : "text-4xl"}`}>
+              {heading}
+            </Heading>
+            <ol className="flex flex-col border-l border-charcoal-700">
               {row.items.map((item) => (
                 <FragmentWithNow key={item.id} now={item.id === firstLater}>
                   {link(item)}

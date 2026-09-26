@@ -25,11 +25,11 @@ export function PathsPanel({
   const { data, error, isPending } = usePaths(id);
   const [layers, setLayers] = useState<ReadonlySet<Layer>>(new Set(LAYERS.map((l) => l.value)));
 
-  if (isPending) return <Loading label="Tracing PATHS…" />;
+  if (isPending) return <Loading label="Tracing PATHS…" variant="panel" />;
   if (error) return <ErrorMessage error={error} />;
   if (!data.supported) {
     return (
-      <p className="rounded-lg border border-charcoal-700 bg-charcoal-900 p-6 text-sm text-parchment-300">
+      <p className="frame p-6 text-sm text-parchment-300">
         PATHS mode follows characters, Titans, events and memories through time. Choose one of those
         to trace.
       </p>
@@ -37,7 +37,7 @@ export function PathsPanel({
   }
   if (data.lanes.length === 0 && data.events.length === 0) {
     return (
-      <p className="rounded-lg border border-charcoal-700 bg-charcoal-900 p-6 text-sm text-parchment-300">
+      <p className="frame p-6 text-sm text-parchment-300">
         Nothing to trace across time yet at your chapter.
       </p>
     );
@@ -57,11 +57,7 @@ export function PathsPanel({
               else next.add(layer.value);
               setLayers(next);
             }}
-            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs ${
-              layers.has(layer.value)
-                ? "border-brass-500 text-parchment-100"
-                : "border-charcoal-600 text-parchment-500 line-through"
-            }`}
+            className="chip"
           >
             <span
               aria-hidden

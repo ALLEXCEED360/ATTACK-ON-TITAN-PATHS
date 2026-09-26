@@ -1,4 +1,3 @@
-import { motion } from "motion/react";
 import { Link, NavLink } from "react-router";
 import { ChapterButton } from "../features/spoilers/ChapterButton";
 import { ChapterGate } from "../features/spoilers/ChapterGate";
@@ -24,13 +23,12 @@ function NavItem({ to, label }: { to: string; label: string }) {
       {({ isActive }) => (
         <>
           {label}
-          {isActive && (
-            <motion.span
-              layoutId="nav-underline"
-              className="absolute inset-x-0 -bottom-px h-0.5 bg-brass-400"
-              transition={{ type: "spring", stiffness: 500, damping: 40 }}
-            />
-          )}
+          <span
+            aria-hidden="true"
+            className={`absolute inset-x-0 -bottom-px h-0.5 origin-left bg-brass-400 transition-transform duration-500 ease-[var(--ease-out-expo)] ${
+              isActive ? "scale-x-100" : "scale-x-0"
+            }`}
+          />
         </>
       )}
     </NavLink>

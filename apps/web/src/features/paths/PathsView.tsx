@@ -245,10 +245,7 @@ export function PathsView({ data, at, layers, origins, onSelect }: PathsViewProp
   });
 
   return (
-    <div
-      ref={container}
-      className="w-full overflow-x-auto rounded-lg border border-charcoal-700 bg-charcoal-900"
-    >
+    <div ref={container} className="frame w-full overflow-x-auto">
       <svg
         width={width}
         height={height}
@@ -286,9 +283,9 @@ export function PathsView({ data, at, layers, origins, onSelect }: PathsViewProp
                 x={tick.x + tick.width / 2}
                 y={22}
                 textAnchor="middle"
-                fontSize={13}
-                fontFamily="var(--font-mono)"
-                fontWeight={600}
+                fontSize={20}
+                fontFamily="var(--font-display)"
+                fontWeight={800}
                 fill="var(--color-brass-300)"
               >
                 {formatYear(tick.year)}

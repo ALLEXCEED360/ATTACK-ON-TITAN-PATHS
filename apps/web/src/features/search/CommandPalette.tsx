@@ -222,8 +222,8 @@ export function CommandPalette() {
                     setActive(options.indexOf(option));
                   }}
                   onClick={option.run}
-                  className={`flex cursor-pointer items-center justify-between gap-4 rounded px-3 py-2 ${
-                    selected ? "bg-charcoal-700" : ""
+                  className={`flex cursor-pointer items-center justify-between gap-4 border-l-2 px-3 py-2 ${
+                    selected ? "border-brass-400 bg-charcoal-800" : "border-transparent"
                   }`}
                 >
                   <span className="min-w-0">

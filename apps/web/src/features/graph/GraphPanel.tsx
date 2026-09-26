@@ -23,7 +23,7 @@ function Segmented<T extends string | number>({
   onChange: (value: T) => void;
 }) {
   return (
-    <div role="group" aria-label={label} className="inline-flex rounded border border-charcoal-600">
+    <div role="group" aria-label={label} className="seg">
       {options.map((option) => (
         <button
           key={String(option.value)}
@@ -32,11 +32,6 @@ function Segmented<T extends string | number>({
           onClick={() => {
             onChange(option.value);
           }}
-          className={`px-2.5 py-1 text-xs ${
-            value === option.value
-              ? "bg-charcoal-700 text-parchment-100"
-              : "text-parchment-500 hover:text-parchment-300"
-          }`}
         >
           {option.label}
         </button>
@@ -113,12 +108,15 @@ export function GraphPanel({ id }: { id: string }) {
           aria-keyshortcuts="P"
           title="PATHS mode: this entity across time (P)"
           onClick={mode === "paths" ? leavePaths : enterPaths}
-          className={`rounded border px-3 py-1 font-mono text-xs font-semibold tracking-[0.2em] ${
+          className={`notch flex items-center gap-2 px-3.5 py-1.5 font-mono text-[0.7rem] font-bold tracking-[0.24em] transition-all ${
             mode === "paths"
-              ? "border-brass-300 bg-brass-500 text-charcoal-950"
-              : "border-brass-500 text-brass-300 hover:bg-charcoal-800"
+              ? "bg-brass-400 text-ink shadow-[0_0_24px_rgb(207_168_85/0.45)]"
+              : "bg-charcoal-800 text-brass-300 hover:bg-brass-500 hover:text-ink"
           }`}
         >
+          <span aria-hidden="true" className="rotate-45 text-[0.55rem]">
+            ■
+          </span>
           PATHS
         </button>
         <Segmented
@@ -151,11 +149,7 @@ export function GraphPanel({ id }: { id: string }) {
                   onClick={() => {
                     toggleCategory(category.value);
                   }}
-                  className={`rounded-full border px-2.5 py-0.5 text-xs ${
-                    activeCategories.includes(category.value)
-                      ? "border-brass-500 text-parchment-100"
-                      : "border-charcoal-600 text-parchment-500 line-through"
-                  }`}
+                  className="chip"
                 >
                   {category.label}
                 </button>
@@ -170,12 +164,12 @@ export function GraphPanel({ id }: { id: string }) {
       ) : view === "list" ? (
         <ConnectionsList id={id} at={at} />
       ) : isPending ? (
-        <Loading label="Loading graph…" />
+        <Loading label="Loading graph…" variant="panel" />
       ) : error ? (
         <ErrorMessage error={error} />
       ) : (
         <>
-          <Suspense fallback={<Loading label="Loading graph…" />}>
+          <Suspense fallback={<Loading label="Loading graph…" variant="panel" />}>
             <GraphView
               neighborhood={data}
               onPositions={onPositions}

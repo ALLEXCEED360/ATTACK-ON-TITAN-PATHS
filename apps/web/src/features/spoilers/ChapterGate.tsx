@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, m, useReducedMotion } from "motion/react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { ARTWORK } from "../../art/manifest";
 import { useReader } from "../../stores/reader";
@@ -67,7 +67,7 @@ function TitleScreen({ onChapter }: { onChapter: (chapter: number) => void }) {
   return (
     <main className="relative isolate flex min-h-dvh flex-col overflow-hidden bg-ink">
       {MAP && (
-        <motion.img
+        <m.img
           src={MAP.src}
           alt=""
           aria-hidden="true"
@@ -85,25 +85,25 @@ function TitleScreen({ onChapter }: { onChapter: (chapter: number) => void }) {
 
       <AnimatePresence mode="wait">
         {step === "title" ? (
-          <motion.section
+          <m.section
             key="title"
             className="flex flex-1 flex-col items-center justify-center gap-6 px-6 pb-[18vh] text-center"
             exit={{ opacity: 0, y: -30, filter: "blur(6px)", transition: { duration: 0.45 } }}
           >
-            <motion.p
+            <m.p
               className="label text-brass-400"
               initial={{ opacity: 0, letterSpacing: "0.6em" }}
               animate={{ opacity: 1, letterSpacing: "0.3em" }}
               transition={{ duration: 1.6, ease: EASE }}
             >
               Attack on Titan
-            </motion.p>
+            </m.p>
             <h1
               aria-label="PATHS"
               className="display flex text-[clamp(6rem,24vw,19rem)] text-parchment-50"
             >
               {letters.map((letter, i) => (
-                <motion.span
+                <m.span
                   key={letter}
                   aria-hidden="true"
                   initial={{ opacity: 0, y: reduce ? 0 : 80, rotateX: reduce ? 0 : -60 }}
@@ -112,16 +112,16 @@ function TitleScreen({ onChapter }: { onChapter: (chapter: number) => void }) {
                   className="inline-block [text-shadow:0_0_60px_rgb(184_145_63/0.25)]"
                 >
                   {letter}
-                </motion.span>
+                </m.span>
               ))}
             </h1>
-            <motion.div
+            <m.div
               className="hairline w-[min(34rem,80vw)]"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 1.2, ease: EASE, delay: 0.8 }}
             />
-            <motion.p
+            <m.p
               className="max-w-xl font-serif text-lg text-parchment-300 italic sm:text-xl"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -129,8 +129,8 @@ function TitleScreen({ onChapter }: { onChapter: (chapter: number) => void }) {
             >
               Every person, battle and secret of the manga — connected across time, and never a page
               past where you are.
-            </motion.p>
-            <motion.button
+            </m.p>
+            <m.button
               ref={begin}
               type="button"
               onClick={() => {
@@ -146,10 +146,10 @@ function TitleScreen({ onChapter }: { onChapter: (chapter: number) => void }) {
               }
             >
               Press any key to begin
-            </motion.button>
-          </motion.section>
+            </m.button>
+          </m.section>
         ) : (
-          <motion.section
+          <m.section
             key="chapter"
             aria-labelledby="gate-title"
             className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center gap-8 px-6 pb-[20vh]"
@@ -169,7 +169,7 @@ function TitleScreen({ onChapter }: { onChapter: (chapter: number) => void }) {
               </p>
             </header>
             <ChapterPicker variant="hero" onConfirm={onChapter} />
-          </motion.section>
+          </m.section>
         )}
       </AnimatePresence>
     </main>

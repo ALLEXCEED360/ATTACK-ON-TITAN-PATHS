@@ -23,11 +23,11 @@ export function ChartCard({
   return (
     <section
       aria-labelledby={heading}
-      className={`flex min-w-0 flex-col gap-4 rounded-lg border border-charcoal-700 bg-charcoal-900 p-5 ${className}`}
+      className={`frame flex min-w-0 flex-col gap-4 p-5 ${className}`}
     >
       <header className="flex items-start justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <h2 id={heading} className="text-lg font-semibold">
+          <h2 id={heading} className="display text-3xl text-parchment-50">
             {title}
           </h2>
           {caption && <p className="text-sm text-parchment-500">{caption}</p>}
@@ -39,7 +39,7 @@ export function ChartCard({
             onClick={() => {
               setAsTable((v) => !v);
             }}
-            className="shrink-0 rounded border border-charcoal-600 px-2 py-1 font-mono text-[0.7rem] tracking-[0.12em] text-parchment-300 uppercase hover:border-parchment-500 hover:text-parchment-100"
+            className="shrink-0 border border-charcoal-700 px-2 py-1 font-mono text-[0.62rem] tracking-[0.14em] text-parchment-300 uppercase transition-colors hover:border-brass-500 hover:text-brass-200"
           >
             {asTable ? "Chart" : "Table"}
           </button>
@@ -108,7 +108,7 @@ export function Tooltip({
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute z-10 w-max max-w-64 rounded border border-charcoal-600 bg-charcoal-950/95 px-3 py-2 text-xs shadow-lg shadow-black/40"
+      className="pointer-events-none absolute z-10 w-max max-w-64 border border-brass-700 bg-ink/95 px-3 py-2 text-xs shadow-lg shadow-black/50"
       style={{
         left: x,
         top: y,

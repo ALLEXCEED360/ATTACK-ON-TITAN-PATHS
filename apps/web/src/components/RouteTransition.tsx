@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useIsPresent, useReducedMotion } from "motion/react";
+import { AnimatePresence, m, useIsPresent, useReducedMotion } from "motion/react";
 import { useState } from "react";
 import { useLocation, useMatches, useOutlet } from "react-router";
 
@@ -31,7 +31,7 @@ function PresentOutlet() {
 /** A skewed ink panel with a brass edge that sweeps across between sections. */
 function Curtain() {
   return (
-    <motion.div
+    <m.div
       aria-hidden="true"
       className="pointer-events-none fixed inset-y-0 -left-[20vw] z-50 w-[140vw] -skew-x-12 bg-ink"
       initial={{ x: "0%" }}
@@ -40,7 +40,7 @@ function Curtain() {
     >
       <div className="absolute inset-y-0 right-0 w-0.5 bg-brass-400 shadow-[0_0_24px_4px_rgb(207_168_85/0.5)]" />
       <div className="absolute inset-y-0 right-3 w-px bg-brass-700" />
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -61,7 +61,7 @@ export function RouteTransition() {
         window.scrollTo(0, 0);
       }}
     >
-      <motion.div
+      <m.div
         key={section}
         className="flex flex-1 flex-col"
         initial={{ opacity: reduce ? 0 : 1 }}
@@ -70,7 +70,7 @@ export function RouteTransition() {
       >
         <PresentOutlet />
         {!reduce && <Curtain />}
-      </motion.div>
+      </m.div>
     </AnimatePresence>
   );
 }

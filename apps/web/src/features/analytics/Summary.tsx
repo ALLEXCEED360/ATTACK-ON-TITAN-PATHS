@@ -15,12 +15,9 @@ export function StatTiles({ totals }: { totals: Analytics["totals"] }) {
     <section aria-label="Totals" className="flex flex-col gap-2">
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {tiles.map((tile) => (
-          <div
-            key={tile.label}
-            className="flex flex-col-reverse gap-1 rounded-lg border border-charcoal-700 bg-charcoal-900 px-5 py-4"
-          >
+          <div key={tile.label} className="frame flex flex-col-reverse gap-1 px-5 py-4">
             <dt className="label">{tile.label}</dt>
-            <dd className="text-4xl font-semibold tabular-nums">{tile.value}</dd>
+            <dd className="display text-6xl text-parchment-50 tabular-nums">{tile.value}</dd>
           </div>
         ))}
       </dl>

@@ -19,19 +19,22 @@ function EntityIndex() {
 
   return (
     <div className="flex flex-col gap-6">
-      <p className="text-parchment-300">Choose where to start.</p>
+      <header className="flex flex-col gap-2">
+        <p className="label text-brass-400">Explore</p>
+        <h1 className="display text-5xl text-parchment-50 sm:text-6xl">Choose where to start</h1>
+      </header>
       {KIND_ORDER.map((kind) => {
         const items = data.items.filter((item) => item.kind === kind);
         if (items.length === 0) return null;
         return (
           <section key={kind} aria-label={KIND_LABELS[kind]} className="flex flex-col gap-2">
-            <h2 className="label">{KIND_LABELS[kind]}s</h2>
+            <h2 className="label text-brass-500">{KIND_LABELS[kind]}s</h2>
             <ul className="flex flex-wrap gap-2">
               {items.map((item) => (
                 <li key={item.id}>
                   <Link
                     to={`/explore/${item.id}`}
-                    className="inline-block rounded border border-charcoal-600 px-2.5 py-1 text-sm hover:border-brass-500"
+                    className="inline-block border border-charcoal-700 bg-charcoal-950 px-3 py-1.5 text-sm transition-colors hover:border-brass-500 hover:text-brass-200"
                   >
                     {item.name}
                   </Link>
@@ -61,11 +64,12 @@ export function ExplorePage() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[16rem_1fr_22rem]">
+      {id && <h1 className="sr-only">Explore</h1>}
       <aside
         aria-label="Timeline"
-        className="order-3 lg:order-1 lg:max-h-[calc(100dvh-9rem)] lg:overflow-y-auto"
+        className="order-3 pl-1.5 lg:order-1 lg:max-h-[calc(100dvh-9rem)] lg:overflow-y-auto"
       >
-        <h2 className="label mb-3">Timeline</h2>
+        <h2 className="label mb-3 text-brass-500">Timeline</h2>
         <TimelineList
           order="world"
           selected={id}
@@ -92,10 +96,7 @@ export function ExplorePage() {
       </section>
 
       {id && (
-        <aside
-          aria-label="Details"
-          className="order-2 rounded-lg border border-charcoal-700 bg-charcoal-900 p-5 lg:order-3"
-        >
+        <aside aria-label="Details" className="frame order-2 self-start p-5 lg:order-3">
           <EntityDetails id={id} compact />
         </aside>
       )}

@@ -57,17 +57,17 @@ export function ConnectionsList({ id, at }: { id: string; at?: string }) {
     <div className="flex flex-col gap-5">
       {groups.map((group) => (
         <section key={group.label} aria-label={group.label} className="flex flex-col gap-2">
-          <h3 className="label">{group.label}</h3>
+          <h3 className="label text-brass-500">{group.label}</h3>
           <ul className="flex flex-wrap gap-2">
             {group.items.map((item) => (
               <li key={item.id}>
                 <Link
                   to={`/explore/${item.id}${search}`}
                   title={KIND_LABELS[item.kind]}
-                  className={`inline-block rounded border px-2.5 py-1 text-sm hover:border-brass-500 ${
+                  className={`inline-block border bg-charcoal-950 px-3 py-1.5 text-sm transition-colors hover:border-brass-500 hover:text-brass-200 ${
                     item.uncertain
                       ? "border-dashed border-charcoal-600 text-parchment-500"
-                      : "border-charcoal-600"
+                      : "border-charcoal-700"
                   }`}
                 >
                   {item.name}

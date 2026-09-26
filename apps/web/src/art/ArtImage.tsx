@@ -37,6 +37,7 @@ export function ArtImage({
         width={art.width}
         height={art.height}
         loading={eager ? "eager" : "lazy"}
+        fetchPriority={eager ? "high" : "auto"}
         decoding="async"
         className="h-full w-full object-cover [filter:saturate(0.85)_contrast(1.06)]"
         style={{

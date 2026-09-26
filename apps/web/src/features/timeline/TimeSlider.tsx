@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useId, useRef, useState } from "react";
 import { useTimeline } from "../../api/queries";
 import { formatAtParam, formatMonth, monthRange, parseAt } from "./time";
 
@@ -48,7 +48,7 @@ export function TimeSlider({ at, onChange }: TimeSliderProps) {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-lg border border-charcoal-700 bg-charcoal-900 px-3 py-2">
+    <div className="flex flex-wrap items-center gap-4 border border-charcoal-800 bg-charcoal-950 px-4 py-1.5">
       <label htmlFor={id} className="label shrink-0">
         Moment
       </label>
@@ -62,9 +62,14 @@ export function TimeSlider({ at, onChange }: TimeSliderProps) {
         onChange={(event) => {
           change(event.target.valueAsNumber);
         }}
-        className={`min-w-40 flex-1 accent-brass-500 ${active ? "" : "opacity-50"}`}
+        className={`rail min-w-40 flex-1 ${active ? "" : "opacity-50"}`}
+        style={
+          {
+            "--fill": `${String(((value - range.min) / Math.max(1, range.max - range.min)) * 100)}%`,
+          } as CSSProperties
+        }
       />
-      <output htmlFor={id} className="w-20 shrink-0 font-mono text-sm text-parchment-100">
+      <output htmlFor={id} className="display w-24 shrink-0 text-xl text-parchment-50">
         {active ? formatMonth(value) : "All time"}
       </output>
       <button
@@ -75,7 +80,7 @@ export function TimeSlider({ at, onChange }: TimeSliderProps) {
           setLive(null);
           onChange(null);
         }}
-        className="rounded border border-charcoal-600 px-2 py-0.5 text-xs text-parchment-300 enabled:hover:border-brass-500 disabled:opacity-40"
+        className="border border-charcoal-700 px-2 py-1 font-mono text-[0.62rem] tracking-[0.14em] text-parchment-300 uppercase enabled:hover:border-brass-500 disabled:opacity-40"
       >
         Show all time
       </button>

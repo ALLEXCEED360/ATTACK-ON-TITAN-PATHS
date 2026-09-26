@@ -143,17 +143,17 @@ export function GraphView({ neighborhood, onSelect, onPositions }: GraphViewProp
   };
 
   const buttonClass =
-    "size-8 rounded border border-charcoal-600 bg-charcoal-900 text-parchment-300 hover:border-brass-500";
+    "size-8 border border-charcoal-700 bg-ink/80 font-mono text-parchment-300 backdrop-blur transition-colors hover:border-brass-500 hover:text-brass-200";
 
   return (
-    <div className="relative overflow-hidden rounded-lg border border-charcoal-700 bg-charcoal-900">
+    <div className="frame overflow-hidden">
       <div
         ref={container}
         className="h-[60vh] min-h-80 w-full"
         role="img"
         aria-label={`Graph of ${String(neighborhood.nodes.length)} entities and ${String(neighborhood.edges.length)} connections. Switch to the list view for a text version.`}
       />
-      <div className="absolute top-2 right-2 flex flex-col gap-1">
+      <div className="absolute top-3 right-3 z-[2] flex flex-col gap-1">
         <button
           type="button"
           aria-label="Zoom in"
