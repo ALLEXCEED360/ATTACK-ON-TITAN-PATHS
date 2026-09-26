@@ -9,6 +9,7 @@ import { GraphPanel } from "../features/graph/GraphPanel";
 import { TimeSlider } from "../features/timeline/TimeSlider";
 import { TimelineList } from "../features/timeline/TimelineList";
 import { KIND_LABELS } from "../lib/format";
+import { PageHeader } from "../components/PageHeader";
 
 const KIND_ORDER: EntityKind[] = ["character", "event", "titan", "faction", "location", "memory"];
 
@@ -19,10 +20,7 @@ function EntityIndex() {
 
   return (
     <div className="flex flex-col gap-6">
-      <header className="flex flex-col gap-2">
-        <p className="label text-brass-400">Explore</p>
-        <h1 className="display text-5xl text-parchment-50 sm:text-6xl">Choose where to start</h1>
-      </header>
+      <PageHeader label="Explore" title="Choose where to start" kanji="探索" />
       {KIND_ORDER.map((kind) => {
         const items = data.items.filter((item) => item.kind === kind);
         if (items.length === 0) return null;

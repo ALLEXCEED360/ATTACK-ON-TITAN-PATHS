@@ -8,23 +8,12 @@ beforeEach(() => {
   useReader.setState({ cutoff: null });
 });
 
-/** Past the title screen, to the chapter question. */
+/** The question is there straight away (the boot screen is the intro now). */
 async function begin() {
-  await userEvent.click(screen.getByRole("button", { name: "Press any key to begin" }));
   await screen.findByRole("heading", { name: "Where are you in the story?" });
 }
 
 describe("ChapterGate", () => {
-  it("opens on a title screen, then asks; any key moves on", async () => {
-    render(<ChapterGate>secret content</ChapterGate>);
-    expect(screen.getByRole("heading", { name: "PATHS" })).toBeTruthy();
-    expect(screen.queryByText("secret content")).toBeNull();
-    await userEvent.keyboard("x");
-    expect(
-      await screen.findByRole("heading", { name: "Where are you in the story?" }),
-    ).toBeTruthy();
-  });
-
   it("shows nothing from the app until a chapter is chosen", async () => {
     render(<ChapterGate>secret content</ChapterGate>);
     await begin();

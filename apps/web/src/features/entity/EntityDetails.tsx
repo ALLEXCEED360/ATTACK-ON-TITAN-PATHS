@@ -33,9 +33,13 @@ export function EntityBody({ entity, compact }: { entity: EntityDetail; compact?
   return (
     <article className="flex flex-col gap-5">
       <header className={`flex flex-col ${compact ? "gap-1" : "gap-3"}`}>
-        <p className="label text-brass-400">{KIND_LABELS[entity.kind]}</p>
+        {compact ? (
+          <p className="label text-brass-400">{KIND_LABELS[entity.kind]}</p>
+        ) : (
+          <span className="ribbon self-start">{KIND_LABELS[entity.kind]}</span>
+        )}
         <Heading
-          className={`display text-parchment-50 ${compact ? "text-4xl" : "text-[clamp(3.5rem,9vw,7.5rem)]"}`}
+          className={`gothic text-bone ${compact ? "text-4xl" : "text-[clamp(3.5rem,8vw,6.5rem)]"}`}
         >
           {entity.name}
         </Heading>

@@ -5,30 +5,34 @@ import { CommandPalette, PaletteTrigger } from "../features/search/CommandPalett
 import { RouteTransition } from "./RouteTransition";
 
 const SECTIONS = [
-  { to: "/explore", label: "Explore" },
-  { to: "/timeline", label: "Timeline" },
-  { to: "/analytics", label: "Analytics" },
+  { to: "/explore", label: "Explore", kanji: "探索" },
+  { to: "/roster", label: "Roster", kanji: "名簿" },
+  { to: "/timeline", label: "Timeline", kanji: "年表" },
+  { to: "/analytics", label: "Analytics", kanji: "分析" },
 ];
 
-function NavItem({ to, label }: { to: string; label: string }) {
+/** A menu slab: bone-white when it's the current section, like a game's pause menu. */
+function NavItem({ to, label, kanji }: { to: string; label: string; kanji: string }) {
   return (
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `relative px-1 py-2 font-mono text-[0.72rem] tracking-[0.16em] uppercase transition-colors ${
-          isActive ? "text-parchment-50" : "text-parchment-500 hover:text-parchment-100"
+        `slab-sm group relative flex items-baseline gap-2 px-4 py-1.5 transition-colors duration-200 ${
+          isActive ? "bg-bone text-ink" : "text-parchment-300 hover:bg-charcoal-800 hover:text-bone"
         }`
       }
     >
       {({ isActive }) => (
         <>
-          {label}
           <span
             aria-hidden="true"
-            className={`absolute inset-x-0 -bottom-px h-0.5 origin-left bg-brass-400 transition-transform duration-500 ease-[var(--ease-out-expo)] ${
-              isActive ? "scale-x-100" : "scale-x-0"
-            }`}
-          />
+            className={`kanji text-[0.7rem] ${isActive ? "text-blood-500" : "text-brass-500"}`}
+          >
+            {kanji}
+          </span>
+          <span className="font-mono text-[0.7rem] font-bold tracking-[0.16em] uppercase">
+            {label}
+          </span>
         </>
       )}
     </NavLink>
@@ -45,17 +49,20 @@ export function AppShell() {
         Skip to content
       </a>
       <div className="flex min-h-dvh flex-col">
-        <header className="sticky top-0 z-40 border-b border-charcoal-800/80 bg-ink/80 backdrop-blur-md">
-          <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-8 gap-y-2 px-4 py-2.5">
-            <Link to="/" className="group flex items-baseline gap-2" aria-label="PATHS home">
-              <span className="display text-[1.7rem] tracking-[0.08em] text-parchment-50 transition-colors group-hover:text-brass-300">
+        <header className="sticky top-0 z-40 border-b-2 border-bone/10 bg-ink/85 backdrop-blur-md">
+          <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-2">
+            <Link to="/" className="group flex items-center gap-2.5" aria-label="PATHS home">
+              <span
+                aria-hidden="true"
+                className="kanji slab-sm bg-blood-500 px-2 py-0.5 text-sm text-bone transition-colors group-hover:bg-brass-500 group-hover:text-ink"
+              >
+                道
+              </span>
+              <span className="gothic text-[2rem] leading-none text-bone transition-colors group-hover:text-brass-200">
                 Paths
               </span>
-              <span className="hidden font-mono text-[0.6rem] tracking-[0.2em] text-brass-500 uppercase lg:inline">
-                Attack on Titan
-              </span>
             </Link>
-            <nav aria-label="Main" className="flex gap-5">
+            <nav aria-label="Main" className="-mx-1 flex flex-wrap gap-1">
               {SECTIONS.map((s) => (
                 <NavItem key={s.to} {...s} />
               ))}

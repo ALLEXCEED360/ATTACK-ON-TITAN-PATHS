@@ -45,6 +45,15 @@ const neighborhood: Neighborhood = {
 const headless = () => cytoscape({ headless: true, elements: toElements(neighborhood) });
 
 describe("toElements", () => {
+  it("puts a portrait on nodes that have one, and marks them", () => {
+    const elements = toElements(neighborhood, (id) =>
+      id === neighborhood.center ? "/art/x.webp" : undefined,
+    );
+    const withImage = elements.filter((e) => e.classes?.includes("has-image"));
+    expect(withImage.map((e) => e.data.id)).toEqual([neighborhood.center]);
+    expect(withImage[0]?.data.image).toBe("/art/x.webp");
+  });
+
   it("marks the centre, kinds, categories and uncertainty as classes", () => {
     const cy = headless();
     expect(cy.getElementById("character_a").hasClass("center")).toBe(true);

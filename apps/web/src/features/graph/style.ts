@@ -128,6 +128,24 @@ export function graphStyle(c: Palette): StylesheetJson {
       } as never,
     },
     {
+      // A portrait fills the node, clipped to its shape, with a bone rim like the dossier cards.
+      selector: "node.has-image",
+      style: {
+        "background-image": "data(image)",
+        "background-fit": "cover",
+        "background-clip": "node",
+        "background-image-containment": "over",
+        width: 34,
+        height: 34,
+        "border-width": 2.5,
+        "border-color": c["parchment-100"],
+      } as never,
+    },
+    {
+      selector: "node.center.has-image",
+      style: { width: 56, height: 56, "border-width": 3, "border-color": c["brass-300"] },
+    },
+    {
       selector: "node.uncertain",
       style: { "border-style": "dashed", "border-color": c["parchment-500"] },
     },

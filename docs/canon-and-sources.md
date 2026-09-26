@@ -98,7 +98,7 @@ IDs never depend on spelling (see `conventions/ids.md`), so changing a display n
 - **All descriptions are written in our own words.**
 - **Never copy text from wikis.** Fan-wiki text is typically CC BY-SA, which is incompatible with this project's CC BY-NC data license.
 - Wikis and fan resources may be used **only to locate** a fact (e.g. to find which chapter something happens in). Every fact is **verified against the chapter itself** before it is cited.
-- **Artwork** (amended 2026-09-25, decision 0010). The web app shows a small set of official colour illustrations by Hajime Isayama, and may show fan art, under these rules:
+- **Artwork** (amended 2026-09-25, decisions 0010 and 0011). The web app shows official artwork (Hajime Isayama's manga art and volume covers, and anime art by Wit Studio), and may show fan art, under these rules:
   - Artwork is used only as decoration, never as a source of facts.
   - Every image is listed in `apps/web/src/art/manifest.ts`, which records who made it, where it comes from, and a `revealedIn` chapter. Images are spoiler-gated exactly like data.
   - Every image is credited on the site's Credits page. Fan art is used only with the artist named and linked.

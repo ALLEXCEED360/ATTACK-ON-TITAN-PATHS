@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import axe from "axe-core";
 import { beforeEach, describe, expect, it } from "vitest";
 import { useReader } from "../../stores/reader";
@@ -19,14 +18,8 @@ beforeEach(() => {
 });
 
 describe("the chapter gate is accessible", () => {
-  it("on the title screen", async () => {
-    const { container } = render(<ChapterGate>app</ChapterGate>);
-    expect(await violations(container)).toEqual([]);
-  });
-
   it("on the chapter question", async () => {
     const { container } = render(<ChapterGate>app</ChapterGate>);
-    await userEvent.click(screen.getByRole("button", { name: "Press any key to begin" }));
     await screen.findByRole("heading", { name: "Where are you in the story?" });
     expect(await violations(container)).toEqual([]);
   });

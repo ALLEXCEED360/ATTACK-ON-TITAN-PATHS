@@ -27,7 +27,7 @@ export function ChartCard({
     >
       <header className="flex items-start justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <h2 id={heading} className="display text-3xl text-parchment-50">
+          <h2 id={heading} className="gothic text-3xl text-bone">
             {title}
           </h2>
           {caption && <p className="text-sm text-parchment-500">{caption}</p>}

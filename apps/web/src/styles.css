@@ -4,11 +4,16 @@
 @import "@fontsource-variable/source-serif-4/wght-italic.css";
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource-variable/grenze-gotisch";
+@import "@fontsource/dela-gothic-one";
+@import "@fontsource/shippori-mincho-b1/800.css";
 
 /*
- * Visual direction (decision 0010): a Survey Corps field archive. Night-dark charcoal, aged
- * parchment, brass fittings, dried blood; condensed poster type for titles, a book serif for the
- * story itself, mono for the clerk's labels. Film grain over everything, art in a graded frame.
+ * Visual direction (decisions 0010, 0011): a Survey Corps field archive with a game-menu edge.
+ * Night-dark ink, bone-white slabs, brass fittings, Titan blood. Gothic lettering (after the
+ * series' hand-lettered logo) for names and titles, condensed poster type for numbers, kanji as
+ * accents, a book serif for the story itself, mono for the clerk's labels. Menus are slanted
+ * slabs, like a game's pause screen. Film grain over everything.
  */
 @theme {
   --color-ink: #0a0b09;
@@ -29,9 +34,16 @@
   --color-brass-500: #b8913f;
   --color-brass-700: #7a5f28;
   --color-blood-400: #d0705f;
+  --color-blood-500: #b3261e;
   --color-blood-600: #9c3a2a;
+  --color-bone: #ece4d0;
+  --color-cloak-500: #4e7446;
+  --color-cloak-700: #2f4a2b;
 
   --font-display: "Big Shoulders Display Variable", "Arial Narrow", sans-serif;
+  --font-gothic: "Grenze Gotisch Variable", "UnifrakturCook", Georgia, serif;
+  --font-kanji: "Dela Gothic One", "Yu Gothic", "Hiragino Sans", sans-serif;
+  --font-mincho: "Shippori Mincho B1", "Yu Mincho", "Hiragino Mincho ProN", serif;
   --font-serif: "Source Serif 4 Variable", Georgia, serif;
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
@@ -135,6 +147,59 @@
     text-transform: uppercase;
     line-height: 0.88;
     letter-spacing: 0.01em;
+  }
+
+  /* Gothic lettering for names and titles, after the series' own logo. */
+  .gothic {
+    font-family: var(--font-gothic);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: 0.005em;
+  }
+
+  /* A kanji accent: small over a label, or huge and outlined as a watermark. */
+  .kanji {
+    /* A mincho reads at small sizes (and echoes the manga's title lettering); the heavy gothic
+       is kept for watermarks. */
+    font-family: var(--font-mincho);
+    font-weight: 800;
+    line-height: 1;
+  }
+  .kanji-watermark {
+    font-family: var(--font-kanji);
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgb(236 228 208 / 0.09);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* A slanted slab, like a game menu's panels. */
+  .slab {
+    clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+  }
+  .slab-sm {
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  }
+
+  /* A bone-white ribbon with ink lettering. */
+  .ribbon {
+    display: inline-block;
+    background: var(--color-bone);
+    color: var(--color-ink);
+    padding: 0.15rem 1rem 0.15rem 0.8rem;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  }
+
+  /* Print halftone, for portrait backdrops. */
+  .halftone {
+    background-image: radial-gradient(rgb(236 228 208 / 0.12) 1px, transparent 1.2px);
+    background-size: 6px 6px;
   }
 
   /* The story's own voice: descriptions, epigraphs. */

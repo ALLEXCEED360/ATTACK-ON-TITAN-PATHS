@@ -2,6 +2,8 @@ import cytoscape, { type Core, type LayoutOptions } from "cytoscape";
 import fcose from "cytoscape-fcose";
 import { useEffect, useRef } from "react";
 import type { Neighborhood } from "../../api/client";
+import { portraitOf } from "../../art/manifest";
+import { useCutoff } from "../../stores/reader";
 import { toElements } from "./elements";
 import { clearHighlight, highlight } from "./focus";
 import { graphStyle, readPalette } from "./style";
@@ -53,6 +55,7 @@ interface GraphViewProps {
  * data changes, elements are diffed in place so nodes keep their positions and glide to new ones.
  */
 export function GraphView({ neighborhood, onSelect, onPositions }: GraphViewProps) {
+  const cutoff = useCutoff();
   const container = useRef<HTMLDivElement>(null);
   const cyRef = useRef<Core | null>(null);
   const onSelectRef = useRef(onSelect);
@@ -96,7 +99,7 @@ export function GraphView({ neighborhood, onSelect, onPositions }: GraphViewProp
   useEffect(() => {
     const cy = cyRef.current;
     if (!cy) return;
-    const next = toElements(neighborhood);
+    const next = toElements(neighborhood, (id) => portraitOf(cutoff, id)?.src);
     const ids = new Set(next.map((element) => element.data.id));
     const isFirstRender = cy.elements().empty();
 
@@ -128,7 +131,7 @@ export function GraphView({ neighborhood, onSelect, onPositions }: GraphViewProp
       animate: !isFirstRender && !prefersReducedMotion(),
       randomize: isFirstRender,
     });
-  }, [neighborhood]);
+  }, [neighborhood, cutoff]);
 
   const zoomBy = (factor: number) => {
     const cy = cyRef.current;
