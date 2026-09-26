@@ -32,36 +32,44 @@ export function EntityBody({ entity, compact }: { entity: EntityDetail; compact?
 
   return (
     <article className="flex flex-col gap-5">
-      <header className="flex flex-col gap-1">
-        <p className="label">{KIND_LABELS[entity.kind]}</p>
-        <Heading className={compact ? "text-2xl font-semibold" : "text-4xl font-semibold"}>
+      <header className={`flex flex-col ${compact ? "gap-1" : "gap-3"}`}>
+        <p className="label text-brass-400">{KIND_LABELS[entity.kind]}</p>
+        <Heading
+          className={`display text-parchment-50 ${compact ? "text-4xl" : "text-[clamp(3.5rem,9vw,7.5rem)]"}`}
+        >
           {entity.name}
         </Heading>
         {otherNames.length > 0 && (
-          <p className="text-sm text-parchment-500">Also known as {otherNames.join(", ")}</p>
+          <p className="font-serif text-parchment-500 italic">
+            Also known as {otherNames.join(", ")}
+          </p>
         )}
       </header>
 
       {entity.description.length > 0 && (
-        <div className="flex flex-col gap-3 text-parchment-300">
+        <div
+          className={`flex flex-col gap-3 ${compact ? "text-parchment-300" : "prose-story max-w-2xl"}`}
+        >
           {entity.description.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
       )}
 
-      <dl className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <dl
+        className={`grid gap-x-6 gap-y-4 border-t border-charcoal-800 pt-5 ${compact ? "grid-cols-1 sm:grid-cols-2" : "max-w-3xl grid-cols-2 sm:grid-cols-4"}`}
+      >
         <FactRow label="Born" fact={entity.born} />
         <FactRow label="Died" fact={entity.died} />
         <FactRow label="Began" fact={entity.start} />
         <FactRow label="Ended" fact={entity.end} />
         <div className="flex flex-col gap-0.5">
           <dt className="label">First appears</dt>
-          <dd className="font-mono text-sm">ch. {entity.revealedIn}</dd>
+          <dd className="display text-3xl text-parchment-50">Ch. {entity.revealedIn}</dd>
         </div>
         <div className="flex flex-col gap-0.5">
           <dt className="label">Connections</dt>
-          <dd className="font-mono text-sm">{entity.connections}</dd>
+          <dd className="display text-3xl text-parchment-50">{entity.connections}</dd>
         </div>
       </dl>
 

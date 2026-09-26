@@ -4,7 +4,7 @@ An interactive temporal knowledge graph of the _Attack on Titan_ manga — explo
 
 ## Status
 
-**Phase 9 — analytics (complete).** Next: Phase 10, polish and the design pass. The web app's deployment is scheduled for the end. API live at [paths-api-m9vw.onrender.com](https://paths-api-m9vw.onrender.com/docs). The dataset covers chapters 1–53 so far. The design lives in [`docs/`](docs/README.md); how to write data is in [`data/`](data/README.md).
+**Phase 10 — design pass (in progress).** Title screen, new visual system, page transitions and credited, spoiler-gated artwork are in. The web app's deployment is scheduled for the end. API live at [paths-api-m9vw.onrender.com](https://paths-api-m9vw.onrender.com/docs). The dataset covers chapters 1–53 so far. The design lives in [`docs/`](docs/README.md); how to write data is in [`data/`](data/README.md).
 
 | Package                                    | What it does                                                           |
 | ------------------------------------------ | ---------------------------------------------------------------------- |
@@ -48,8 +48,8 @@ Based on the _Attack on Titan_ manga by Hajime Isayama. The manga is the single 
 
 - **Code** — [MIT](LICENSE).
 - **Data and documentation** (`data/`, `docs/`) — [CC BY-NC 4.0](LICENSE-DATA): reuse with attribution, non-commercial only.
-- _Attack on Titan_ and all related names and characters belong to Hajime Isayama and Kodansha. These licenses cover only the original work in this repository.
+- _Attack on Titan_ and all related names, characters and artwork belong to Hajime Isayama and Kodansha. These licenses cover only the original work in this repository. Artwork in `apps/web/public/art/` is **not** licensed by this project; it's credited on the site's Credits page and listed in `apps/web/src/art/manifest.ts`.
 
 ## Disclaimer
 
-Non-commercial fan project. Not affiliated with or endorsed by Hajime Isayama, Kodansha, or any rights holder. No official artwork is hosted in this repository.
+Non-commercial fan project. Not affiliated with or endorsed by Hajime Isayama, Kodansha, or any rights holder. A few official illustrations are shown for non-commercial, fan purposes with credit; rights holders can ask for any of them to be removed, and they will be.

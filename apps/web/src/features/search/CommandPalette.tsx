@@ -39,10 +39,12 @@ export function PaletteTrigger() {
       onClick={() => {
         setOpen(true);
       }}
-      className="flex w-full max-w-sm items-center justify-between gap-3 rounded border border-charcoal-600 bg-charcoal-900 px-3 py-1.5 text-left text-sm text-parchment-500 hover:border-parchment-500"
+      className="flex w-full max-w-sm items-center justify-between gap-3 border border-charcoal-700 bg-charcoal-950/80 px-3 py-1.5 text-left text-sm text-parchment-500 transition-colors hover:border-charcoal-600 hover:text-parchment-300"
     >
       <span>Search people, events, places…</span>
-      <kbd className="font-mono text-xs">Ctrl K</kbd>
+      <kbd className="border border-charcoal-700 px-1.5 font-mono text-[0.65rem] tracking-wider">
+        Ctrl K
+      </kbd>
     </button>
   );
 }
@@ -155,7 +157,7 @@ export function CommandPalette() {
         // A click on the backdrop (the dialog element itself) closes it.
         if (event.target === dialog.current) close();
       }}
-      className="mx-auto mt-[12vh] w-[min(40rem,calc(100vw-2rem))] rounded-lg border border-charcoal-600 bg-charcoal-900 p-0 text-parchment-100 shadow-2xl backdrop:bg-black/70"
+      className="mx-auto mt-[12vh] w-[min(40rem,calc(100vw-2rem))] border border-charcoal-700 bg-charcoal-950 p-0 text-parchment-100 shadow-2xl shadow-black backdrop:bg-ink/80 backdrop:backdrop-blur-sm"
     >
       <div className="flex items-center gap-3 border-b border-charcoal-700 px-4 py-3">
         <input

@@ -25,7 +25,7 @@ export function ChapterButton() {
         onClick={() => {
           setOpen(true);
         }}
-        className="rounded border border-charcoal-600 px-3 py-1 font-mono text-sm whitespace-nowrap text-parchment-300 hover:border-brass-500"
+        className="notch border border-brass-700 bg-charcoal-900 px-3 py-1.5 font-mono text-xs tracking-[0.16em] whitespace-nowrap text-brass-300 uppercase transition-colors hover:border-brass-400 hover:text-brass-200"
         aria-label={`Reading up to chapter ${String(cutoff)}. Change chapter`}
       >
         Ch. {cutoff}
@@ -35,9 +35,10 @@ export function ChapterButton() {
         onClose={() => {
           setOpen(false);
         }}
-        className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-lg border border-charcoal-600 bg-charcoal-900 p-6 text-parchment-100 backdrop:bg-black/70"
+        className="m-auto w-[min(34rem,calc(100vw-2rem))] border border-charcoal-700 bg-charcoal-950 p-7 text-parchment-100 shadow-2xl shadow-black backdrop:bg-ink/80 backdrop:backdrop-blur-sm"
       >
-        <h2 className="mb-4 text-xl font-semibold">Change your chapter</h2>
+        <p className="label text-brass-400">Spoiler shield</p>
+        <h2 className="display mb-6 text-4xl">Change your chapter</h2>
         <ChapterPicker
           key={cutoff}
           initial={cutoff}

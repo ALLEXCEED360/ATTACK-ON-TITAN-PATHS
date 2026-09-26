@@ -30,3 +30,4 @@ One short record per architecture decision, numbered in order.
 | 0007 | [Search](decisions/0007-search.md)                                                                     |
 | 0008 | [Time is computed per reader chapter](decisions/0008-chapter-aware-time.md)                            |
 | 0009 | [Analytics](decisions/0009-analytics.md)                                                               |
+| 0010 | [Visual design and artwork](decisions/0010-design.md)                                                  |

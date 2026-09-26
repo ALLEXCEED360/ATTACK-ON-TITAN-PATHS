@@ -8,11 +8,27 @@ beforeEach(() => {
   useReader.setState({ cutoff: null });
 });
 
+/** Past the title screen, to the chapter question. */
+async function begin() {
+  await userEvent.click(screen.getByRole("button", { name: "Press any key to begin" }));
+  await screen.findByRole("heading", { name: "Where are you in the story?" });
+}
+
 describe("ChapterGate", () => {
+  it("opens on a title screen, then asks; any key moves on", async () => {
+    render(<ChapterGate>secret content</ChapterGate>);
+    expect(screen.getByRole("heading", { name: "PATHS" })).toBeTruthy();
+    expect(screen.queryByText("secret content")).toBeNull();
+    await userEvent.keyboard("x");
+    expect(
+      await screen.findByRole("heading", { name: "Where are you in the story?" }),
+    ).toBeTruthy();
+  });
+
   it("shows nothing from the app until a chapter is chosen", async () => {
     render(<ChapterGate>secret content</ChapterGate>);
+    await begin();
     expect(screen.queryByText("secret content")).toBeNull();
-    expect(screen.getByRole("heading", { name: "Where are you in the story?" })).toBeTruthy();
 
     const number = screen.getByRole("spinbutton", { name: "Chapter number" });
     await userEvent.clear(number);
@@ -25,12 +41,14 @@ describe("ChapterGate", () => {
 
   it("offers a one-click 'finished' option", async () => {
     render(<ChapterGate>secret content</ChapterGate>);
+    await begin();
     await userEvent.click(screen.getByRole("button", { name: "I've finished the manga" }));
     expect(useReader.getState().cutoff).toBe(139);
   });
 
   it("clamps typed chapters to the real range", async () => {
     render(<ChapterGate>secret content</ChapterGate>);
+    await begin();
     const number = screen.getByRole("spinbutton", { name: "Chapter number" });
     await userEvent.clear(number);
     await userEvent.type(number, "500");

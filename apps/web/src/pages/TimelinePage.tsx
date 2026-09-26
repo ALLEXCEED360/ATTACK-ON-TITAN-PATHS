@@ -9,8 +9,8 @@ export function TimelinePage() {
     <div className="mx-auto flex max-w-2xl flex-col gap-6">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="label">Timeline</p>
-          <h1 className="text-3xl font-semibold">
+          <p className="label text-brass-400">Timeline</p>
+          <h1 className="display text-5xl text-parchment-50 sm:text-6xl">
             {order === "world" ? "In the order it happened" : "In the order it's revealed"}
           </h1>
         </div>

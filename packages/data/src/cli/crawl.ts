@@ -55,10 +55,12 @@ for (const cutoff of cutoffs) {
     items.flatMap(({ id }) => [
       fetchJson(`/entities/${id}?cutoff=${String(cutoff)}`),
       fetchJson(`/graph/neighborhood/${id}?cutoff=${String(cutoff)}&depth=3`),
+      fetchJson(`/paths/${id}?cutoff=${String(cutoff)}`),
     ]),
   );
   await fetchJson(`/timeline?cutoff=${String(cutoff)}&order=world`);
   await fetchJson(`/timeline?cutoff=${String(cutoff)}&order=story`);
+  await fetchJson(`/analytics?cutoff=${String(cutoff)}`);
 }
 
 console.log(`${String(requests)} requests across ${String(cutoffs.length)} chapters`);

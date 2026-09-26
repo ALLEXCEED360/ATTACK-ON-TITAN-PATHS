@@ -3,10 +3,11 @@ import { Link } from "react-router";
 export function NotFoundPage() {
   return (
     <div className="mx-auto flex max-w-xl flex-col gap-4 py-16">
-      <p className="label">Not found</p>
-      <h1 className="text-3xl font-semibold">There&apos;s nothing at this address.</h1>
-      <Link to="/" className="text-brass-300 hover:underline">
-        Back to the start →
+      <p className="label text-brass-400">Not found</p>
+      <h1 className="display text-6xl text-parchment-50">Beyond the Walls.</h1>
+      <p className="prose-story">There&apos;s nothing at this address.</p>
+      <Link to="/" className="btn btn-ghost self-start">
+        Back inside →
       </Link>
     </div>
   );

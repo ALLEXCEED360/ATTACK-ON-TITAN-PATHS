@@ -13,8 +13,8 @@ export function AnalyticsPage() {
   return (
     <div className="flex flex-col gap-8">
       <header>
-        <p className="label">Analytics</p>
-        <h1 className="text-3xl font-semibold">The story in numbers</h1>
+        <p className="label text-brass-400">Analytics</p>
+        <h1 className="display text-6xl text-parchment-50 sm:text-7xl">The story in numbers</h1>
         <p className="mt-1 text-sm text-parchment-500">
           Counted from what you've read — up to chapter {cutoff}. Nothing past it is included.
         </p>
